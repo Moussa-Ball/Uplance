@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# We'll only runchecks on changes that are a part of this commit
+# So let's stash others
+git stash -q --keep-index       
+
+#
+# Now we can do our stuff...
+# First, we check code quality
+echo 'Checking Javascript code quality & Running tests...'
+./node_modules/pre-commit/hook
+RESULT=$?
+[ $RESULT -ne 0 ] && exit 1
+
+echo 'Checking PHP code style...'
+./vendor/bin/phpcs
+PHPCS_EC=$?
+# Then, we run tests
+echo 'Running PHP tests...'
+./vendor/bin/phpunit
+PHPUNIT_EC=$?
+# We're done with checks, we can unstash changes
+git stash pop -q
+# Exit if any error codes
+let "ERROR = $JSCS_EC + $PHPCS_EC + $PHPUNIT_EC"
+if [ "${ERROR}" -ne "0" ]
+then
+  echo "Commit aborted."
+  exit ${ERROR}
+fi
