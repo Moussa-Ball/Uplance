@@ -47,10 +47,10 @@ class ProposalSend extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('You have a new proposal for your project.')
             ->greeting('Hi ' . $this->proposal->user->name)
-            ->line($this->proposal->user->name . ' sent you a proposal for the project: '
-                . $this->proposal->job->project_name)
-            ->action('See the proposal', route('proposals.list', $this->proposal->job->hashid))
-            ->salutation('Bests regards,\nUplance');
+            ->line($this->proposal->user->name . ' sent you a proposal on your '
+                . $this->proposal->job->project_name . ' project.')
+            ->line('You can see his proposal for your project by clicking on this button below.')
+            ->action('See the proposal', route('proposals.list', $this->proposal->job->hashid));
     }
 
     /**

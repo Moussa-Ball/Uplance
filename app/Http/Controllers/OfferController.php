@@ -2,20 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Offer;
 use App\User;
-use Artesaos\SEOTools\Facades\SEOMeta;
+use App\Offer;
+use App\Proposal;
 use Illuminate\Http\Request;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class OfferController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Form to hire freelancer without a job proposal.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function indexWithout(Request $request, User $user)
     {
+        $this->authorize('client', $request->user());
+        SEOMeta::setTitle('Hire freelancer');
+        return view('offers.create');
+    }
+
+    /**
+     * Form to hire freelancer with a job proposal.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexWith(Request $request, Job $job, Proposal $proposal)
+    {
+        dd($job, $proposal);
+        $this->authorize('client', $request->user());
         SEOMeta::setTitle('Hire freelancer');
         return view('offers.create');
     }

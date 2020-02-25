@@ -57,12 +57,15 @@
 </template>
 
 <script>
+const audio = new Audio("/messages.mp3");
 export default {
   props: ["user"],
   data() {
     return {
       count: 0,
-      notifications: []
+      favico: null,
+      notifications: [],
+      old_title: document.title
     };
   },
   methods: {
@@ -106,10 +109,21 @@ export default {
           link: notification.link
         }
       });
-      if (document.hidden) {
-        let audio = new Audio("/messages.mp3");
+      if (window.document.hidden) {
         audio.play();
+        _this.favico = new Favicon({
+          animation: "none",
+          textColor: "#FFFFFF"
+        });
         _this.favico.badge(_this.count);
+        document.title = `(${_this.count}) ${_this.old_title}`;
+      }
+    });
+
+    $(document).on("visibilitychange", function() {
+      if (!document.hidden) {
+        _this.favico.reset();
+        document.title = _this.old_title;
       }
     });
   }

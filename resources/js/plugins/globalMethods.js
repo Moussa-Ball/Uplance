@@ -38,15 +38,8 @@ const showNotification = function (text, type, progress, timeout) {
 
 const { getName } = require('country-list');
 
-import Favicon from "favico.js";
-const favico = new Favicon({
-    animation: "none",
-    textColor: "#FFFFFF"
-});
-
 const GlobalMethods = {
     install(Vue) {
-        Vue.prototype.favico = favico;
         Vue.prototype.showErrors = showErrors;
         Vue.prototype.getCountryName = getName;
         Vue.prototype.showNotification = showNotification;

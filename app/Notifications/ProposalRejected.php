@@ -50,8 +50,7 @@ class ProposalRejected extends Notification
             ->line("Your proposal for {$this->proposal->job->project_name} project has been rejected.")
             ->line("You can still continue to search for another job.")
             ->action("Find Job", route('jobs.index'))
-            ->line("Good luck on uplance.")
-            ->salutation('Bests regards,\nUplance');
+            ->line("Good luck on uplance.");
     }
 
     /**

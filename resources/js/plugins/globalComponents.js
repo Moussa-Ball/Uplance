@@ -1,6 +1,7 @@
 window.axios = require("axios");
-import VueAxios from "vue-axios";
 import Places from 'vue-places';
+import VueAxios from "vue-axios";
+window.Favicon = require('favico.js');
 import VueTelInput from 'vue-tel-input'
 import Multiselect from 'vue-multiselect'
 import VueSlider from 'vue-slider-component'
@@ -45,7 +46,7 @@ import ProfileSettings from '../components/ProfileSettings'
 import SubmitJob from '../components/SubmitJob'
 import Notifications from '../components/Notifications'
 import Messenger from '../components/Messenger'
-import SendOffer from '../components/SendOffer'
+import HireFreelancer from '../components/HireFreelancer'
 import SearchFreelancer from '../components/SearchFreelancer'
 import UserStatusSwitcher from '../components/UserStatusSwitcher'
 
@@ -127,7 +128,7 @@ export default {
         Vue.component('datetime', Datetime);
         Vue.component('notifications', Notifications);
         Vue.component('messenger', Messenger);
-        Vue.component('send-offer', SendOffer);
+        Vue.component('hire-freelancer', HireFreelancer);
         Vue.component('search-freelancer', SearchFreelancer);
         Vue.component('user-status-switcher', UserStatusSwitcher);
     }

@@ -124,6 +124,7 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         'category_id',
         'presence_status',
         'switcher_status',
+        'credit',
         'hourly_rate',
         'skills',
         'tagline',

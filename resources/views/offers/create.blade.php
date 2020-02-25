@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <send-offer></send-offer>
+    <hire-freelancer></hire-freelancer>
 @endsection

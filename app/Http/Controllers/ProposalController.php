@@ -58,7 +58,7 @@ class ProposalController extends Controller
         ];
 
         $user = [
-            'credit' => 30
+            'credit' => \Auth::user()->credit
         ];
 
         return view('proposals.create', compact('job', 'user'));

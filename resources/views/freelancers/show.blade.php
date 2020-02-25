@@ -64,10 +64,10 @@
                     <!-- Button -->
                     @auth
                     @if($freelancer->id != Auth::id() && Auth::user()->current_account == 'client')
-                    <a href="{{ route('offers.index', $freelancer->hashid) }}" class="apply-now-button margin-bottom-50">Hire Freelancer <i class="icon-material-outline-arrow-right-alt"></i></a>
+                    <a href="{{ route('offers.new', $freelancer->hashid) }}" class="apply-now-button margin-bottom-50">Hire Freelancer <i class="icon-material-outline-arrow-right-alt"></i></a>
                     @endif
                     @else
-                    <a href="{{ route('offers.index', $freelancer->hashid) }}" class="apply-now-button margin-bottom-50">Hire Freelancer <i class="icon-material-outline-arrow-right-alt"></i></a>
+                    <a href="{{ route('offers.new', $freelancer->hashid) }}" class="apply-now-button margin-bottom-50">Hire Freelancer <i class="icon-material-outline-arrow-right-alt"></i></a>
                     @endauth
 
                     <!-- Freelancer Indicators -->

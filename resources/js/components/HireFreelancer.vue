@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dashboard-headline">
-      <h3>Send an offer</h3>
+      <h3>Hire Freelancer</h3>
     </div>
 
     <div class="margin-top-70"></div>

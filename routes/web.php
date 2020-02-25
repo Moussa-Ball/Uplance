@@ -44,7 +44,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          * Offers routes.
          */
         Route::group(['prefix' => 'offers'], function () {
-            Route::get('/~{user}', 'OfferController@index')->name('offers.index');
+            Route::get('/new/~{user}', 'OfferController@indexWithout')->name('offers.new');
+            Route::get('/new/~{job}-{proposal}', 'OfferController@indexWith')->name('offers.proposal');
         });
 
         /**
