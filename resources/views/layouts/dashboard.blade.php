@@ -94,6 +94,7 @@
                                         </div>
 
                                         <!-- Begin User Status Switcher -->
+                                        <user-status-switcher :user="{{ json_encode(['id' => Auth::user()->hashid, 'switcher_status' => Auth::user()->switcher_status]) }}"></user-status-switcher>
                                         <!-- End User Status Switcher -->
                                 </div>
 

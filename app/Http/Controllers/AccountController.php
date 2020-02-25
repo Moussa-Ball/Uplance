@@ -6,13 +6,16 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
+    /**
+     * Redirect to profile settings if the user has not complete his profile.
+     */
     public function __construct()
     {
         $this->middleware('complete.profile');
     }
 
     /**
-     * Switch the current either client or freelancer.
+     * Switch the current account either client or freelancer.
      *
      * @param \Illuminate\Http\Request
      */

@@ -191,9 +191,14 @@
         <!-- Sidebar -->
         <div class="col-xl-4 col-lg-4">
             <div class="sidebar-container">
-                @if($job->proposals()->withTrashed()->where('user_id', \Auth::id())->first())
+                @if($job->proposals()->where('user_id', \Auth::id())->first())
                 <div class="notification notice">
                     <p>You have already submitted a proposal to this job.</p>
+                    <a class="close"></a>
+                </div>
+                @elseif($job->proposals()->withTrashed()->where('user_id', \Auth::id())->first())
+                <div class="notification warning">
+                    <p>You proposal has been rejected.</p>
                     <a class="close"></a>
                 </div>
                 @else

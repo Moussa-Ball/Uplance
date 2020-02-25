@@ -37,7 +37,7 @@ class Proposal extends Model
 
     public function getHashidAttribute()
     {
-        return Hashids::connection(Job::class)->encode($this->attributes['id']);
+        return Hashids::connection(Proposal::class)->encode($this->attributes['id']);
     }
 
     public function user()

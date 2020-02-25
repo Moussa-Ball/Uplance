@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Offer;
+use App\User;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,9 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user_id)
+    public function index(User $user)
     {
-        SEOMeta::setTitle('Send an offer');
+        SEOMeta::setTitle('Hire freelancer');
         return view('offers.create');
     }
 

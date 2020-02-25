@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Events\UserOnline;
+use App\User;
 
-/**
- * Allows to set the user presence.
- *
- * @param \Illuminate\Http\Request
- */
-class UserOnlineController extends Controller
+class SwitcherOnlineController extends Controller
 {
     public function __invoke(User $user)
     {
-        $user->presence_status = 'online';
+        $user->switcher_status = 'online';
         $user->save();
 
         broadcast(new UserOnline($user));

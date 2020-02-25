@@ -1,78 +1,152 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Uplance official repository
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## This repository contains the official source code of the freelance website, Uplance.
 
-## About Laravel
+## Dependencies required
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+To use this repository, you must first ensure that
+these dependencies below are already installed.
+Make sure your server meets the following requirements:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [tmux](https://doc.ubuntu-fr.org/tmux) (For multi window in terminal)
+- [Node.js](https://nodejs.org/)
+- [yarn](https://yarnpkg.com)
+- [maildev](https://danfarrelly.nyc/MailDev/)
+- [Laravel Requirements](https://laravel.com/docs/5.8#server-requirements)
+- [make](http://www.gnu.org/software/make/) - (Already installed on Linux)
+- [composer](https://getcomposer.org/download/)
+- [redis-server](https://redis.io/download)
+- [laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server)
+- Database (Mysql/Others)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Options
 
-## Learning Laravel
+laravel-echo-server must be installed globally with npm or yarn.
+It's a NodeJs server for Laravel Echo broadcasting with Socket.io.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+``` bash
+$ npm install -g laravel-echo-server
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+After installing laravel-echo-server, initialize it by running the command below. 
+Otherwise, use the laravel-echo-server.json.example file and rename it to laravel-echo-server.json.
 
-## Laravel Sponsors
+``` bash
+$ laravel-echo-server init
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Then you can install redis-server with this command below for ubuntu.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+``` bash
+$ sudo apt-get install redis-server
+```
 
-## Contributing
+For archlinux proceeds as follows.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+``` bash
+$ sudo pacman -S redis-server
+```
 
-## Code of Conduct
+## Usage
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Clone the repository first.
 
-## Security Vulnerabilities
+``` bash
+$ git clone https://Moussa-Ball@bitbucket.org/uplancecanada/uplance.git
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Rename the .env.example file to .env and configure the environment variables 
+by adding also these variables below and their values.
 
-## License
+```
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+AWS S3 is also used in the project. You must specify the environment variables for Amazon S3.
+
+```
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=
+AWS_BUCKET=
+```
+
+Do not forget to configure the variables for the database and the email.
+After configuring the environment variables, proceed as follows in the terminal.
+
+``` bash
+$ composer install
+$ yarn install
+$ php artisan migrate
+$ php artisan passport:keys
+$ make dev
+```
+
+:warning Do not make `make dev` on windows if you dont have installed `make` and `tmux`.
+Use [cmder](https://cmder.net/) and launch on each tab the commands below.
+Do the above steps without make dev then do what is mentioned below.
+
+``` bash
+$ php artisan serve
+$ yarn hot or npm run hot
+$ maildev --ip 127.0.0.1
+$ laravel-echo-server start
+$ redis-server
+```
+
+### To install the CRM ([Laravel Voyager](https://laravelvoyager.com/))
+
+``` bash
+$ php artisan voyager:install
+```
+
+### Add an administrator on the crm 
+``` bash
+$ php artisan voyager:admin email
+```
+
+The email must be an email from a user already registering in database.
+
+### Laravel Passport ([Laravel Passport](https://laravel.com/docs/5.8/passport))
+
+``` bash
+$ php artisan passport:keys
+```
+
+This command generates the encryption keys Passport needs in order to generate access token.
+Otherwise the ajax part will not work with `Vue.js`.
+
+
+To run the linter tests in php for the code format, run the command below.
+
+``` bash
+$ ./vendor/bin/phpcs
+```
+
+To fix code formatting errors, run the command below:
+
+``` bash
+$ ./vendor/bin/phpcbf
+```
+
+To launch the javascript eslint, run the command below:
+
+``` bash
+$ npm run lint
+```
+
+To launch unit tests for vue.js, run the command below:
+
+``` bash
+$ npm run test
+```
+
+If you have a 404 problem or 500 with apache. Refer to this link below to solve the problem.
+
+### [404 Error | Laravel - Apache](https://stackoverflow.com/questions/22757749/laravel-redirects-to-a-route-but-then-apache-gives-404-error)
+
+### [500 Error | Laravel - Apache](https://stackoverflow.com/questions/31543175/getting-a-500-internal-server-error-on-laravel-5-ubuntu-14-04)

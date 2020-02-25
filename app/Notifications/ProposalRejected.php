@@ -4,12 +4,12 @@ namespace App\Notifications;
 
 use App\Proposal;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
-class ProposalNotification extends Notification implements ShouldQueue
+class ProposalRejected extends Notification
 {
     use Queueable;
 
@@ -45,10 +45,13 @@ class ProposalNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('You have a new proposal for your project.')
-            ->line($this->proposal->user->name . ' sent you a proposal for the project: '
-                . $this->proposal->job->project_name)
-            ->action('See the proposal', route('proposals.list', $this->proposal->job->hashid));
+            ->subject('Your proposal has been rejected.')
+            ->greeting('Hi ' . $this->proposal->user->name)
+            ->line("Your proposal for {$this->proposal->job->project_name} project has been rejected.")
+            ->line("You can still continue to search for another job.")
+            ->action("Find Job", route('jobs.index'))
+            ->line("Good luck on uplance.")
+            ->salutation('Bests regards,\nUplance');
     }
 
     /**
@@ -60,9 +63,8 @@ class ProposalNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->proposal->user->name,
             'project_name' => $this->proposal->job->project_name,
-            'link' => route('proposals.list', $this->proposal->job->hashid)
+            'link' => route('jobs.show', $this->proposal->job->hashid)
         ];
     }
 

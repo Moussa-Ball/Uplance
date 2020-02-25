@@ -38,7 +38,8 @@ class CreateUsersTable extends Migration
             $table->enum('account_type', ['freelancer', 'client'])->nullable();
             $table->enum('current_account', ['freelancer', 'client'])->nullable();
             $table->boolean('verified')->default(false);
-            $table->string('status')->default('online');
+            $table->string('presence_status')->default('online');
+            $table->string('switcher_status')->default('online');
             $table->integer('credit')->default(30);
             $table->dateTime('next_reset_date')->default(Carbon::now()->add(1, 'month'));
             $table->integer('hourly_rate')->default(5);

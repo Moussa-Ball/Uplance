@@ -123,7 +123,7 @@
                       <div class="freelancer-avatar">
                         <div
                           class="verified-badge user-status"
-                          :class="{'status-online': freelancer.status === 'online', 'status-inactif': freelancer.status === 'inactif'}"
+                          :class="{'status-online': freelancer.presence_status === 'online' && freelancer.switcher_status === 'online'}"
                         ></div>
                         <a
                           v-if="freelancer.avatar[0] === 'u'"
@@ -342,21 +342,16 @@ export default {
       .listen("UserOnline", function(user) {
         for (let key in _this.freelancers.data) {
           if (_this.freelancers.data[key].hashid == user.hashid) {
-            _this.freelancers.data[key].status = "online";
-          }
-        }
-      })
-      .listen("UserInactif", function(user) {
-        for (let key in _this.freelancers.data) {
-          if (_this.freelancers.data[key].hashid == user.hashid) {
-            _this.freelancers.data[key].status = "inactif";
+            _this.freelancers.data[key].presence_status = user.presence_status;
+            _this.freelancers.data[key].switcher_status = user.switcher_status;
           }
         }
       })
       .listen("UserOffline", function(user) {
         for (let key in _this.freelancers.data) {
           if (_this.freelancers.data[key].hashid == user.hashid) {
-            _this.freelancers.data[key].status = "offline";
+            _this.freelancers.data[key].presence_status = user.presence_status;
+            _this.freelancers.data[key].switcher_status = user.switcher_status;
           }
         }
       });

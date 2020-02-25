@@ -44,7 +44,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          * Offers routes.
          */
         Route::group(['prefix' => 'offers'], function () {
-            Route::get('/~{user_id}', 'OfferController@index')->name('offers.index');
+            Route::get('/~{user}', 'OfferController@index')->name('offers.index');
         });
 
         /**
@@ -53,7 +53,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
         Route::group(['prefix' => 'proposals'], function () {
             Route::get('/~{id}', 'ProposalController@index')->name('proposals.index');
             Route::get('/list/~{id}', 'ProposalController@show')->name('proposals.list');
-            Route::get('/remove/~{job_id}-{proposal_id}', 'ProposalController@destroy')->name('proposals.delete');
+            Route::get('/refuse/~{job}-{proposal}', 'ProposalController@destroy')->name('proposals.delete');
         });
 
         /**

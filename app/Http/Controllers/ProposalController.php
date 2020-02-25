@@ -7,7 +7,8 @@ use App\Proposal;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\ProposalRequest;
-use App\Notifications\ProposalNotification;
+use App\Notifications\ProposalRejected;
+use App\Notifications\ProposalSend;
 use Artesaos\SEOTools\Facades\SEOMeta;
 
 class ProposalController extends Controller
@@ -102,7 +103,9 @@ class ProposalController extends Controller
             'job_id' => $job->id,
         ]);
 
-        $proposal->job->user->notify(new ProposalNotification($proposal));
+        $proposal->job->user->notify(new ProposalSend($proposal));
+        $proposal->user->credit -= 2;
+        $proposal->user->save();
 
         return response()->json([
             'attachable_id' => $proposal->id,
@@ -132,30 +135,19 @@ class ProposalController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete proposal.
      *
      * @param  \App\Proposal  $proposal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $job_id, $proposal_id)
+    public function destroy(Request $request, Job $job, Proposal $proposal)
     {
         $this->authorize('client', $request->user());
-
-        $job_id = Hashids::connection(Job::class)->decode($job_id);
-        if (!$job_id) return abort(404);
-
-        $proposal_id = Hashids::connection(Proposal::class)->decode($proposal_id);
-        if (!$proposal_id) return abort(404);
-
-        $job = Job::where('id', $job_id)->first();
-        if (!$job) return abort(404);
-
         $this->authorize('owner', $job->user_id);
 
-        Proposal::where([
-            'id' => $proposal_id,
-            'job_id' => $job->id,
-        ])->delete();
+        if ($proposal->accepted) return abort(402);
+        $proposal->user->notify(new ProposalRejected($proposal));
+        $proposal->delete();
 
         return redirect()->back()->with('success', "The freelancer's proposal was refused.");
     }

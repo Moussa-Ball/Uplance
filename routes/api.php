@@ -24,9 +24,15 @@ Route::group(['middleware' => ['auth:api']], function () {
         return new UserResource($request->user());
     });
 
+    /**
+     * ----------------------------------------------------
+     * User status & switcher routes.
+     * ----------------------------------------------------
+     */
     Route::put('/user/{user}/online', 'UserOnlineController');
-    Route::put('/user/{user}/inactif', 'UserInactifController');
     Route::put('/user/{user}/offline', 'UserOfflineController');
+    Route::put('/user/switcher/{user}/online', 'SwitcherOnlineController');
+    Route::put('/user/switcher/{user}/offline', 'SwitcherOfflineController');
 
     /**
      * ----------------------------------------------------
@@ -53,7 +59,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      * ----------------------------------------------------
      */
     Route::group(['prefix' => 'notifications'], function () {
-        Route::get('/', 'NotificationController@all');
+        Route::get('/', 'NotificationController@limit');
         Route::put('/markAsRead/{notification_id}', 'NotificationController@markAsRead');
         Route::get('/markAllAsRead', 'NotificationController@markAllAsRead');
     });

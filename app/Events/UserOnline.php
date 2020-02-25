@@ -16,7 +16,7 @@ class UserOnline implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    private $user;
 
     /**
      * Create a new event instance.
@@ -41,7 +41,9 @@ class UserOnline implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'hashid' => $this->user->hashid
+            'hashid' => $this->user->hashid,
+            'presence_status' => $this->user->presence_status,
+            'switcher_status' => $this->user->switcher_status,
         ];
     }
 }

@@ -47,6 +47,7 @@ import Notifications from '../components/Notifications'
 import Messenger from '../components/Messenger'
 import SendOffer from '../components/SendOffer'
 import SearchFreelancer from '../components/SearchFreelancer'
+import UserStatusSwitcher from '../components/UserStatusSwitcher'
 
 
 export default {
@@ -128,5 +129,6 @@ export default {
         Vue.component('messenger', Messenger);
         Vue.component('send-offer', SendOffer);
         Vue.component('search-freelancer', SearchFreelancer);
+        Vue.component('user-status-switcher', UserStatusSwitcher);
     }
 };
