@@ -5,6 +5,8 @@ import VueRouter from "vue-router";
 /**
  * Components Here.
  */
+import Messages from '../components/Messages'
+import Messenger from '../components/Messenger'
 import SearchJob from '../components/SearchJob'
 import PreviewJob from '../components/PreviewJob'
 
@@ -19,6 +21,16 @@ const routes = [
         path: "/:lang/jobs/~:id",
         component: PreviewJob,
     },
+    {
+        path: '/:lang/messages',
+        name: 'messenger',
+        component: Messenger,
+    },
+    {
+        path: '/:lang/messages/thread~:id',
+        name: 'messages',
+        component: Messages,
+    }
 ];
 
 /**

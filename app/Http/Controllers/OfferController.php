@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
 use App\User;
 use App\Offer;
 use App\Proposal;

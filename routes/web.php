@@ -36,7 +36,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          */
         Route::group(['prefix' => 'messages'], function () {
             Route::get('/', 'MessengerController@index')->name('messages.index');
-            Route::get('/~{job_id}-{proposal_id}', 'MessengerController@createConversation')
+            Route::get('/thread~{id}', 'MessengerController@show')->name('messages.thread');
+            Route::get('/~{job}-{proposal}', 'MessengerController@createConversation')
                 ->name('messages.create');
         });
 

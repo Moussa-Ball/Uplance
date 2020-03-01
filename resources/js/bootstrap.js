@@ -7,7 +7,6 @@ try {
     // eslint-disable-next-line no-empty
 } catch (e) { }
 
-
 // Have this in case you stop running your laravel echo server
 if (typeof io !== 'undefined') {
     window.Echo = new Echo({

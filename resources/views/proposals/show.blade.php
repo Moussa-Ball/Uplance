@@ -122,7 +122,7 @@
                                         @if(!$bid->accepted)
                                         <a href="{{ route('offers.proposal', ['job' => $job->hashid, 'proposal' => $bid->hashid]) }}" class="button ripple-effect"><i class="icon-material-outline-check"></i> Hire Freelancer</a>
                                         @endif
-                                        <a href="{{ route('messages.create', ['job_id' => $job->hashid, 'proposal_id' => $bid->hashid]) }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                                        <a href="{{ route('messages.create', ['job' => $job->hashid, 'proposal' => $bid->hashid]) }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
                                         @if(!$bid->accepted)
                                         <a href="{{ route('proposals.delete', ['job' => $job->hashid, 'proposal' => $bid->hashid]) }}" onclick="return confirm('Are you sure?')" class="button gray ripple-effect ico" title="Remove Bid" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
                                         @endif

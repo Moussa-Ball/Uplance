@@ -374,7 +374,7 @@ export default {
   },
   watch: {
     "user.skills": function() {
-      if (this.user.skills) {
+      if (this.user.skills.length) {
         let skills = this.user.skills;
         skills = skills.split(",");
         for (let i in skills) {

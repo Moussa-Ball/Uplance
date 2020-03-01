@@ -53,6 +53,7 @@
                         <!--  User Notifications -->
                         <div class="header-widget">
                             <notifications :user="{{ (int)Auth::user()->id }}"></notifications>
+                        <messages-notifications :user="{{ (int)Auth::user()->id }}"></messages-notifications>
                         </div>
                         <!--  User Notifications / End -->
 
@@ -152,10 +153,11 @@
                                 <li class="{{ (Route::currentRouteName() == 'dashboard') ? 'active-submenu' : '' }}">
                                     <a href="#"><i class="icon-material-outline-dashboard"></i> Dashboard</a>
                                 </li>
-                                <li class="{{ (Route::currentRouteName() == 'messenger') ? 'active-submenu' : '' }}">
-                                    <a href="#">
+                                <li class="{{ (Route::currentRouteName() == 'messages.index' || Route::currentRouteName() == 'messages.thread') ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('messages.index') }}">
                                         <i class="icon-material-outline-question-answer"></i> Messages 
-                                        <!-- TODO: Message Badge Here -->
+                                        <!-- Message Badge -->
+                                        <message-badge :user="{{ (int)Auth::user()->id }}"></message-badge>
                                     </a>
                                 </li>
                                 <li class="{{ (Route::currentRouteName() == 'bookmarks') ? 'active-submenu' : '' }}">

@@ -1,7 +1,6 @@
 window.axios = require("axios");
 import Places from 'vue-places';
 import VueAxios from "vue-axios";
-window.Favicon = require('favico.js');
 import VueTelInput from 'vue-tel-input'
 import Multiselect from 'vue-multiselect'
 import VueSlider from 'vue-slider-component'
@@ -31,6 +30,8 @@ import Nl2br from 'vue-nl2br'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import VueTimeago from 'vue-timeago'
+import VueChatScroll from 'vue-chat-scroll'
+import { Picker } from 'emoji-mart-vue';
 
 /**
  * Import Component to display.
@@ -49,6 +50,8 @@ import Messenger from '../components/Messenger'
 import HireFreelancer from '../components/HireFreelancer'
 import SearchFreelancer from '../components/SearchFreelancer'
 import UserStatusSwitcher from '../components/UserStatusSwitcher'
+import MessagesNotifications from '../components/MessagesNotifications'
+import MessageBadge from '../components/MessageBadge'
 
 
 export default {
@@ -60,12 +63,14 @@ export default {
          */
 
         Vue.use(ReadMore);
+        Vue.use(VueChatScroll)
         Vue.use(VueTelInput);
         Vue.use(VueAxios, axios);
         Vue.use(money, { precision: 4 });
         Vue.use(vueCountryRegionSelect);
         Vue.use(StarRating);
         Vue.use(Bookmark);
+        Vue.use(Picker);
         Vue.use(SocialShare);
         Vue.use(VueTippy, {
             directive: "tippy", // => v-tippy
@@ -131,5 +136,8 @@ export default {
         Vue.component('hire-freelancer', HireFreelancer);
         Vue.component('search-freelancer', SearchFreelancer);
         Vue.component('user-status-switcher', UserStatusSwitcher);
+        Vue.component('messages-notifications', MessagesNotifications);
+        Vue.component('message-badge', MessageBadge);
+        Vue.component('picker', Picker);
     }
 };

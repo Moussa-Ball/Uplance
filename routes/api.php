@@ -49,7 +49,12 @@ Route::group(['middleware' => ['auth:api']], function () {
      * ----------------------------------------------------
      */
     Route::group(['prefix' => 'messages'], function () {
-        Route::get('/get_participants', 'MessengerController@getParticipants');
+        Route::get('/discussions/{thread}', 'MessengerController@discussions');
+        Route::get('/conversations', 'MessengerController@conversations');
+        Route::post('/store/{thread}', 'MessengerController@store');
+        Route::put('/active/{id}', 'MessengerController@active');
+        Route::put('/mark-as-read/{thread}', 'MessengerController@markAsRead');
+        Route::get('/previous/{thread}', 'MessengerController@previousMessages');
     });
 
 

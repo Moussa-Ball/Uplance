@@ -129,7 +129,7 @@ class ProposalController extends Controller
         $job = Job::where('id', $id)->first();
         if (!$job) return abort(404);
         $this->authorize('owner', $job->user_id);
-        $proposals = Proposal::where('job_id', $job->id)->paginate(10);
+        $proposals = Proposal::where('job_id', $job->id)->orderBy('created_at', 'DESC')->paginate(10);
         SEOMeta::setTitle('Manage Bidders');
         return view('proposals.show', compact('proposals', 'job'));
     }

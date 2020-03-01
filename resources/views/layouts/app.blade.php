@@ -63,6 +63,7 @@
                         <!--  User Notifications -->
                         <div class="header-widget hide-on-mobile">
                             <notifications :user="{{ (int)Auth::user()->id }}"></notifications>
+                            <messages-notifications :user="{{ (int)Auth::user()->id }}"></messages-notifications>
                         </div>
                         <!--  User Notifications / End -->
 

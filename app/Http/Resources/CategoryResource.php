@@ -14,8 +14,13 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
+        if ($this->resource) {
+            return [
+                'name' => $this->name,
+            ];
+        }
         return [
-            'name' => ($this) ? $this->name : "",
+            'name' => "",
         ];
     }
 }

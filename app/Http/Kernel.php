@@ -45,8 +45,11 @@ class Kernel extends HttpKernel
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
+        'throttle' => ['throttle:99,1'], //No idea why, but this works! Added by me. ++++
+
         'api' => [
-            'throttle:60,1',
+            //'throttle:60,1',
+            'throttle:5000,1', //These values did not change the throttle limit. Added by me. ++++
             'bindings',
         ],
     ];

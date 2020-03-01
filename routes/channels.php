@@ -11,10 +11,10 @@
 |
 */
 
+
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-
 
 Broadcast::channel('Job', function () {
     return Auth::check();
@@ -22,4 +22,8 @@ Broadcast::channel('Job', function () {
 
 Broadcast::channel('uplance', function ($user) {
     return $user->hashid;
+});
+
+Broadcast::channel('messenger', function ($user) {
+    return Auth::check();
 });

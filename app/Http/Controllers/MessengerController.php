@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\ActivateDiscussion;
+use App\Events\NewMessage;
+use App\Http\Requests\StoreMessageRequest;
+use Auth;
 use App\Job;
+use App\Notifications\MessageReceived;
 use App\Proposal;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
 use Cmgmyr\Messenger\Models\Thread;
 use Cmgmyr\Messenger\Models\Message;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -15,62 +19,129 @@ class MessengerController extends Controller
 {
     public function index()
     {
+        $active = ActivateDiscussion::where('user_id', Auth::id())->first();
+        if ($active) {
+            return redirect()->route('messages.thread', $active->active_thread_id);
+        }
         SEOMeta::setTitle('Messages');
         return view('messenger.index');
     }
 
-    public function createConversation(Request $request, $job_id, $proposal_id)
+    public function show()
     {
-        $this->authorize('client', $request->user());
-
-        $job_id = Hashids::connection(Job::class)->decode($job_id);
-        if (!$job_id) return abort(404);
-
-        $proposal_id = Hashids::connection(Proposal::class)->decode($proposal_id);
-        if (!$proposal_id) return abort(404);
-
-        $job = Job::where('id', $job_id)->first();
-        if (!$job) return abort(404);
-
-        $this->authorize('owner', $job->user_id);
-
-        $proposal = Proposal::where(['id' => $proposal_id, 'job_id' => $job->id])->first();
-
-        /*$conversation = Chat::conversations()->between($request->user(), $proposal->user);
-
-        if ($conversation == null) {
-            $conversation = Chat::createConversation([$proposal->user])->makePrivate();
-        }*/
-
-        //return redirect()->route('messages.index');
+        SEOMeta::setTitle('Messages');
+        return view('messenger.index');
     }
 
-    public function getParticipants(Request $request)
+    public function createConversation(Request $request, Job $job, Proposal $proposal)
     {
-        $thread = Thread::create([
-            'subject' => 'proposal'
-        ]);
+        $this->authorize('client', $request->user());
+        $this->authorize('owner', $job->user_id);
 
-        // Message
-        $message = Message::create([
-            'thread_id' => $thread->id,
-            'user_id' => $request->user()->id,
-            'body' => 'Hello Guy\'s',
+        // create thread || Discussion.
+        $thread = Thread::create([
+            'subject' => "{$job->project_name}",
         ]);
 
         // Sender
-        $participant = Participant::create([
+        Participant::create([
             'thread_id' => $thread->id,
-            'user_id' => $request->user()->id,
-            'last_read' => new \Carbon\Carbon,
+            'user_id' => $job->user_id,
+            'last_read' => new \Carbon\Carbon(),
         ]);
 
-        dd($participant);
+        // Recipient
+        $thread->addParticipant($proposal->user_id);
 
-        $threads = Thread::getAllLatest()->get();
-        dd($threads);
-        /*$conversation = Chat::conversations()->setPaginationParams(['sorting' => 'desc'])
-            ->setParticipant($request->user())->get()->toJson();
-        return $conversation;*/
+        // Store activate thread in database.
+
+        return redirect()->route('messages.index');
+    }
+
+    public function conversations(Request $request)
+    {
+        $threads = Thread::with('users')->forUser(Auth::id())->latest('updated_at')->get();
+        $custom_threads = $threads->toArray();
+
+        foreach ($threads as $key => $thread) {
+            $custom_threads[$key]['user'] = $thread->participants()->where('user_id', '!=', Auth::id())->first()->user;
+            $custom_threads[$key]['latest_message'] = $thread->getLatestMessageAttribute();
+            $custom_threads[$key]['unread'] =  (int) $thread->userUnreadMessagesCount(Auth::id());
+        }
+
+        return [
+            'owner' => Auth::id(),
+            'threads' => (empty($custom_threads)) ? null : $custom_threads,
+        ];
+    }
+
+    public function discussions(Thread $thread)
+    {
+        return [
+            'thread' => $thread,
+            'owner' => Auth::id(),
+            'user' => $thread->users()->where('user_id', '!=', Auth::id())->first(),
+            'messages' => array_reverse($thread->messages()->with('user')->limit(10)->latest('created_at')->get()->toArray()),
+        ];
+    }
+
+    public function store(StoreMessageRequest $request, Thread $thread)
+    {
+        $validator = \Validator::make(json_decode($request->content, true), [
+            'type' => 'required', //Must be a number and length of value is 8
+            'content' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Store new message.
+        $message = Message::create([
+            'thread_id' => $thread->id,
+            'user_id' => Auth::id(),
+            'body' => $request->content,
+        ]);
+
+        foreach ($message->recipients()->get() as $recipient) {
+            if ($recipient->user->presence_status == 'offline')
+                $recipient->user->notify(new MessageReceived($message, $recipient->user));
+        }
+
+        $message = Message::with('user')->where('id', $message->id)->first();
+        broadcast(new NewMessage($message));
+
+        return $message;
+    }
+
+    public function active($id)
+    {
+        $active = ActivateDiscussion::where('user_id', Auth::id())->first();
+
+        if ($active) {
+            $active->update([
+                'active_thread_id' => $id,
+            ]);
+        } else {
+            $active = ActivateDiscussion::firstOrCreate([
+                'user_id' => Auth::id(),
+                'active_thread_id' => $id,
+            ]);
+        }
+
+        return $active;
+    }
+
+    public function markAsRead(Thread $thread)
+    {
+        $unread = (int) $thread->userUnreadMessagesCount(Auth::id());
+        $thread->markAsRead(Auth::id());
+        return $unread;
+    }
+
+    public function previousMessages(Request $request, Thread $thread)
+    {
+        return array_reverse($thread->messages()->with('user')
+            ->where('created_at', '<', $request->before)->limit(10)->latest('created_at')->get()->toArray());
     }
 }

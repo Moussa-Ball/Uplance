@@ -149,7 +149,27 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'id', 'password', 'remember_token',
+        'id',
+        'role_id',
+        'password',
+        'remember_token',
+        'email',
+        'provider',
+        'provider_id',
+        'next_withdraw_date',
+        'next_reset_date',
+        'address',
+        'postal_code',
+        'mobile_phone',
+        'email_verified_at',
+        'settings',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'stripe_id',
+        'card_brand',
+        'card_last_four',
+        'trial_ends_at',
     ];
 
     /**

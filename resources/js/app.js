@@ -9,4 +9,9 @@ Vue.config.productionTip = true;
 Vue.use(Uplance);
 
 // eslint-disable-next-line no-unused-vars
-const app = new Vue(Vue.util.extend({ router, store })).$mount('#app');
+const app = new Vue(Vue.util.extend({
+    router, store, created() {
+        this.$store.dispatch("Messenger/getConversations");
+    }
+})).$mount('#app');
+

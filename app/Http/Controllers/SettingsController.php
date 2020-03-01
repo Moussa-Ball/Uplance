@@ -108,7 +108,8 @@ class SettingsController extends Controller
         $category = Category::where('name', $request->category)->first();
         $request->user()->categories()->sync($category);
         $request->user()->update($request->all());
-        $request->user()->update(['category_id' => $category->id]);
+        if ($request->user()->current_account == 'freelancer')
+            $request->user()->update(['category_id' => $category->id]);
         return response()->json('Your profile has been updated!');
     }
 
