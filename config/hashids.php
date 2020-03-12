@@ -50,5 +50,17 @@ return [
             'salt' => \App\Proposal::class . 'f8fe4aa8e8d9ef9553864cc473a04fc7',
             'length' => 11,
         ],
+        \App\Offer::class => [
+            'salt' => \App\Offer::class . 'f8fe4aa8e8d9ef9553864cc473a04fc7',
+            'length' => 11,
+        ],
+        \App\Contract::class => [
+            'salt' => \App\Contract::class . 'f8fe4aa8e8d9ef9553864cc473a04fc7',
+            'length' => 11,
+        ],
+        \App\Invoice::class => [
+            'salt' => \App\Invoice::class . 'f8fe4aa8e8d9ef9553864cc473a04fc7',
+            'length' => 11,
+        ],
     ],
 ];

@@ -86,7 +86,7 @@
         <template v-if="$route.name == 'messenger'">
           <div style="text-align: center; margin-left: 50px; margin-right: 50px;">
             <img
-              style="width: 150px; height: 300px; margin: 50px auto;"
+              style="width: 100px; height: 300px; margin: 50px auto;"
               src="/images/messages.svg"
               alt="messages.svg"
             />

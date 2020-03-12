@@ -24,11 +24,32 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
      * Routes when the user is connected.
      * -------------------------------------------------------------------------------------
      */
-    Route::group(['middleware' => ['auth', /*'verified'*/]], function () {
+    Route::group(['middleware' => ['auth', 'verified']], function () {
 
-        // Home route
+        /**
+         * Home route
+         */
         Route::get('/', function () {
             return redirect()->route('jobs.index');
+        });
+
+        /**
+         * Contracts routes
+         */
+        Route::group(['prefix' => 'contracts'], function () {
+            Route::get('/', 'ContractController@index')->name('contracts.index');
+            Route::get('/~{contract}', 'ContractController@show')->name('contracts.show');
+            Route::post('/store/~{offer}', 'ContractController@store')->name('contracts.store');
+        });
+
+        /**
+         * Payments routes.
+         */
+        Route::group(['prefix' => 'payments'], function () {
+            Route::get('/billing-method', 'PaymentController@index')->name('payments.index');
+            Route::post('/billing-method/add', 'PaymentController@add')->name('payments.add');
+            Route::post('/billing-method/default', 'PaymentController@enableDefaultMethod')->name('payments.default');
+            Route::post('/billing-method/remove', 'PaymentController@removePaymentMethod')->name('payments.remove');
         });
 
         /**
@@ -45,8 +66,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          * Offers routes.
          */
         Route::group(['prefix' => 'offers'], function () {
-            Route::get('/new/~{user}', 'OfferController@indexWithout')->name('offers.new');
-            Route::get('/new/~{job}-{proposal}', 'OfferController@indexWith')->name('offers.proposal');
+            Route::get('/', 'OfferController@index')->name('offers.index');
+            Route::get('/new/~{user}', 'OfferController@create')->name('offers.new');
+            Route::get('/destroy/~{offer}', 'OfferController@destroy')->name('offers.destroy');
         });
 
         /**

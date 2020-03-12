@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Offer;
+use App\Proposal;
+use App\User;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -40,6 +44,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('owner', function ($user, $id) {
             return $user->id === $id;
+        });
+
+        Gate::define('not-accepted', function ($user, Model $model) {
+            return $model->accepted == false;
         });
 
         Passport::routes();

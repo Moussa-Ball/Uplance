@@ -8,15 +8,6 @@
 
 				<h2>Reset Password</h2>
 
-				<!-- Breadcrumbs -->
-				<nav id="breadcrumbs" class="dark">
-					<ul>
-						<li><a href="{{ url('/') }}">Home</a></li>
-						<li><a href="{{ route('login') }}">Login</a></li>
-						<li>Forgot Password</li>
-					</ul>
-				</nav>
-
 			</div>
 		</div>
 	</div>

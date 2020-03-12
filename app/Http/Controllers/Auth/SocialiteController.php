@@ -100,13 +100,13 @@ class SocialiteController extends Controller
         $new_user = null;
 
         if ($authUser) {
-            if ($authUser->avatar === asset('users/default.png')) {
-                $authUser->avatar = $user->avatar;
+            if (!$authUser->avatar) {
+                $authUser->avatar = asset('users/default.png');
             }
             $authUser->provider = $provider;
             $authUser->provider_id = $user->id;
             $authUser->save();
-            $this->redirectTo = '/find-work';
+            $this->redirectTo = '/jobs';
             return $authUser;
         }
 
@@ -116,7 +116,7 @@ class SocialiteController extends Controller
                 'first_name' => end($names),
                 'last_name' => reset($names),
                 'email' => $user->email,
-                'avatar' => $user->avatar,
+                'avatar' => asset('users/default.png'),
                 'provider' => $provider, // The name of the service provider.
                 'provider_id' => $user->id // The user id from the service provider.
             ]);
@@ -126,7 +126,7 @@ class SocialiteController extends Controller
                 'first_name' => reset($names),
                 'last_name' => end($names),
                 'email' => $user->email,
-                'avatar' => $user->avatar,
+                'avatar' => asset('users/default.png'),
                 'provider' => $provider, // The name of the service provider.
                 'provider_id' => $user->id // The user id from the service provider.
             ]);

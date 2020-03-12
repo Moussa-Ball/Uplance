@@ -271,7 +271,6 @@
                     checked
                     id="milestone"
                     v-model="payment_type"
-                    name="payment_type"
                     type="radio"
                     value="milestones"
                   />
@@ -550,8 +549,9 @@ export default {
       }
     },
     payment_type() {
+      console.log("payment_type");
       this.total_amount = 0;
-      if (this.payment_type == "project") {
+      if (this.payment_type !== "milestones") {
         this.milestones = [];
       } else {
         this.milestones = [{ description: "", due_date: "", amount: 0 }];

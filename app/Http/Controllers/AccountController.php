@@ -23,11 +23,12 @@ class AccountController extends Controller
     {
         if ($request->user()->current_account === 'freelancer') {
             $request->user()->update(['current_account' => 'client']);
+            return redirect()->route('freelancers.index');
         } elseif ($request->user()->current_account === 'client') {
             $request->user()->update(['current_account' => 'freelancer']);
+            return redirect()->route('jobs.index');
         } else {
             return $this->authorize(true);
         }
-        return redirect()->back();
     }
 }

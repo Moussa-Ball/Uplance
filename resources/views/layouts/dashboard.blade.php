@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    @if(Route::currentRouteName() != 'home')
-    <script src="{{ mix('js/app.js') }}" defer></script>
-    @endif
     <link rel="shortcut icon" type="image/png" href="/internet.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
@@ -38,7 +35,7 @@
                                 <li><a class="not-dropdown" href="#">Find Agency</a></li>
                                 @endif
                                 <li><a class="not-dropdown" href="#">Bookmarks</a></li>
-                                <li><a class="not-dropdown" href="#">Contracts</a></li>
+                                <li><a class="not-dropdown" href="{{ route('contracts.index') }}">Contracts</a></li>
                                 @if(Auth::user()->current_account == 'client')
                                 <li><a class="not-dropdown" href="{{ route('jobs.create') }}">Post a Job</a></li>
                                 @else
@@ -94,7 +91,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Begin User Status Switcher -->
+                                         <!-- Begin User Status Switcher -->
                                         <user-status-switcher :user="{{ json_encode(['id' => Auth::user()->hashid, 'switcher_status' => Auth::user()->switcher_status]) }}"></user-status-switcher>
                                         <!-- End User Status Switcher -->
                                 </div>
@@ -168,15 +165,21 @@
                                     <a href="#"><i class="icon-material-outline-rate-review"></i> Reviews</a>
                                 </li>
                                 @endif
-                                <li class="{{ (Route::currentRouteName() == 'contracts') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-material-outline-assessment"></i> Contracts</a>
+                                <li class="{{ (Route::currentRouteName() == 'contracts.index') ? 'active-submenu' : '' }}">
+                                <a href="{{ route('contracts.index') }}"><i class="icon-material-outline-assessment"></i> Contracts</a>
                                 </li>
                                 <li class="{{ (Route::currentRouteName() == 'invoices') ? 'active-submenu' : '' }}">
                                     <a href="#"><i class="icon-material-outline-assignment"></i> Invoices</a>
                                 </li>
+                               
                                 @if(Auth::user()->account_type === 'freelancer')
                                 <li class="{{ (Route::currentRouteName() == 'payment.get') ? 'active-submenu' : '' }}">
                                     <a href="#"><i class="icon-line-awesome-money"></i> Get Paid</a>
+                                </li>
+                                @endif
+                                 @if(Auth::user()->current_account === 'client')
+                                <li class="{{ (Route::currentRouteName() == 'payments.index') ? 'active-submenu' : '' }}">
+                                <a href="{{ route('payments.index') }}"><i class="icon-line-awesome-money"></i>Billing Method</a>
                                 </li>
                                 @endif
                                 @if(Auth::user()->subscription_status === null)
@@ -184,8 +187,10 @@
                                     <a href="#"><i class="icon-material-outline-account-balance-wallet"></i> Membership</a>
                                 </li>
                                 @endif
-                                @if(Auth::user()->account_type === 'freelancer')
-                                <li><a href="#"><i class="icon-material-outline-local-offer"></i>  Offers</a></li>
+                                @if(Auth::user()->current_account === 'freelancer')
+                                <li class="{{ (Route::currentRouteName() == 'offers.index') ? 'active-submenu' : '' }}">
+                                <a href="{{ route('offers.index') }}"><i class="icon-material-outline-local-offer"></i>  Offers</a>
+                                </li>
                                 @endif
                             </ul>
                             @if(Auth::user()->current_account === 'client')
@@ -496,6 +501,10 @@ $('#snackbar-user-status label').click(function() {
     }).show();
 </script>
 @endif
+@if(Route::currentRouteName() != 'home')
+<script src="{{ mix('js/app.js') }}"></script>
+@endif
 @yield('js')
+@yield('stripe')
 </body>
 </html>

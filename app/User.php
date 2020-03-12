@@ -137,13 +137,6 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be append.
-     *
-     * @var array
-     */
-    protected $appends = ['hashid'];
-
-    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -173,6 +166,13 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
     ];
 
     /**
+     * The attributes that should be append.
+     *
+     * @var array
+     */
+    protected $appends = ['hashid', 'country_name'];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -184,6 +184,14 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
     public function getHashidAttribute()
     {
         return Hashids::connection(User::class)->encode($this->attributes['id']);
+    }
+
+    public function getCountryNameAttribute()
+    {
+        if ($this->attributes['country']) {
+            return \PragmaRX\Countries\Package\Countries::where('cca2', strtoupper($this->attributes['country']))
+                ->first()->name->common;
+        }
     }
 
     public function categories()

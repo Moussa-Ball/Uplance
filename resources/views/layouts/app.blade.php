@@ -43,7 +43,7 @@
                                 <li><a class="not-dropdown" href="#">Find Agency</a></li>
                                 @endif
                                 <li><a class="not-dropdown" href="#">Bookmarks</a></li>
-                                <li><a class="not-dropdown" href="#">Contracts</a></li>
+                                <li><a class="not-dropdown" href="{{  route('contracts.index')}}">Contracts</a></li>
                                 @if(Auth::user()->current_account == 'client')
                                 <li><a class="not-dropdown" href="{{ route('jobs.create') }}">Post a Job</a></li>
                                 @else

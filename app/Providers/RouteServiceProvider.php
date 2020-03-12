@@ -44,6 +44,17 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('proposal', function ($value, $route) {
             return $this->getModel(\App\Proposal::class, $value);
         });
+
+        Route::bind('offer', function ($value, $route) {
+            return $this->getModel(\App\Offer::class, $value);
+        });
+
+        Route::bind('contract', function ($value, $route) {
+            return $this->getModel(\App\Contract::class, $value);
+        });
+        Route::bind('invoice', function ($value, $route) {
+            return $this->getModel(\App\Invoice::class, $value);
+        });
     }
 
     private function getModel($model, $routeKey)

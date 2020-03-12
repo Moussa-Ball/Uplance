@@ -2,38 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OfferRequest;
+use Auth;
 use App\Job;
+use App\Notifications\OfferSend;
 use App\User;
 use App\Offer;
 use App\Proposal;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\SEOTools;
+use Cmgmyr\Messenger\Models\Participant;
+use Cmgmyr\Messenger\Models\Thread;
 
 class OfferController extends Controller
 {
     /**
-     * Form to hire freelancer without a job proposal.
+     * Show the list of offer for an user.
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexWithout(Request $request, User $user)
+    public function index()
     {
-        $this->authorize('client', $request->user());
-        SEOMeta::setTitle('Hire freelancer');
-        return view('offers.create');
-    }
-
-    /**
-     * Form to hire freelancer with a job proposal.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function indexWith(Request $request, Job $job, Proposal $proposal)
-    {
-        dd($job, $proposal);
-        $this->authorize('client', $request->user());
-        SEOMeta::setTitle('Hire freelancer');
-        return view('offers.create');
+        $this->authorize('freelancer', Auth::user());
+        $offers = Offer::where('to_id', Auth::id())->orderBy('created_at', 'DESC')->paginate(10);
+        SEOTools::setTitle('Contract Offers');
+        return view('offers.index', compact('offers'));
     }
 
     /**
@@ -41,9 +36,20 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, User $user)
     {
-        //
+        $this->authorize('client', $request->user());
+        $this->authorize('client', $user);
+        $proposal = $request->get('proposal');
+        if ($proposal) {
+            $proposal = Hashids::connection(Proposal::class)->decode($proposal);
+            if (!empty($proposal))
+                $proposal = Proposal::where('id', $proposal)->first();
+        } else {
+            $proposal = [];
+        }
+        SEOMeta::setTitle('Hire freelancer');
+        return view('offers.create', compact('user', 'proposal'));
     }
 
     /**
@@ -52,53 +58,49 @@ class OfferController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OfferRequest $request, User $user)
     {
-        //
+        $this->authorize('client', $request->user());
+        $this->authorize('client', $user);
+        $proposal = $request->get('proposal');
+        if ($proposal) {
+            $proposal = Hashids::connection(Proposal::class)->decode($proposal);
+            if (!empty($proposal))
+                $proposal = Proposal::where('id', $proposal)->first();
+        }
+
+        $offer = Offer::create([
+            'contract_title' => $request->input('contract_title'),
+            'hourly_rate' => $request->input('hourly_rate'),
+            'milestones' => $request->input('milestones'),
+            'total_amount' => $request->input('total_amount'),
+            'offer_type' => $request->input('offer_type'),
+            'description' => $request->input('description'),
+            'proposal_id' => ($proposal) ? $proposal->id : null,
+            'to_id' => $user->id,
+            'from_id' => Auth::id(),
+            'due_date' => $request->input('due_date'),
+        ]);
+
+        // Notify the freelancer.
+        $offer->to->notify(new OfferSend($offer));
+
+        return response()->json([
+            'attachable_id' => $offer->id,
+            'attachable_type' => Offer::class,
+            'message' => 'Your offer has been sent to the freelancer.'
+        ]);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Offer  $offer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Offer $offer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Offer  $offer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Offer $offer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Decline offer.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Offer  $offer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Offer $offer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
     public function destroy(Offer $offer)
     {
-        //
+        $offer->delete();
+        return redirect()->back();
     }
 }

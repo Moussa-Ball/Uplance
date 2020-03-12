@@ -144,6 +144,7 @@ class ProposalController extends Controller
     {
         $this->authorize('client', $request->user());
         $this->authorize('owner', $job->user_id);
+        $this->authorize('not-accepted', $proposal);
 
         if ($proposal->accepted) return abort(402);
         $proposal->user->notify(new ProposalRejected($proposal));

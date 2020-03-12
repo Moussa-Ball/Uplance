@@ -32,15 +32,25 @@
                                     @if($bid->user->verified)
                                     <div class="verified-badge"></div>
                                     @endif
-                                    <a href="#"><img style="width: 78px; height: 78px; border-radius: 50%;" src="{{ $bid->user->avatar }}" alt=""></a>
+                                    <a href="{{ route('freelancers.show', $bid->user->hashid) }}" target="_blank">
+                                        <img style="width: 78px; height: 78px; border-radius: 50%;" src="{{ $bid->user->avatar }}" alt="avatar">
+                                    </a>
                                 </div>
 
                                 <!-- Name -->
                                 <div class="freelancer-name">
-                                    <h4><a href="#">{{ $bid->user->name }} <img class="flag" src="/images/flags/{{strtolower($bid->user->country)}}.svg" alt="" title="{{ $bid->user->country_name }}" data-tippy-placement="top"></a>   
-                                    @if($bid->accepted)
-                                    <mark class="color">Hired</mark>
-                                    @endif</h4>
+                                    <h4>
+                                        <a href="{{ route('freelancers.show', $bid->user->hashid) }}" target="_blank">
+                                            {{ $bid->user->name }} 
+                                            <img class="flag" src="/images/flags/{{strtolower($bid->user->country)}}.svg" alt="flag" 
+                                                title="{{ $bid->user->country_name }}"
+                                                data-tippy-placement="top">
+                                        </a>
+                                       
+                                        @if($bid->accepted)
+                                        <mark style="cursor: default;" class="color">Hired</mark>
+                                        @endif
+                                    </h4>
 
                                     <!-- Rating -->
                                     <div data-rating="{{ $bid->user->rating }}" class="star-rating">
@@ -101,6 +111,7 @@
                                     <br>
 
                                     <div class="single-page-section">
+                                        <h4 class="margin-bottom-40" style="text-decoration: underline">{{ $bid->job->project_name }}</h4>
                                         {!! nl2br($bid->cover_letter) !!}
                                     </div>
 
@@ -120,16 +131,16 @@
                                     @if(!$job->completed)
                                     <div class="buttons-to-right always-visible margin-top-25 margin-bottom-0">
                                         @if(!$bid->accepted)
-                                        <a href="{{ route('offers.proposal', ['job' => $job->hashid, 'proposal' => $bid->hashid]) }}" class="button ripple-effect"><i class="icon-material-outline-check"></i> Hire Freelancer</a>
+                                        <a href="{{ route('offers.new', ['user' => $bid->user->hashid, 'job' => $job->hashid, 'proposal' => $bid->hashid]) }}" class="button ripple-effect"><i class="icon-material-outline-check"></i> Hire Freelancer</a>
                                         @endif
-                                        <a href="{{ route('messages.create', ['job' => $job->hashid, 'proposal' => $bid->hashid]) }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                                        <a href="{{ route('messages.index') }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
                                         @if(!$bid->accepted)
                                         <a href="{{ route('proposals.delete', ['job' => $job->hashid, 'proposal' => $bid->hashid]) }}" onclick="return confirm('Are you sure?')" class="button gray ripple-effect ico" title="Remove Bid" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
                                         @endif
                                     </div>
                                     @else
                                     <div class="buttons-to-right always-visible margin-top-25 margin-bottom-0">
-                                        <a href="{{ route('messages.create', ['job_id' => $job->hashid, 'proposal_id' => $bid->hashid]) }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                                        <a href="{{ route('messages.index') }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
                                     </div>
                                     @endif
                                 </div>

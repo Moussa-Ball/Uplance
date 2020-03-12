@@ -27,9 +27,11 @@
                     <img style="position: relative; top: 5px;" class="flag" src="/images/flags/{{ strtolower($job->user->country) }}.svg" alt /> 
                     <span style="position: relative; top: 6px;">{{ $job->country }}</span>
                 </li>
-                @if($job->payment_verified)
+                @if($job->user->hasPaymentMethod())
                 <li>
-                    <div class="verified-badge-with-title">Verified</div>
+                    <div style="position: relative; top: 5px; cursor: default;" class="verified-badge-with-title" 
+                    v-tippy="{placement: 'bottom',  arrow: true, maxWidth: 350, theme: 'light'}"
+                    content="The customer's payment method has already been verified.">Verified</div>
                 </li>
                 @endif
                 </ul>

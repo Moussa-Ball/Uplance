@@ -1,13 +1,17 @@
 <template>
   <!-- Message Content -->
   <div class="message-content">
-    <div v-show="!call" class="messages-headline">
-      <h4 v-if="messages.user">{{ messages.user.name }}</h4>
+    <div class="messages-headline">
+      <h4 v-if="messages.user">{{ messages.user.name }},</h4>
+      <strong
+        v-if=" messages.thread.subject.length > 25"
+      >{{ messages.thread.subject.substr(0, 25) }}...</strong>
+      <strong v-else>{{ messages.thread.subject }}</strong>
       <div class="message-action">
-        <a href="javascript:void;">
+        <a v-if="false" href="javascript:void;">
           <i class="icon-feather-video"></i> Video Call
         </a>
-        <a href="javascript:void;">
+        <a v-if="false" href="javascript:void;">
           <i class="icon-feather-phone-call"></i> Voice Call
         </a>
         <a href="javascript:void;">
@@ -18,17 +22,24 @@
 
     <!-- Message Content Inner -->
     <div
-      v-show="!call"
       class="message-content-inner"
       v-chat-scroll="{always: false, smooth: true, scrollonremoved:true, smoothonremoved: false}"
-      style="overflow-y: auto; overflow-x: hidden; height: 480px;"
+      style="height: 480px;"
     >
       <!-- Message Content -->
       <template v-for="(message, key) in messages.messages">
-        <Message :message="message" :messages="messages" :key="key"></Message>
+        <Message
+          v-if="!message.hasOwnProperty('finish')"
+          :message="message"
+          :messages="messages"
+          :key="key"
+        ></Message>
       </template>
       <!-- Message Content End -->
-      <div v-if="messages.thread && messages.thread.id === typing.threadId" class="message-bubble">
+      <div
+        v-if="messages.thread && messages.thread.id === typing.threadId && !messages.messages[0].hasOwnProperty('finish')"
+        class="message-bubble"
+      >
         <div class="message-bubble-inner">
           <div class="message-avatar">
             <img :src="messages.user.avatar" alt="avatar" />
@@ -47,7 +58,7 @@
     <!-- Message Content Inner / End -->
 
     <!-- Reply Area -->
-    <div v-show="!call" class="message-reply">
+    <div class="message-reply">
       <textarea
         v-if="!loading"
         cols="1"
@@ -97,32 +108,6 @@
       >Send</button>
       <half-circle-spinner v-if="loading" :animation-duration="1000" :size="60" color="#2a41e8" />
     </div>
-
-    <div v-if="call" class="call">
-      <div class="content">
-        <div class="container">
-          <div class="col-md-12">
-            <div class="panel">
-              <div class="participant">
-                <img class="avatar-xxl" :src="messages.user.avatar" alt="avatar" />
-                <span>Connecting</span>
-              </div>
-              <div class="options">
-                <button class="btn option">
-                  <i class="material-icons md-30">mic</i>
-                </button>
-                <button class="btn option call-end">
-                  <i class="material-icons md-30">call_end</i>
-                </button>
-                <button class="btn option">
-                  <i class="material-icons md-30">videocam</i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   <!-- Message Content -->
 </template>
@@ -134,7 +119,6 @@ export default {
   data() {
     return {
       typing: 0,
-      call: false,
       content: "",
       loading: false,
       showEmoji: false,
@@ -172,16 +156,6 @@ export default {
         } catch (e) {}
       }
     },
-    async loadPreviousMessages() {
-      this.loading = true;
-      await setTimeout(() => {
-        this.$store.dispatch(
-          "Messenger/loadPreviousMessages",
-          this.$route.params.id
-        );
-        this.loading = false;
-      }, 100);
-    },
     toggleEmojiPicker() {
       this.showEmoji = !this.showEmoji;
     },
@@ -189,6 +163,26 @@ export default {
       this.content += emoji.native;
       const textarea = this.$refs.messengerTextarea;
       textarea.focus();
+    },
+    async onScroll() {
+      if (this.$messages.scrollTop === 0) {
+        this.loading = true;
+        let messenger = $(".message-content-inner");
+        let previousHeight = messenger[0].scrollHeight;
+        await this.$store.dispatch(
+          "Messenger/loadPreviousMessages",
+          this.$route.params.id
+        );
+        setTimeout(() => {
+          let messenger = $(".message-content-inner");
+          var height = messenger[0].scrollHeight - previousHeight;
+          messenger.animate({ scrollTop: height }, "slow");
+          this.loading = false;
+          if (this.messages.messages[0].hasOwnProperty("finish")) {
+            this.$messages.removeEventListener("scroll", this.onScroll);
+          }
+        }, 1000);
+      }
     }
   },
   watch: {
@@ -235,17 +229,9 @@ export default {
     _this.loading = true;
     await this.$store.dispatch("Messenger/getMessages", this.$route.params.id);
     await this.$store.dispatch("Messenger/activeThread", this.$route.params.id);
-    _this.loading = false;
-
-    let messages = document.querySelector(".message-content-inner");
-    $(".message-content-inner").scroll(function() {
-      if (messages.scrollTop === 0) {
-        _this.loadPreviousMessages();
-      }
-    });
 
     // Auto Resizing Message Input Field
-    setTimeout(() => {
+    await setTimeout(() => {
       jQuery.each(jQuery("textarea[data-autoresize]"), function() {
         var offset = this.offsetHeight - this.clientHeight;
 
@@ -260,11 +246,16 @@ export default {
           })
           .removeAttr("data-autoresize");
       });
+
+      _this.$messages = _this.$el.querySelector(".message-content-inner");
+      _this.$messages.addEventListener("scroll", _this.onScroll);
     }, 100);
 
     Echo.private("messenger").listenForWhisper("typing", e => {
       _this.typing = e;
     });
+
+    _this.loading = false;
   }
 };
 </script>
@@ -331,83 +322,4 @@ export default {
     }
   }
 }
-
-.call {
-  background: linear-gradient(
-    145deg,
-    rgba(120, 167, 255, 1) 0,
-    rgba(119, 84, 249, 1) 50%,
-    rgba(101, 33, 243, 1) 100%
-  );
-  position: sticky;
-  top: 0;
-  z-index: 1020;
-  overflow-y: auto;
-
-  .content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - 300px);
-    text-align: center;
-
-    .inside {
-      max-height: calc(100vh - 0px);
-      .panel {
-        padding: 30px 0;
-      }
-    }
-
-    .participant {
-      margin-bottom: 56px;
-      span {
-        display: block;
-        color: #fff;
-        font-weight: 700;
-        text-align: center;
-      }
-    }
-
-    .avatar-xxl {
-      margin-bottom: 56px;
-      cursor: pointer;
-      animation: pulse 2s infinite;
-      width: 100%;
-      height: 200px;
-      min-width: 200px;
-      max-width: 200px;
-      border-radius: 100%;
-      transition: all 0.3s;
-    }
-
-    .options {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 60px;
-
-      .option {
-        padding: 0 20px;
-        color: #fff;
-        line-height: 0;
-      }
-
-      .btn {
-        background: 0 0;
-        transition: all 0.3s;
-      }
-
-      .call-end {
-        padding: 15px;
-        margin: 0 20px;
-        background: #e05b5d;
-        color: #fff;
-        line-height: 0;
-        border-radius: 100%;
-        animation: call-end 2s infinite;
-      }
-    }
-  }
-}
 </style>
-<style src="./messenger.css"></style>

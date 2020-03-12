@@ -26,6 +26,24 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     /**
      * ----------------------------------------------------
+     * Payments routes
+     * ----------------------------------------------------
+     */
+    Route::group(['prefix' => 'payments'], function () {
+        Route::get('/finish/~{invoice}', 'PaymentController@finishPayment');
+    });
+
+    /**
+     * ----------------------------------------------------
+     * Offers routes
+     * ----------------------------------------------------
+     */
+    Route::group(['prefix' => 'offers'], function () {
+        Route::post('/store/~{user}', 'OfferController@store');
+    });
+
+    /**
+     * ----------------------------------------------------
      * User status & switcher routes.
      * ----------------------------------------------------
      */

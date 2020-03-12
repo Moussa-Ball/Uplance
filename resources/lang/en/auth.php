@@ -13,6 +13,7 @@ return [
     |
     */
 
+    'validation.password' => "The password is not match.",
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
