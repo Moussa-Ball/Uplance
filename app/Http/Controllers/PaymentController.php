@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Contract;
 use Auth;
+use App\User;
 use Exception;
 use App\Invoice;
-use App\User;
+use App\Contract;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
-use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Support\MessageBag;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class PaymentController extends Controller
 {
@@ -93,6 +94,24 @@ class PaymentController extends Controller
         }
     }
 
+    /**
+     * Calculate the service fee.
+     */
+    private function getFees($amount)
+    {
+        if ($amount >= 5 && $amount <= 10) {
+            return $amount / 100 * 20;
+        }
+
+        if ($amount >= 10 && $amount <= 20) {
+            return $amount / 100 * 10;
+        }
+
+        if ($amount >= 20) {
+            return $amount / 100 * 5;
+        }
+    }
+
     public function finishPayment(Request $request, Invoice $invoice)
     {
         $this->authorize('owner', $invoice->from->id);
@@ -102,30 +121,77 @@ class PaymentController extends Controller
             try {
                 $amount = $invoice->amount * 100;
                 $payment = $request->user()->charge($amount, $paymentMethod->id);
-                $user = User::where('id', $invoice->to_id)->first();
-                $user->budget = $user->budget + $this->calculateFees($invoice->amount);
-                $user->save();
 
-                $current_user = User::where('id', Auth::id())->first();
-                $current_user->spent += $invoice->amount;
-                $current_user->save();
+                if ($payment->charges->data[0]['paid'] == true && $payment->charges->data[0]['status'] == 'succeeded') {
+                    $user = User::where('id', $invoice->to_id)->first();
+                    $user->total_earning += $this->calculateFees($invoice->amount); //to changed
+                    $user->save();
 
-                if ($invoice->type == 'Fixed Price' && $invoice->contract->milestones) {
-                    $contract = Contract::where('id', $invoice->contract_id)->first();
-                    $contract->milestones_paid += $invoice->amount;
-                    $contract->total_earnings += $invoice->amount;
-                    $contract->remaining -= $invoice->amount;
-                    $contract->completed = ($contract->remaining <= 0) ? true : false;
-                    $contract->save();
+                    $current_user = $request->user();
+                    $current_user->spent += $invoice->amount;
+                    $current_user->save();
 
-                    if ($contract->remaining <= 0) {
-                        //TODO: Review Here
+                    /**
+                     * ------------------------------------------------------------------------
+                     * When it is Fixed Price without milestones.
+                     * ------------------------------------------------------------------------
+                     */
+                    if ($invoice->type == 'Fixed Price' && !$invoice->contract->milestones) {
+                        Contract::where('id', $invoice->contract_id)->update([
+                            'project_paid' => $invoice->amount,
+                            'total_earnings' => $invoice->amount,
+                            'completed' => true,
+                        ]);
+                        $invoice->total_due = $this->calculateFees($invoice->amount);
+                        $invoice->service_fee = $this->getFees($invoice->amount);
+                        $invoice->total = $invoice->amount;
+                        $invoice->paid_at = Carbon::now();
+                        $invoice->save();
+
+                        //TODO: Review & Notification.
+
+                        return response()->json(route('invoices.success', $invoice->hashid));
+                    }
+
+                    /**
+                     * ------------------------------------------------------------------------
+                     * When it is Fixed Price with milestones.
+                     * ------------------------------------------------------------------------
+                     */
+                    elseif ($invoice->type == 'Fixed Price' && $invoice->contract->milestones) {
+                        $contract = Contract::where('id', $invoice->contract_id)->first();
+                        $contract->milestones_paid += $invoice->amount;
+                        $contract->total_earnings += $invoice->amount;
+                        $contract->remaining -= $invoice->amount;
+                        $contract->completed = ($contract->remaining <= 0) ? true : false;
+                        $contract->save();
+
+                        $invoice->total_due = $this->calculateFees($invoice->amount);
+                        $invoice->service_fee = $this->getFees($invoice->amount);
+                        $invoice->total = $invoice->amount;
+                        $invoice->paid_at = Carbon::now();
+                        $invoice->save();
+
+                        if ($contract->remaining <= 0) {
+                            //TODO: Review & Notification.
+                            return response()->json('Your payment was successful. The contract is now closed.');
+                        } else {
+                            return response()->json('The milestone payment was successful.');
+                        }
+                    }
+
+                    /**
+                     * ------------------------------------------------------------------------
+                     * When it is Hourly Rate.
+                     * ------------------------------------------------------------------------
+                     */
+                    else {
+                        $contract = $invoice->contract;
+                        $contract->total_earnings += $invoice->amount;
                     }
                 }
-
-                return response()->json('Your payment has been made.');
             } catch (Exception $e) {
-                //
+                return response()->json(['error' => $e->getMessage()], 422);
             }
         } else {
             $error = \Illuminate\Validation\ValidationException::withMessages([

@@ -39,7 +39,7 @@
                                 @if(Auth::user()->current_account == 'client')
                                 <li><a class="not-dropdown" href="{{ route('jobs.create') }}">Post a Job</a></li>
                                 @else
-                                <li><a class="not-dropdown" href="#">Invoices</a></li>
+                                <li><a class="not-dropdown" href="{{ route('invoices.index') }}">Invoices</a></li>
                                 @endif
                                 @endguest
                             </ul>
@@ -165,11 +165,11 @@
                                     <a href="#"><i class="icon-material-outline-rate-review"></i> Reviews</a>
                                 </li>
                                 @endif
-                                <li class="{{ (Route::currentRouteName() == 'contracts.index') ? 'active-submenu' : '' }}">
+                                <li class="{{ (Route::currentRouteName() == 'contracts.index' || Route::currentRouteName() == 'contracts.show') ? 'active-submenu' : '' }}">
                                 <a href="{{ route('contracts.index') }}"><i class="icon-material-outline-assessment"></i> Contracts</a>
                                 </li>
-                                <li class="{{ (Route::currentRouteName() == 'invoices') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-material-outline-assignment"></i> Invoices</a>
+                                <li class="{{ (Route::currentRouteName() == 'invoices.index') ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('invoices.index') }}"><i class="icon-material-outline-assignment"></i> Invoices</a>
                                 </li>
                                
                                 @if(Auth::user()->account_type === 'freelancer')

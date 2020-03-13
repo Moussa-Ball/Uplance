@@ -47,7 +47,7 @@
                                 @if(Auth::user()->current_account == 'client')
                                 <li><a class="not-dropdown" href="{{ route('jobs.create') }}">Post a Job</a></li>
                                 @else
-                                <li><a class="not-dropdown" href="#">Invoices</a></li>
+                                <li><a class="not-dropdown" href="{{ route('invoices.index') }}">Invoices</a></li>
                                 @endif
                                 @endguest
                             </ul>

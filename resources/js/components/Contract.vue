@@ -52,11 +52,13 @@
               </div>
               <div class="col-md-5">
                 <div class="row-card">
-                  <img :src="contrat.to.avatar" class="avatar" alt="avatar" />
-                  <div
-                    class="user-presence-indicator"
-                    :class="{'status-online': contrat.to.presence_status === 'online' && contrat.to.switcher_status === 'online'}"
-                  ></div>
+                  <a target="_blank" :href="`/freelancers/~${contrat.to.hashid}`">
+                    <img :src="contrat.to.avatar" class="avatar" alt="avatar" />
+                    <div
+                      class="user-presence-indicator"
+                      :class="{'status-online': contrat.to.presence_status === 'online' && contrat.to.switcher_status === 'online'}"
+                    ></div>
+                  </a>
                   <div class="client-information">
                     <h4 class="client-name">{{ contrat.to.first_name }} {{ contrat.to.last_name }}</h4>
                     <span>{{ contrat.to.tagline }}</span>
@@ -413,6 +415,7 @@
                       :animation-duration="1000"
                       :size="60"
                       color="#2a41e8"
+                      :style="{'float': right}"
                     />
                   </li>
                 </ul>
@@ -431,7 +434,7 @@ import moment from "moment";
 import { HalfCircleSpinner } from "epic-spinners";
 import { SlideYDownTransition } from "vue2-transitions";
 export default {
-  props: ["contract", "user", "from"],
+  props: ["contract", "user"],
   data() {
     return {
       show: true,
@@ -484,7 +487,7 @@ export default {
       await axios
         .get("/api/payment/continue~" + contratId + "-" + invoiceId)
         .then(response => {
-          window.location.href = response.data.payment_url;
+          window.location.href = response.data.url;
         })
         .catch(error => {
           _this.loading = false;
@@ -497,11 +500,7 @@ export default {
       await this.axios
         .get("/api/payments/finish/~" + invoiceId)
         .then(response => {
-          this.showNotification(response.data, 'success', true, 5000)
-          setTimeout(() => {
-            window.location.reload();
-          }, 3000);
-          _this.loading = false;
+          window.location.href = `/invoices/success/~${invoiceId}`
         })
         .catch(error => {
           this.showErrors(error)

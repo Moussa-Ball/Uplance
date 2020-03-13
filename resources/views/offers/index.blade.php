@@ -121,7 +121,7 @@
 										<br>
 
 										<div class="single-page-section">
-											<h4 class="margin-bottom-40" style="text-decoration: underline">{{ $offer->contract_title }}</h4>
+											<h4 class="margin-bottom-40" style="text-decoration: underline; cursor: text;">{{ $offer->contract_title }}</h4>
 											{{ $offer->description }}
 										</div>
 

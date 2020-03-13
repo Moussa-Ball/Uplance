@@ -26,6 +26,7 @@
                                 <th>Client</th>
                                 <th>Freelancer</th>
                                 <th>Type</th>
+                                <th>Closed</th>
                                 <th>Action</th>
                             </tr>
                             @foreach ($contracts as $contract)
@@ -40,6 +41,7 @@
                                     <td data-label="Column 2">{{ $contract->from->first_name }} {{ $contract->from->last_name }}</td>
                                     <td data-label="Column 2"><a target="_blank" href="/find-freelancer/profile/freelancer~{{ $contract->to->id }}">{{ $contract->to->first_name }} {{ $contract->to->last_name }}</a></td>
                                     <td data-label="Column 2">{{ $contract->type }}</a></td>
+                                    <td data-label="Column 2">{{ ($contract->completed) ? 'Yes' : 'No' }}</a></td>
                                     <td data-label="Column 3"><a href="{{ route('contracts.show', $contract->hashid) }}" class="button">See</a></td>
                                 </tr>
                             @endforeach

@@ -4,16 +4,7 @@
 <!-- Dashboard Headline -->
 <div class="dashboard-headline">
 	<h3>Invoices</h3>
-	<span>Your Invoices</span>
-
-	<!-- Breadcrumbs -->
-	<nav id="breadcrumbs" class="dark">
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="#">Dashboard</a></li>
-			<li>Invoices</li>
-		</ul>
-	</nav>
+	<span>The list of all your invoices.</span>
 </div>
 
 <div class="row">
@@ -40,9 +31,9 @@
 						</div>
 						<div class="buttons-to-right">
 							@if($invoice->paid_at)
-							<a target="_blank" href="{{ route('invoices.view', $invoice->order) }}" class="button gray">View Invoice</a>
+							<a target="_blank" href="{{ route('invoices.show', $invoice->hashid) }}" class="button gray">View Invoice</a>
 							@endif
-							<a href="{{ route('contracts.view', $invoice->contract_id) }}" class="button gray">See the associated contract</a>
+							<a target="_blank" href="{{ route('contracts.show', $invoice->contract->hashid) }}" class="button gray">See the associated contract</a>
 						</div>
 					</li>
 					@endforeach

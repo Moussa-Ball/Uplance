@@ -2,84 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Invoice;
-use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\view
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $invoices = Invoice::where('to_id', Auth::id())
+            ->orWhere('from_id', Auth::id())
+            ->orderBy('created_at', 'DESC')->paginate(10);
+        return view('invoices.index', compact('invoices'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Contract  $contract
-     * @return \Illuminate\Http\Response
+     * @param  \App\Invoice  $invoice
+     * @return \Illuminate\Http\view
      */
-    public function show(Invoice $contract)
+    public function success(Invoice $invoice)
     {
-        //
+        return view('invoices.success', compact('invoice'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
-     * @param  \App\Contract  $contract
-     * @return \Illuminate\Http\Response
+     * @param  \App\Invoice  $invoice
+     * @return \Illuminate\Http\view
      */
-    public function edit(Invoice $contract)
+    public function show(Invoice $invoice)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Contract  $contract
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Invoice $contract)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Contract  $contract
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Invoice $contract)
-    {
-        //
+        return view('invoices.show', compact('invoice'));
     }
 }

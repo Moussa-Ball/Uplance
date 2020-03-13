@@ -47,7 +47,7 @@
 		<div class="col-xl-6">	
 			<strong class="margin-bottom-5">Bill to</strong>
 			<p>
-				{{ $invoice->to->first_name }} {{ $invoice->to->last_name }} <br>
+				{{ $invoice->to->name }} <br>
 				{{ $invoice->to->address }} <br>
 				{{ $invoice->to->city }}{{ ($invoice->to->postal_code) ? ', '.$invoice->to->postal_code : '' }} <br>
 			</p>
@@ -56,7 +56,7 @@
 		<div class="col-xl-6">	
 			<strong class="margin-bottom-5">Bill from</strong>
 			<p>
-				{{ $invoice->from->first_name }} {{ $invoice->from->last_name }} <br>
+				{{ $invoice->from->name }} <br>
 				{{ $invoice->from->address }} <br>
 				{{ $invoice->from->city }}{{ ($invoice->from->postal_code) ? ', '.$invoice->from->postal_code : '' }} <br>
 			</p>
@@ -86,19 +86,19 @@
 				<tr>
 					<td>{{ $invoice->description }}</td>
 					@if($invoice->rate)
-					<td>${{ money_format($invoice->contract->rate, 2) }}</td>
+					<td>${{ number_format($invoice->contract->rate, 2, ',', '.') }}</td>
 					@endif
 					@if($invoice->rate)
 					<td>{{ str_replace('.', ':', $invoice->hours) }} hrs</td>
 					@endif
-					<td>${{ money_format($invoice->amount, 2) }}</td>
+					<td>${{ number_format($invoice->amount, 2, ',', '.') }}</td>
 					@if(Auth::user()->account_type === 'freelancer')
-					<td>- ${{ money_format($invoice->service_fee, 2) }}</td>
+					<td>- ${{ number_format($invoice->service_fee, 2, ',', '.') }}</td>
 					@endif
 					@if(Auth::user()->account_type === 'freelancer')
-					<td>${{ money_format($invoice->total_due, 2) }}</td>
+					<td>${{ number_format($invoice->total_due, 2, ',', '.') }}</td>
 					@else
-					<td>${{ money_format($invoice->total, 2) }}</td>
+					<td>${{ number_format($invoice->total, 2, ',', '.') }}</td>
 					@endif
 				</tr>
 			</table>
@@ -109,9 +109,9 @@
 				<tr>
 					<th>Total Due</th> 
 					@if(Auth::user()->account_type === 'freelancer')
-					<th><span>${{ money_format($invoice->total_due, 2) }}</span></th>
+					<th><span>${{ number_format($invoice->total_due, 2, ',', '.') }}</span></th>
 					@else
-					<th><span>${{ money_format($invoice->total, 2) }}</span></th>
+					<th><span>${{ number_format($invoice->total, 2, ',', '.') }}</span></th>
 					@endif
 				</tr>
 			</table>

@@ -20,8 +20,7 @@ class ContractController extends Controller
      */
     public function index()
     {
-        $contracts = Contract::where('completed', false)
-            ->where('to_id', Auth::id())
+        $contracts = Contract::where('to_id', Auth::id())
             ->orWhere('from_id', Auth::id())
             ->orderBy('created_at', 'DESC')->paginate(10);
         return view('contracts.index', compact('contracts'));

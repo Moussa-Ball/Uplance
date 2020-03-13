@@ -36,6 +36,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
         /**
          * Contracts routes
          */
+        Route::group(['prefix' => 'invoices'], function () {
+            Route::get('/', 'InvoiceController@index')->name('invoices.index');
+            Route::get('/~{invoice}', 'InvoiceController@show')->name('invoices.show');
+            Route::get('/success/~{invoice}', 'InvoiceController@success')->name('invoices.success');
+        });
+
+        /**
+         * Contracts routes
+         */
         Route::group(['prefix' => 'contracts'], function () {
             Route::get('/', 'ContractController@index')->name('contracts.index');
             Route::get('/~{contract}', 'ContractController@show')->name('contracts.show');
