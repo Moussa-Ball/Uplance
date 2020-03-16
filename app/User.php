@@ -188,9 +188,11 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
 
     public function getCountryNameAttribute()
     {
-        if ($this->attributes['country']) {
-            return \PragmaRX\Countries\Package\Countries::where('cca2', strtoupper($this->attributes['country']))
+        if ($this->country) {
+            return \PragmaRX\Countries\Package\Countries::where('cca2', strtoupper($this->country))
                 ->first()->name->common;
+        } else {
+            return "";
         }
     }
 

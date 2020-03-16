@@ -299,7 +299,6 @@ export default {
   },
   async mounted() {
     let _this = this;
-    await _this.getResults();
     await this.axios
       .get("/api/profile/settings/categories")
       .then(response => {
@@ -337,6 +336,8 @@ export default {
       .catch(error => {
         this.showErrors(error);
       });
+
+    await _this.getResults();
 
     Echo.join("uplance")
       .listen("UserOnline", function(user) {

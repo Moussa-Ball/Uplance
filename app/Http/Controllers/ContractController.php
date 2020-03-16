@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\User;
 use App\Offer;
 use App\Invoice;
 use App\Contract;
@@ -16,7 +17,7 @@ class ContractController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\view
      */
     public function index()
     {
@@ -27,10 +28,24 @@ class ContractController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function contracts(User $user)
+    {
+        return Contract::where([
+            'to_id' => $user->id,
+            'completed' => false,
+            'type' => 'Hourly Rate'
+        ])->get()->toJson();
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Contract  $contract
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\view
      */
     public function show(Request $request, Contract $contract)
     {
@@ -156,7 +171,7 @@ class ContractController extends Controller
             $offer->proposal->save();
         }
 
-        return redirect()->back()
+        return redirect()->route('contracts.show', $contract->hashid)
             ->with('success', 'You have accepted the offer, a contract has just been active for the job. Good luck!');
     }
 }

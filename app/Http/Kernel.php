@@ -26,6 +26,7 @@ class Kernel extends HttpKernel
         \RenatoMarinho\LaravelPageSpeed\Middleware\TrimUrls::class,
         \RenatoMarinho\LaravelPageSpeed\Middleware\RemoveQuotes::class,
         \RenatoMarinho\LaravelPageSpeed\Middleware\CollapseWhitespace::class,
+        \Fruitcake\Cors\HandleCors::class,
     ];
 
     /**
@@ -77,7 +78,7 @@ class Kernel extends HttpKernel
         'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
         'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
-        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
+        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
     ];
 
     /**

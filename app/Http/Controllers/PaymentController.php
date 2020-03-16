@@ -10,17 +10,19 @@ use App\Contract;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
-use Illuminate\Support\MessageBag;
 use Artesaos\SEOTools\Facades\SEOMeta;
 
 class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $user = $request->user();
+        $user = Cashier::findBillable($request->user()->stripe_id);
+        if ($user == null) {
+            $request->user()->createAsStripeCustomer();
+        }
         SEOMeta::setTitle('Billing Method');
         return view('payments.method', [
-            'intent' => $user->createSetupIntent(),
+            'intent' => $request->user()->createSetupIntent(),
             'payment_methods' => $request->user()->paymentMethods(),
         ]);
     }
@@ -174,20 +176,8 @@ class PaymentController extends Controller
 
                         if ($contract->remaining <= 0) {
                             //TODO: Review & Notification.
-                            return response()->json('Your payment was successful. The contract is now closed.');
-                        } else {
-                            return response()->json('The milestone payment was successful.');
                         }
-                    }
-
-                    /**
-                     * ------------------------------------------------------------------------
-                     * When it is Hourly Rate.
-                     * ------------------------------------------------------------------------
-                     */
-                    else {
-                        $contract = $invoice->contract;
-                        $contract->total_earnings += $invoice->amount;
+                        return response()->json(route('invoices.success', $invoice->hashid));
                     }
                 }
             } catch (Exception $e) {
@@ -199,5 +189,110 @@ class PaymentController extends Controller
             ]);
             throw $error;
         }
+    }
+
+    private function generateOrder($index = 0)
+    {
+        $today = date("Ymd");
+        $rand = strtoupper(substr(uniqid(sha1(time())), 0, 4));
+        return $unique = $today . $rand . $index;
+    }
+
+    private function hourlyRatePayment(Request $request, Invoice $invoice)
+    {
+        $this->authorize('owner', $invoice->from->id);
+        $paymentMethod = $request->user()->defaultPaymentMethod();
+
+        if ($paymentMethod) {
+            try {
+                $amount = $invoice->amount * 100;
+                $payment = $request->user()->charge($amount, $paymentMethod->id);
+
+                if ($payment->charges->data[0]['paid'] == true && $payment->charges->data[0]['status'] == 'succeeded') {
+                    $user = $invoice->to;
+                    $user->total_earning = $user->total_earning + $this->calculateFees($invoice->amount);
+                    $user->save();
+
+                    $current_user = $request->user();
+                    $current_user->spent += $invoice->amount;
+                    $current_user->save();
+
+                    $contract = $invoice->contract;
+                    $contract->total_earnings += $invoice->amount;
+                    $contract->save();
+
+                    if ($contract->completed) {
+                        // TODO: Review Here.
+
+                        $invoice->hours = $contract->work_hours;
+                        $contract->save();
+                    } else {
+                        $invoice->hours = $contract->work_hours;
+                        $contract->total_hours += $contract->work_hours;
+                        $contract->work_hours = 0;
+                        $contract->save();
+
+                        Invoice::create([
+                            'order' => $this->generateOrder(),
+                            'issued' => Carbon::now(),
+                            'description' => $invoice->description,
+                            'type' => 'Hourly Rate',
+                            'rate' => $invoice->rate,
+                            'contract_id' => $invoice->contract_id,
+                            'to_id' => $invoice->to_id,
+                            'from_id' => $invoice->from_id,
+                        ]);
+                    }
+
+                    $invoice->total_due = $this->calculateFees($invoice->amount);
+                    $invoice->service_fee = $this->getFees($invoice->amount);
+                    $invoice->total = $invoice->amount;
+                    $invoice->paid_at = Carbon::now();
+                    $invoice->save();
+
+                    // TODO: Notification Here
+
+                    return response()->json(route('invoices.success', $invoice->hashid));
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 422);
+            }
+        } else {
+            $error = \Illuminate\Validation\ValidationException::withMessages([
+                'payment_method' => ['You have not yet added a payment method.'],
+            ]);
+            throw $error;
+        }
+    }
+
+    public function paidAndContinueContract(Request $request, Invoice $invoice)
+    {
+        //Check authorization.
+        $this->authorize('owner', $invoice->from->id);
+
+        // Set invoice amount.
+        $invoice->amount = $invoice->contract->rate * $invoice->contract->work_hours;
+        $invoice->save();
+
+        // Do the payment.
+        return $this->hourlyRatePayment($request, $invoice);
+    }
+
+    public function paidAndEndContract(Request $request, Invoice $invoice)
+    {
+        //Check authorization.
+        $this->authorize('owner', $invoice->from->id);
+
+        // Set invoice amount.
+        $invoice->amount = $invoice->contract->rate * $invoice->contract->work_hours;
+        $invoice->save();
+
+        // End contract.
+        $contract = $invoice->contract;
+        $contract->completed = true;
+        $contract->save();
+
+        // Do the payment.
+        return $this->hourlyRatePayment($request, $invoice);
     }
 }

@@ -199,8 +199,12 @@
                   </span>
                 </div>
                 <div class="details-informations">
-                  <h2>Hours</h2>
+                  <h2>Hours Worked</h2>
                   <span>{{ String(contrat.work_hours).replace('.', ':') }} hrs</span>
+                </div>
+                <div class="details-informations">
+                  <h2>Hours Earned</h2>
+                  <span>{{ String(contrat.total_hours).replace('.', ':') }} hrs</span>
                 </div>
                 <div class="details-informations">
                   <h2 v-if="user == contrat.to.hashid">Total Earnings</h2>
@@ -415,7 +419,6 @@
                       :animation-duration="1000"
                       :size="60"
                       color="#2a41e8"
-                      :style="{'float': right}"
                     />
                   </li>
                 </ul>
@@ -464,32 +467,34 @@ export default {
     /**
      * Paid and end the hourly rate contrat.
      */
-    async paidAndEndcontrat(contratId, invoiceId) {
+    async paidAndEndContrat(contratId, invoiceId) {
       let _this = this;
       _this.loading = true;
       _this.invoiceIdentifier = invoiceId;
       await axios
-        .get("/api/payment/end~" + contratId + "-" + invoiceId)
+        .get("/api/payments/end/~" +invoiceId)
         .then(response => {
-          window.location.href = response.data.payment_url;
+          window.location.href = `/invoices/success/~${invoiceId}`
         })
         .catch(error => {
+          this.showErrors(error)
           _this.loading = false;
         });
     },
     /**
      * Paid and continue the hourly rate contrat.
      */
-    async paidAndContinuecontrat(contratId, invoiceId) {
+    async paidAndContinueContrat(contratId, invoiceId) {
       let _this = this;
       _this.loading = true;
       _this.invoiceIdentifier = invoiceId;
       await axios
-        .get("/api/payment/continue~" + contratId + "-" + invoiceId)
+        .get("/api/payments/continue/~" + invoiceId)
         .then(response => {
-          window.location.href = response.data.url;
+          window.location.href = `/invoices/success/~${invoiceId}`
         })
         .catch(error => {
+          this.showErrors(error)
           _this.loading = false;
         });
     },

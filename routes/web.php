@@ -24,7 +24,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
      * Routes when the user is connected.
      * -------------------------------------------------------------------------------------
      */
-    Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::group(['middleware' => ['auth', /*'verified'*/]], function () {
 
         /**
          * Home route

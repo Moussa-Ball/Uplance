@@ -14,6 +14,7 @@ use App\Http\Resources\UserResource;
 |
 */
 
+
 Route::group(['middleware' => ['auth:api']], function () {
     /**
      * ----------------------------------------------------
@@ -31,6 +32,8 @@ Route::group(['middleware' => ['auth:api']], function () {
      */
     Route::group(['prefix' => 'payments'], function () {
         Route::get('/finish/~{invoice}', 'PaymentController@finishPayment');
+        Route::get('/end/~{invoice}', 'PaymentController@paidAndEndContract');
+        Route::get('/continue/~{invoice}', 'PaymentController@paidAndContinueContract');
     });
 
     /**
@@ -138,4 +141,24 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/category', 'SettingsController@category');
         Route::get('/skills', 'SettingsController@skills');
     });
+});
+
+
+/**
+ * -----------------------------------------------------------------
+ * ---------- API REST FOR DESKTOP & MOBILE APPLICATION ------------
+ * -----------------------------------------------------------------
+ */
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('/login', 'Api\AuthController@login');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('logout', 'Api\AuthController@logout');
+        Route::get('user', 'Api\AuthController@user');
+    });
+});
+
+Route::group(['prefix' => 'contracts', 'middleware' => ['auth:api']], function () {
+    // Get all contracts for a user from Uplance Desktop App..
+    Route::get('/~{user}', 'ContractController@contracts');
 });

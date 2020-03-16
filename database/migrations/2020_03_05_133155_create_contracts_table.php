@@ -19,6 +19,7 @@ class CreateContractsTable extends Migration
             $table->string('type');
             $table->double('rate')->nullable();
             $table->double('work_hours')->default(0);
+            $table->double('total_hours')->default(0);
             $table->double('remaining')->default(0);
             $table->double('project_paid')->default(0);
             $table->double('amount')->default(0);

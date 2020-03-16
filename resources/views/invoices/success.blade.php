@@ -9,7 +9,7 @@
 				<div class="breathing-icon"><i class="icon-feather-check"></i></div>
 				<h2 class="margin-top-30">Thank you for your payment!</h2>
 				<p>Your payment has been processed successfully.</p>
-				<a target="_blank" href="{{ route('contracts.show', $invoice->contract->hashid) }}" class="button ripple-effect-dark button-sliding-icon margin-top-30">Return to contract <i class="icon-material-outline-arrow-right-alt"></i></a>
+				<a href="{{ route('contracts.show', $invoice->contract->hashid) }}" class="button ripple-effect-dark button-sliding-icon margin-top-30">Return to contract <i class="icon-material-outline-arrow-right-alt"></i></a>
 				<a target="_blank" href="{{ route('invoices.show', $invoice->hashid) }}" class="button ripple-effect-dark button-sliding-icon margin-top-30">View Invoice <i class="icon-material-outline-arrow-right-alt"></i></a>
 			</div>
 

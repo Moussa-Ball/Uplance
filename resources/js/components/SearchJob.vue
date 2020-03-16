@@ -402,7 +402,6 @@ export default {
   },
   async mounted() {
     let _this = this;
-    await this.getResults();
     await this.axios
       .get("/api/profile/settings/categories")
       .then(response => {
@@ -440,6 +439,8 @@ export default {
       .catch(error => {
         this.showErrors(error);
       });
+
+    await this.getResults();
 
     Echo.channel("NewJob").listen("NewJob", e => {
       if (e.category === _this.category || _this.category == "") {

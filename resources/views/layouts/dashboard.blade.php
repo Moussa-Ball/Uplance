@@ -174,7 +174,7 @@
                                
                                 @if(Auth::user()->account_type === 'freelancer')
                                 <li class="{{ (Route::currentRouteName() == 'payment.get') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-line-awesome-money"></i> Get Paid</a>
+                                    <a href="#"><i class="icon-line-awesome-money"></i>Get Payments</a>
                                 </li>
                                 @endif
                                  @if(Auth::user()->current_account === 'client')
