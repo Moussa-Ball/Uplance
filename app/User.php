@@ -206,6 +206,11 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         return $this->hasMany(User::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'to_id');
+    }
+
     public function bookmarks()
     {
         return $this->morphMany(Bookmark::class, 'bookmark');

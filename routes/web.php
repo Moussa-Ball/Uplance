@@ -33,8 +33,28 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             return redirect()->route('jobs.index');
         });
 
+        // BOOKMARKS
+        Route::get('/bookmarks', 'BookmarksController@index')->name('bookmarks');
+        Route::get('/bookmarks/delete/{bookmark}', 'BookmarksController@destroy')->name('bookmarks.delete');
+
+        // DASHBOARD
+        Route::get('/dashboard', 'DashboardController@index')
+            ->name('dashboard');
+
+        // REVIEWS
+        Route::get('/reviews', 'ReviewController@index')->name('reviews');
+        Route::get('/reviews/leave/{id}', 'ReviewController@leave')->name('reviews.leave');
+
         /**
-         * Contracts routes
+         * Invoices routes
+         */
+        Route::group(['prefix' => 'notifications'], function () {
+            Route::get('/delete/{notification}', 'NotificationController@destroy')->name('notifications.destroy');
+            Route::get('/delete', 'NotificationController@destroyAll')->name('notifications.destroy_all');
+        });
+
+        /**
+         * Invoices routes
          */
         Route::group(['prefix' => 'invoices'], function () {
             Route::get('/', 'InvoiceController@index')->name('invoices.index');
@@ -94,7 +114,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          */
         Route::group(['prefix' => 'freelancers'], function () {
             Route::get('/', 'FreelancerController@index')->name('freelancers.index');
-            Route::get('/~{id}', 'FreelancerController@show')->name('freelancers.show');
+            Route::get('/~{user}', 'FreelancerController@show')->name('freelancers.show');
         });
 
         /**
@@ -106,7 +126,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             Route::get('edit/~{id}', 'JobController@edit')->name('jobs.edit');
             Route::get('delete/~{id}', 'JobController@destroy')->name('jobs.delete');
             Route::get('manage', 'JobController@manage')->name('jobs.manage');
-            Route::get('/~{id}', 'JobController@show')->name('jobs.show');
+            Route::get('/~{job}', 'JobController@show')->name('jobs.show');
         });
 
         /**

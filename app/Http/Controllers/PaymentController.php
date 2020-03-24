@@ -7,6 +7,10 @@ use App\User;
 use Exception;
 use App\Invoice;
 use App\Contract;
+use App\Notifications\ContractEnd;
+use App\Notifications\PaymentMade;
+use App\Notifications\PaymentReceived;
+use App\Review;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
@@ -151,6 +155,33 @@ class PaymentController extends Controller
                         $invoice->save();
 
                         //TODO: Review & Notification.
+                        $invoice->from->notify(new PaymentMade($invoice));
+                        $invoice->to->notify(new PaymentReceived($invoice));
+                        $invoice->to->notify(new ContractEnd($invoice->contract, 'freelancer'));
+                        $invoice->from->notify(new ContractEnd($invoice->contract, 'client'));
+
+                        Review::create([
+                            'rating' => 0,
+                            'rated' => false,
+                            'on_time' => false,
+                            'on_budget' => false,
+                            'to_id' => $invoice->to_id,
+                            'from_id' => $invoice->from_id,
+                            'contract_id' => $invoice->contract_id,
+                        ]);
+
+                        Review::create([
+                            'rating' => 0,
+                            'rated' => false,
+                            'on_time' => false,
+                            'on_budget' => false,
+                            'to_id' => $invoice->from_id,
+                            'from_id' => $invoice->to_id,
+                            'contract_id' => $invoice->contract_id,
+                        ]);
+
+                        $invoice->contract->to->jobs_done += 1;
+                        $invoice->contract->to->save();
 
                         return response()->json(route('invoices.success', $invoice->hashid));
                     }
@@ -174,8 +205,38 @@ class PaymentController extends Controller
                         $invoice->paid_at = Carbon::now();
                         $invoice->save();
 
+                        // Notifications
+                        $invoice->from->notify(new PaymentMade($invoice));
+                        $invoice->to->notify(new PaymentReceived($invoice));
+
                         if ($contract->remaining <= 0) {
-                            //TODO: Review & Notification.
+                            // Notifications
+                            $invoice->to->notify(new ContractEnd($invoice->contract, 'freelancer'));
+                            $invoice->from->notify(new ContractEnd($invoice->contract, 'client'));
+
+                            // Reviews
+                            Review::create([
+                                'rating' => 0,
+                                'rated' => false,
+                                'on_time' => false,
+                                'on_budget' => false,
+                                'to_id' => $invoice->to_id,
+                                'from_id' => $invoice->from_id,
+                                'contract_id' => $invoice->contract_id,
+                            ]);
+
+                            Review::create([
+                                'rating' => 0,
+                                'rated' => false,
+                                'on_time' => false,
+                                'on_budget' => false,
+                                'to_id' => $invoice->from_id,
+                                'from_id' => $invoice->to_id,
+                                'contract_id' => $invoice->contract_id,
+                            ]);
+
+                            $contract->to->jobs_done += 1;
+                            $contract->to->save();
                         }
                         return response()->json(route('invoices.success', $invoice->hashid));
                     }
@@ -198,7 +259,7 @@ class PaymentController extends Controller
         return $unique = $today . $rand . $index;
     }
 
-    private function hourlyRatePayment(Request $request, Invoice $invoice)
+    private function hourlyRatePayment(Request $request, Invoice $invoice, $end)
     {
         $this->authorize('owner', $invoice->from->id);
         $paymentMethod = $request->user()->defaultPaymentMethod();
@@ -221,11 +282,17 @@ class PaymentController extends Controller
                     $contract->total_earnings += $invoice->amount;
                     $contract->save();
 
-                    if ($contract->completed) {
-                        // TODO: Review Here.
+                    if ($end) {
+                        // End contract.
+                        $contract = $invoice->contract;
+                        $contract->completed = true;
+                        $contract->save();
 
                         $invoice->hours = $contract->work_hours;
                         $contract->save();
+
+                        $contract->to->jobs_done += 1;
+                        $contract->to->save();
                     } else {
                         $invoice->hours = $contract->work_hours;
                         $contract->total_hours += $contract->work_hours;
@@ -250,8 +317,35 @@ class PaymentController extends Controller
                     $invoice->paid_at = Carbon::now();
                     $invoice->save();
 
-                    // TODO: Notification Here
+                    // Notifications
+                    $invoice->from->notify(new PaymentMade($invoice));
+                    $invoice->to->notify(new PaymentReceived($invoice));
 
+                    if ($end) {
+                        $invoice->to->notify(new ContractEnd($invoice->contract, 'freelancer'));
+                        $invoice->from->notify(new ContractEnd($invoice->contract, 'client'));
+
+                        // TODO: Review Here.
+                        Review::create([
+                            'rating' => 0,
+                            'rated' => false,
+                            'on_time' => false,
+                            'on_budget' => false,
+                            'to_id' => $invoice->to_id,
+                            'from_id' => $invoice->from_id,
+                            'contract_id' => $invoice->contract_id,
+                        ]);
+
+                        Review::create([
+                            'rating' => 0,
+                            'rated' => false,
+                            'on_time' => false,
+                            'on_budget' => false,
+                            'to_id' => $invoice->from_id,
+                            'from_id' => $invoice->to_id,
+                            'contract_id' => $invoice->contract_id,
+                        ]);
+                    }
                     return response()->json(route('invoices.success', $invoice->hashid));
                 }
             } catch (Exception $e) {
@@ -275,7 +369,7 @@ class PaymentController extends Controller
         $invoice->save();
 
         // Do the payment.
-        return $this->hourlyRatePayment($request, $invoice);
+        return $this->hourlyRatePayment($request, $invoice, false);
     }
 
     public function paidAndEndContract(Request $request, Invoice $invoice)
@@ -287,12 +381,7 @@ class PaymentController extends Controller
         $invoice->amount = $invoice->contract->rate * $invoice->contract->work_hours;
         $invoice->save();
 
-        // End contract.
-        $contract = $invoice->contract;
-        $contract->completed = true;
-        $contract->save();
-
         // Do the payment.
-        return $this->hourlyRatePayment($request, $invoice);
+        return $this->hourlyRatePayment($request, $invoice, true);
     }
 }

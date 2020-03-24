@@ -10,7 +10,6 @@
 <div class="row">
     <div class="col-xl-12">
         <div class="dashboard-box margin-top-0">
-
             <!-- Headline -->
             <div class="headline">
                 <div class="row">
@@ -31,18 +30,12 @@
                             </tr>
                             @foreach ($contracts as $contract)
                                 <tr>
-                                    <td data-label="Column 1">
-                                        @if($contract->job)
-                                        <a target="_blank" href="/find-work/{{ $contract->job->slug }}-{{ $contract->job->id }}">{{ $contract->job->project_name }}</a>
-                                        @else
-                                        {{ $contract->title }}
-                                        @endif
-                                    </td>
-                                    <td data-label="Column 2">{{ $contract->from->first_name }} {{ $contract->from->last_name }}</td>
-                                    <td data-label="Column 2"><a target="_blank" href="/find-freelancer/profile/freelancer~{{ $contract->to->id }}">{{ $contract->to->first_name }} {{ $contract->to->last_name }}</a></td>
-                                    <td data-label="Column 2">{{ $contract->type }}</a></td>
-                                    <td data-label="Column 2">{{ ($contract->completed) ? 'Yes' : 'No' }}</a></td>
-                                    <td data-label="Column 3"><a href="{{ route('contracts.show', $contract->hashid) }}" class="button">See</a></td>
+                                    <td data-label="Column 1">{{ $contract->title }}</td>
+                                    <td data-label="Column 2">{{ $contract->from->name }}</td>
+                                    <td data-label="Column 3"><a target="_blank" href="/freelancers/~{{ $contract->to->hashid }}">{{ $contract->to->name }}</a></td>
+                                    <td data-label="Column 4">{{ $contract->type }}</a></td>
+                                    <td data-label="Column 5">{{ ($contract->completed) ? 'Yes' : 'No' }}</a></td>
+                                    <td data-label="Column 6"><a href="{{ route('contracts.show', $contract->hashid) }}" class="button">See</a></td>
                                 </tr>
                             @endforeach
                         </table>
@@ -52,6 +45,5 @@
         </div>
     </div>
 </div>
-
 {!! $contracts->links('vendor.pagination.uplance') !!}
 @endsection

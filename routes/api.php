@@ -141,6 +141,13 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('/category', 'SettingsController@category');
         Route::get('/skills', 'SettingsController@skills');
     });
+
+    /**
+     * ----------------------------------------------------
+     * All reviews routes.
+     * ----------------------------------------------------
+     */
+    Route::post('/store-review~{id}', 'ReviewController@storeReview');
 });
 
 

@@ -156,11 +156,8 @@ class JobController extends Controller
      * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Job $job)
     {
-        $id = Hashids::connection(Job::class)->decode($id);
-        $job = Job::where('id', $id)->first();
-        if (!$job) return abort(404);
         $category = $job->categories()->first();
         if (!$category) return abort(404);
         SEOMeta::setTitle($job->project_name . ' - ' . $category->name);

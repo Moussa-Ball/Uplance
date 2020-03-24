@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\User;
 use App\Category;
+use App\Review;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -40,6 +42,7 @@ class FreelancerController extends Controller
         $user = new User();
         $user = $user->search($keywords);
         $user = $user->where('current_account', 'freelancer');
+        $user = $user->where('skills', '!=', 'NULL');
 
         if ($location) {
             $country = new Countries();
@@ -90,14 +93,12 @@ class FreelancerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $id = Hashids::connection(User::class)->decode($id);
-        if (!$id) return abort(404);
-        $freelancer = User::where('id', $id)->first();
-        if (!$freelancer) return abort(404);
-        SEOTools::setTitle($freelancer->name . ' - ' . $freelancer->categories()->first()->name);
-        return view('freelancers.show', compact('freelancer'));
+        $freelancer = $user;
+        $reviews = Review::where('to_id', Auth::id())->paginate(10);
+        SEOTools::setTitle($user->name . ' - ' . $user->categories()->first()->name);
+        return view('freelancers.show', compact('freelancer', 'reviews'));
     }
 
     /**

@@ -111,7 +111,7 @@
                                     <br>
 
                                     <div class="single-page-section">
-                                        <h4 class="margin-bottom-40" style="text-decoration: underline">{{ $bid->job->project_name }}</h4>
+                                        <h4 class="margin-bottom-40" style="text-decoration: underline; cursor: text;">{{ $bid->job->project_name }}</h4>
                                         {!! nl2br($bid->cover_letter) !!}
                                     </div>
 

@@ -47,8 +47,8 @@ class ProposalSend extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject('You have a new proposal for your project.')
             ->greeting('Hi ' . $this->proposal->user->name)
-            ->line($this->proposal->user->name . ' sent you a proposal on your '
-                . $this->proposal->job->project_name . ' project.')
+            ->line($this->proposal->user->name . ' sent you a proposal for your project: '
+                . $this->proposal->job->project_name)
             ->line('You can see his proposal for your project by clicking on this button below.')
             ->action('See the proposal', route('proposals.list', $this->proposal->job->hashid));
     }
@@ -62,9 +62,9 @@ class ProposalSend extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->proposal->user->name,
-            'project_name' => $this->proposal->job->project_name,
-            'link' => route('proposals.list', $this->proposal->job->hashid)
+            'link' => route('proposals.list', $this->proposal->job->hashid),
+            'content' => $this->proposal->user->name . ' sent you a proposal for your project: '
+                . $this->proposal->job->project_name
         ];
     }
 

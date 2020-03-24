@@ -12,7 +12,7 @@
     <div v-if="notifications.length" class="header-notifications-dropdown">
       <div class="header-notifications-headline">
         <h4>Notifications</h4>
-        <button
+        <button @click="gotoDashboard()"
           class="mark-as-read ripple-effect-dark"
           v-tippy="{
                         placement: 'left',
@@ -31,106 +31,9 @@
           <ul>
             <template v-for="(notification, index) in notifications">
               <li :key="index">
-                <a
-                  v-if="
-                                        notification.type ==
-                                            'App\\Notifications\\ProposalSend'
-                                    "
-                  :href="notification.data.link"
-                >
+                <a :href="notification.data.link">
                   <span class="notification-text" style="padding-left: 0; padding-right: 0;">
-                    <strong>
-                      {{
-                      notification.data.name
-                      }}
-                    </strong>
-                    sent you a proposal on your
-                    <span class="color">
-                      {{
-                      notification.data.project_name
-                      }}
-                    </span>
-                    project.
-                  </span>
-                </a>
-                <a
-                  v-if="
-                                        notification.type ==
-                                            'App\\Notifications\\ProposalRejected'
-                                    "
-                  :href="notification.data.link"
-                >
-                  <span class="notification-text" style="padding-left: 0; padding-right: 0;">
-                    Your proposal for
-                    <span class="color">
-                      {{
-                      notification.data.project_name
-                      }}
-                    </span>
-                    project has benen rejected by the
-                    client.
-                  </span>
-                </a>
-                <a
-                  v-if="
-                                        notification.type ==
-                                            'App\\Notifications\\OfferSend'
-                                    "
-                  :href="notification.data.link"
-                >
-                  <span class="notification-text" style="padding-left: 0; padding-right: 0;">
-                    <strong>
-                      {{
-                      notification.data.name
-                      }}
-                    </strong>
-                    sent you a contract offer concerning a
-                    project,
-                    <span
-                      class="color"
-                    >
-                      {{
-                      notification.data.project_name
-                      }}
-                    </span>
-                  </span>
-                </a>
-                <a
-                  v-if="notification.type == 'App\\Notifications\\FreelancerHired'"
-                  :href="notification.data.link"
-                >
-                  <span class="notification-text" style="padding-left: 0; padding-right: 0;">
-                    <strong>
-                      {{
-                      notification.data.name
-                      }}
-                    </strong>
-                    hired you for the project:
-                    <span class="color">
-                      {{
-                      notification.data.project_name
-                      }}
-                    </span>
-                    A contract is now active.
-                  </span>
-                </a>
-                <a
-                  v-if=" notification.type == 'App\\Notifications\\ContractActivated'"
-                  :href="notification.data.link"
-                >
-                  <span class="notification-text" style="padding-left: 0; padding-right: 0;">
-                    <strong>
-                      {{
-                      notification.data.name
-                      }}
-                    </strong>
-                    has accepted your offer for:
-                    <span class="color">
-                      {{
-                      notification.data.project_name
-                      }}
-                    </span>
-                    A contract is now active.
+                    {{ notification.data.content }}
                   </span>
                 </a>
               </li>
@@ -152,6 +55,9 @@ export default {
     };
   },
   methods: {
+    gotoDashboard() {
+      window.location.href = '/dashboard'
+    },
     markAllAsRead() {
       if (this.count >= 1) {
         this.axios
@@ -187,9 +93,8 @@ export default {
       _this.notifications.unshift({
         type: notification.type,
         data: {
-          name: notification.name,
-          project_name: notification.project_name,
-          link: notification.link
+          link: notification.link,
+          content: notification.content,
         }
       });
     });

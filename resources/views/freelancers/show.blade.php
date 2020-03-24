@@ -46,6 +46,53 @@
                     <h3 class="margin-bottom-25">About Me</h3>
                     {!! nl2br($freelancer->presentation) !!}
                 </div>
+
+                <!-- Boxed List -->
+                @if(!$reviews->isEmpty())
+                <div class="boxed-list margin-bottom-60">
+                    <div class="boxed-list-headline">
+                        <h3><i class="icon-material-outline-thumb-up"></i> Work History and Feedback</h3>
+                    </div>
+                    <ul class="boxed-list-ul">
+                        @foreach($reviews as $review)
+                        @if(!$review->contract->is_agency)
+                        <li>
+                            <div class="boxed-list-item">
+                                <!-- Content -->
+                                <div class="item-content">
+                                    <h4>{{ $review->contract->title }} <span>Rated as Freelancer</span></h4>
+                                    <div class="item-details margin-top-10">
+                                        @if($review->rating)
+                                        <div data-rating="{{ $review->rating }}" class="star-rating">
+                                            <star-rating :style="{position: 'relative', top: 3 + 'px'}" :star-size="18" :read-only="true"
+                                                            :show-rating="false" :rating="{{ $review->rating }}">
+                                            </star-rating>
+                                        </div>
+                                        @endif
+                                        <div class="detail-item"><i class="icon-material-outline-date-range"></i> {{ $review->created_at->format('Y-m-d') }}</div>
+                                    </div>
+                                    @if($review->comment)
+                                    <div class="item-description">
+                                        <p>{{ $review->comment }}</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </li>
+                        @endif
+                        @endforeach
+                    </ul>
+
+                    <!-- Pagination -->
+                    <div class="clearfix"></div>
+                    <div class="pagination-container margin-top-40 margin-bottom-10">
+                        {!! $reviews->links('vendor.pagination.uplance') !!}
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- Pagination / End -->
+                </div>
+                @endif
+                <!-- Boxed List / End -->
             </div>
 
             <!-- Sidebar -->

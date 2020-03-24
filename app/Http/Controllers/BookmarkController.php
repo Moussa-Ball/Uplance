@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Job;
+use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\BookmarkRequest;
 
 class BookmarkController extends Controller
 {
-    public function index($bookmark_id, $bookmark_type)
+    public function index(Request $request, $bookmark_id, $bookmark_type)
     {
         $class = 'App\\' . $bookmark_type;
         $model = new $class;
@@ -19,6 +19,7 @@ class BookmarkController extends Controller
         $bookmark = $model->bookmarks()->where([
             'bookmark_id' => $model->id,
             'bookmark_type' => 'App\\' . $bookmark_type,
+            'user_id' => $request->user()->id,
         ])->first();
 
         if ($bookmark) {
@@ -38,13 +39,15 @@ class BookmarkController extends Controller
 
         $bookmark = $model->bookmarks()->where([
             'bookmark_id' => $model->id,
-            'bookmark_type' => 'App\\' . $request->input('bookmark_type')
+            'bookmark_type' => 'App\\' . $request->input('bookmark_type'),
+            'user_id' => $request->user()->id,
         ])->first();
 
         if ($bookmark == null) {
             $model->bookmarks()->create([
                 'bookmark_id' => $model->id,
-                'bookmark_type' => 'App\\' . $request->input('bookmark_type')
+                'bookmark_type' => 'App\\' . $request->input('bookmark_type'),
+                'user_id' => $request->user()->id,
             ]);
             return response()->json(true);
         } else {

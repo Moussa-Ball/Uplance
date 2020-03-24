@@ -47,7 +47,7 @@ class ProposalRejected extends Notification
         return (new MailMessage)
             ->subject('Your proposal has been rejected.')
             ->greeting('Hi ' . $this->proposal->user->name)
-            ->line("Your proposal for {$this->proposal->job->project_name} project has been rejected.")
+            ->line("Your proposal for {$this->proposal->job->project_name} has been rejected.")
             ->line("You can still continue to search for another job.")
             ->action("Find Job", route('jobs.index'))
             ->line("Good luck on uplance.");
@@ -62,8 +62,8 @@ class ProposalRejected extends Notification
     public function toArray($notifiable)
     {
         return [
-            'project_name' => $this->proposal->job->project_name,
-            'link' => route('jobs.show', $this->proposal->job->hashid)
+            'link' => route('jobs.show', $this->proposal->job->hashid),
+            'content' => "Your proposal for {$this->proposal->job->project_name} has been rejected."
         ];
     }
 

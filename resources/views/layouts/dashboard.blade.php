@@ -34,7 +34,7 @@
                                 @if(env('AGENCY_FEATURE'))
                                 <li><a class="not-dropdown" href="#">Find Agency</a></li>
                                 @endif
-                                <li><a class="not-dropdown" href="#">Bookmarks</a></li>
+                                <li><a class="not-dropdown" href="{{ route('bookmarks') }}">Bookmarks</a></li>
                                 <li><a class="not-dropdown" href="{{ route('contracts.index') }}">Contracts</a></li>
                                 @if(Auth::user()->current_account == 'client')
                                 <li><a class="not-dropdown" href="{{ route('jobs.create') }}">Post a Job</a></li>
@@ -97,7 +97,7 @@
                                 </div>
 
                                 <ul class="user-menu-small-nav">
-                                    <li><a href="#"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                    <li><a href="{{ route('dashboard') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
                                     @if(env('SWITCH_ACCOUNT_FEATURE'))
                                     <li><a href="{{ route('account.switch') }}"><i class="icon-material-outline-account-circle"></i> Switch Account</a></li>
                                     @endif
@@ -148,7 +148,7 @@
 
                             <ul data-submenu-title="Start">
                                 <li class="{{ (Route::currentRouteName() == 'dashboard') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-material-outline-dashboard"></i> Dashboard</a>
+                                    <a href="{{ route('dashboard') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a>
                                 </li>
                                 <li class="{{ (Route::currentRouteName() == 'messages.index' || Route::currentRouteName() == 'messages.thread') ? 'active-submenu' : '' }}">
                                     <a href="{{ route('messages.index') }}">
@@ -158,13 +158,11 @@
                                     </a>
                                 </li>
                                 <li class="{{ (Route::currentRouteName() == 'bookmarks') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-material-outline-star-border"></i> Bookmarks</a>
+                                <a href="{{ route('bookmarks') }}"><i class="icon-material-outline-star-border"></i> Bookmarks</a>
                                 </li>
-                                @if(Auth::user()->account_type == 'employer')
                                 <li class="{{ (Route::currentRouteName() == 'reviews') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-material-outline-rate-review"></i> Reviews</a>
+                                    <a href="{{ route('reviews') }}"><i class="icon-material-outline-rate-review"></i> Reviews</a>
                                 </li>
-                                @endif
                                 <li class="{{ (Route::currentRouteName() == 'contracts.index' || Route::currentRouteName() == 'contracts.show') ? 'active-submenu' : '' }}">
                                 <a href="{{ route('contracts.index') }}"><i class="icon-material-outline-assessment"></i> Contracts</a>
                                 </li>

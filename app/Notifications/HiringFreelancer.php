@@ -6,9 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class ContractActivated extends Notification
+class HiringFreelancer extends Notification
 {
     use Queueable;
 
@@ -32,7 +31,7 @@ class ContractActivated extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'database', 'broadcast'];
+        return ['mail'];
     }
 
     /**
@@ -44,11 +43,10 @@ class ContractActivated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->greeting('')
-            ->subject('Your contract has been started.')
-            ->line("{$this->contract->to->name} has accepted your offer regarding the project: {$this->contract->title}")
-            ->line("A contract has just been activated for the project.")
-            ->action('See the contract', route('contracts.show', $this->contract->hashid))
+            ->greeting('Hello!')
+            ->line($this->contract->from->first_name.' '.$this->contract->from->last_name.' hired you for the '
+                .$this->contract->job->project_name. ' project. You now have a current contract.')
+            ->action('See the contract', route('contracts.view', $this->contract->id))
             ->line('Good luck!');
     }
 
@@ -61,19 +59,7 @@ class ContractActivated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'link' => route('contracts.show', $this->contract->hashid),
-            'content' => "{$this->contract->to->name} has accepted your offer regarding the project: {$this->contract->title}",
+            //
         ];
-    }
-
-    /**
-     * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return BroadcastMessage
-     */
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage($this->toArray($notifiable));
     }
 }

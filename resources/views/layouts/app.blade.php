@@ -42,7 +42,7 @@
                                 @if(env('AGENCY_FEATURE'))
                                 <li><a class="not-dropdown" href="#">Find Agency</a></li>
                                 @endif
-                                <li><a class="not-dropdown" href="#">Bookmarks</a></li>
+                                <li><a class="not-dropdown" href="{{  route('bookmarks')}}">Bookmarks</a></li>
                                 <li><a class="not-dropdown" href="{{  route('contracts.index')}}">Contracts</a></li>
                                 @if(Auth::user()->current_account == 'client')
                                 <li><a class="not-dropdown" href="{{ route('jobs.create') }}">Post a Job</a></li>
@@ -110,7 +110,7 @@
                                     </div>
 
                                     <ul class="user-menu-small-nav">
-                                        <li><a href="#"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
+                                        <li><a href="{{ route('dashboard') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a></li>
                                         @if(env('SWITCH_ACCOUNT_FEATURE') && Auth::user()->current_account)
                                         <li><a href="{{ route('account.switch') }}"><i class="icon-material-outline-account-circle"></i> Switch Account</a></li>
                                         @endif

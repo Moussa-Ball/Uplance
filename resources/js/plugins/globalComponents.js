@@ -53,6 +53,7 @@ import UserStatusSwitcher from "../components/UserStatusSwitcher";
 import MessagesNotifications from "../components/MessagesNotifications";
 import MessageBadge from "../components/MessageBadge";
 import Contract from "../components/Contract";
+import StoreReview from "../components/StoreReview";
 
 export default {
     install(Vue) {
@@ -143,5 +144,6 @@ export default {
         Vue.component("message-badge", MessageBadge);
         Vue.component("picker", Picker);
         Vue.component("contract", Contract);
+        Vue.component("store-review", StoreReview);
     }
 };

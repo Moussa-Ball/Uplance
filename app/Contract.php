@@ -80,6 +80,11 @@ class Contract extends Model
         return $this->belongsTo(Proposal::class, 'to_id', 'user_id');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'to_id', 'from_id');
+    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class);

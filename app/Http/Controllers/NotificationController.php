@@ -28,4 +28,20 @@ class NotificationController extends Controller
         $request->user()->unreadNotifications->markAsRead();
         return $request->user()->notifications()->get()->toArray();
     }
+
+    public function destroy(Request $request, $notification)
+    {
+        $notification = $request->user()->notifications()->where('id', $notification)->first();
+        if (!$notification)
+            return abort(404);
+
+        $notification->delete();
+        return redirect()->back()->with('success', 'The notification has been removed.');
+    }
+
+    public function destroyAll(Request $request)
+    {
+        $request->user()->notifications()->delete();
+        return redirect()->back()->with('success', 'All notifications has been removed.');
+    }
 }
