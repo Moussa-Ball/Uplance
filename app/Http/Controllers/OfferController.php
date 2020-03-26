@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OfferRequest;
 use Auth;
 use App\Job;
+use App\Notifications\DeclineOffer;
 use App\Notifications\OfferSend;
 use App\User;
 use App\Offer;
@@ -100,7 +101,9 @@ class OfferController extends Controller
      */
     public function destroy(Offer $offer)
     {
+        $data = $offer;
         $offer->delete();
+        $data->to->notify(new DeclineOffer($data));
         return redirect()->back();
     }
 }

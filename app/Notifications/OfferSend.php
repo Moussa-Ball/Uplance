@@ -60,9 +60,8 @@ class OfferSend extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->offer->from->name,
-            'project_name' => $this->offer->contract_title,
-            'link' => route('offers.index')
+            'link' => route('offers.index'),
+            'content' => "You have received an offer from {$this->offer->from->name} concerning a project: {$this->offer->contract_title}.",
         ];
     }
 

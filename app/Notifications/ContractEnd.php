@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class ContractEnd extends Notification
 {
@@ -34,7 +35,7 @@ class ContractEnd extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database', 'broadcast'];
     }
 
     /**
@@ -68,8 +69,31 @@ class ContractEnd extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+        if ($this->for_who === 'freelancer') {
+            return [
+                'link' => route('contracts.show', $this->contract->id),
+                'content' => "The {$this->contract->title} contract is already marked as completed. 
+                    The client will leave you a review. Thank you for doing your business on uplance, 
+                    we wish you the best success on uplance."
+            ];
+        } else {
+            return [
+                'link' => route('contracts.show', $this->contract->id),
+                'content' => "The {$this->contract->title} contract is already marked as completed. 
+                    Your review was branded on the freelancer profile. Your project is no longer online. 
+                    Thank you for doing your business on uplance we wish you the best."
+            ];
+        }
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage($this->toArray($notifiable));
     }
 }

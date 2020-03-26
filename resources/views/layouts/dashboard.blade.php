@@ -145,11 +145,11 @@
                     <!-- Navigation -->
                     <div class="dashboard-nav">
                         <div class="dashboard-nav-inner">
-
                             <ul data-submenu-title="Start">
                                 <li class="{{ (Route::currentRouteName() == 'dashboard') ? 'active-submenu' : '' }}">
                                     <a href="{{ route('dashboard') }}"><i class="icon-material-outline-dashboard"></i> Dashboard</a>
                                 </li>
+                                
                                 <li class="{{ (Route::currentRouteName() == 'messages.index' || Route::currentRouteName() == 'messages.thread') ? 'active-submenu' : '' }}">
                                     <a href="{{ route('messages.index') }}">
                                         <i class="icon-material-outline-question-answer"></i> Messages 
@@ -157,37 +157,40 @@
                                         <message-badge :user="{{ (int)Auth::user()->id }}"></message-badge>
                                     </a>
                                 </li>
+                                
                                 <li class="{{ (Route::currentRouteName() == 'bookmarks') ? 'active-submenu' : '' }}">
-                                <a href="{{ route('bookmarks') }}"><i class="icon-material-outline-star-border"></i> Bookmarks</a>
+                                    <a href="{{ route('bookmarks') }}"><i class="icon-material-outline-star-border"></i> Bookmarks</a>
                                 </li>
+                                
                                 <li class="{{ (Route::currentRouteName() == 'reviews') ? 'active-submenu' : '' }}">
                                     <a href="{{ route('reviews') }}"><i class="icon-material-outline-rate-review"></i> Reviews</a>
                                 </li>
+                                
                                 <li class="{{ (Route::currentRouteName() == 'contracts.index' || Route::currentRouteName() == 'contracts.show') ? 'active-submenu' : '' }}">
-                                <a href="{{ route('contracts.index') }}"><i class="icon-material-outline-assessment"></i> Contracts</a>
+                                    <a href="{{ route('contracts.index') }}"><i class="icon-material-outline-assessment"></i> Contracts</a>
                                 </li>
+                                
                                 <li class="{{ (Route::currentRouteName() == 'invoices.index') ? 'active-submenu' : '' }}">
                                     <a href="{{ route('invoices.index') }}"><i class="icon-material-outline-assignment"></i> Invoices</a>
                                 </li>
                                
-                                @if(Auth::user()->account_type === 'freelancer')
+                                @if(Auth::user()->current_account === 'freelancer')
                                 <li class="{{ (Route::currentRouteName() == 'payment.get') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-line-awesome-money"></i>Get Payments</a>
+                                    <a href="#"><i class="icon-line-awesome-money"></i>Get Paid</a>
                                 </li>
                                 @endif
-                                 @if(Auth::user()->current_account === 'client')
+                                
                                 <li class="{{ (Route::currentRouteName() == 'payments.index') ? 'active-submenu' : '' }}">
-                                <a href="{{ route('payments.index') }}"><i class="icon-line-awesome-money"></i>Billing Method</a>
+                                    <a href="{{ route('payments.index') }}"><i class="icon-line-awesome-money"></i>Billing Method</a>
                                 </li>
-                                @endif
-                                @if(Auth::user()->subscription_status === null)
-                                <li class="{{ (Route::currentRouteName() == 'plans') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-material-outline-account-balance-wallet"></i> Membership</a>
+                                
+                                <li class="{{ (Route::currentRouteName() == 'membership') ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('membership') }}"><i class="icon-material-outline-account-balance-wallet"></i> Membership</a>
                                 </li>
-                                @endif
+                                
                                 @if(Auth::user()->current_account === 'freelancer')
                                 <li class="{{ (Route::currentRouteName() == 'offers.index') ? 'active-submenu' : '' }}">
-                                <a href="{{ route('offers.index') }}"><i class="icon-material-outline-local-offer"></i>  Offers</a>
+                                    <a href="{{ route('offers.index') }}"><i class="icon-material-outline-local-offer"></i>  Offers</a>
                                 </li>
                                 @endif
                             </ul>

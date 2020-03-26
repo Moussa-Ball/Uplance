@@ -2,28 +2,23 @@
 
 namespace App\Notifications;
 
-use Auth;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
-class DeclineInvitation extends Notification
+class PremiumBusiness extends Notification
 {
     use Queueable;
-
-    private $team;
-    private $user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user, $team)
+    public function __construct()
     {
-        $this->team = $team;
-        $this->user = $user;
+        //
     }
 
     /**
@@ -46,8 +41,9 @@ class DeclineInvitation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Hi '.$this->user->name.'!')
-                    ->line(Auth::user()->name." has refused your invitation request to join your team `{$this->team->name}`. However you can continue to make requests to other freelancers. Good luck on uplance.");
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**

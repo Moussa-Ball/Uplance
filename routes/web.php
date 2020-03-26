@@ -33,6 +33,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             return redirect()->route('jobs.index');
         });
 
+        // Subscriptions
+        Route::get('/membership', 'SubscriptionController@index')->name('membership');
+
         // BOOKMARKS
         Route::get('/bookmarks', 'BookmarksController@index')->name('bookmarks');
         Route::get('/bookmarks/delete/{bookmark}', 'BookmarksController@destroy')->name('bookmarks.delete');

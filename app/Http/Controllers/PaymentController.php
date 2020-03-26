@@ -241,7 +241,7 @@ class PaymentController extends Controller
                         return response()->json(route('invoices.success', $invoice->hashid));
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 422);
             }
         } else {
@@ -348,7 +348,7 @@ class PaymentController extends Controller
                     }
                     return response()->json(route('invoices.success', $invoice->hashid));
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 422);
             }
         } else {

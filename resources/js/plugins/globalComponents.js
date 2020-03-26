@@ -54,6 +54,7 @@ import MessagesNotifications from "../components/MessagesNotifications";
 import MessageBadge from "../components/MessageBadge";
 import Contract from "../components/Contract";
 import StoreReview from "../components/StoreReview";
+import Premium from "../components/Premium";
 
 export default {
     install(Vue) {
@@ -145,5 +146,6 @@ export default {
         Vue.component("picker", Picker);
         Vue.component("contract", Contract);
         Vue.component("store-review", StoreReview);
+        Vue.component("premium", Premium);
     }
 };

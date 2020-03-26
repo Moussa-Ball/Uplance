@@ -61,9 +61,8 @@ class FreelancerHired extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->contract->from->name,
-            'project_name' => $this->contract->title,
-            'link' => route('contracts.show', $this->contract->hashid)
+            'link' => route('contracts.show', $this->contract->hashid),
+            'content' => "You accepted {$this->contract->from->name} offer regarding his project: {$this->contract->title}",
         ];
     }
 
