@@ -164,6 +164,13 @@
                               :show-rating="false"
                               :rating="freelancer.rating"
                             ></star-rating>
+                            <span v-if="freelancer.premium">
+                              <span v-if="freelancer.premium == 'pro'" class="badge">Pro</span>
+                              <span
+                                v-else-if="freelancer.premium == 'business'"
+                                class="badge"
+                              >Business</span>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -181,12 +188,12 @@
                           </strong>
                         </li>
                         <li>
-                          Rate
-                          <strong>${{ freelancer.hourly_rate }} / hr</strong>
+                          Success
+                          <strong>{{ freelancer.job_success }}%</strong>
                         </li>
                         <li>
-                          Job Success
-                          <strong>{{ freelancer.job_success }}%</strong>
+                          Rate
+                          <strong>${{ freelancer.hourly_rate }} / hr</strong>
                         </li>
                       </ul>
                     </div>
@@ -360,7 +367,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .freelancer-details {
   min-width: 50% !important;
 }
@@ -387,5 +394,18 @@ export default {
 .verified-badge.user-status:before {
   content: "";
   padding: -1px !important;
+}
+
+.badge {
+  display: inline-block;
+  transition: 0.3s;
+  font-size: 14px;
+  border-radius: 4px;
+  background-color: rgba(42, 65, 232, 0.07);
+  color: #2a41e8 !important;
+  display: inline-block;
+  padding: 4px 16px;
+  margin: 15px 2px 2px 2px !important;
+  line-height: 24px;
 }
 </style>

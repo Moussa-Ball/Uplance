@@ -170,7 +170,7 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['hashid', 'country_name'];
+    protected $appends = ['hashid', 'country_name', 'premium'];
 
     /**
      * The attributes that should be cast to native types.
@@ -193,6 +193,15 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
                 ->first()->name->common;
         } else {
             return "";
+        }
+    }
+
+    public function getPremiumAttribute()
+    {
+        if ($this->subscribed('pro')) {
+            return 'pro';
+        } else if ($this->subscribed('business')) {
+            return 'business';
         }
     }
 

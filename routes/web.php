@@ -33,8 +33,24 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             return redirect()->route('jobs.index');
         });
 
-        // Subscriptions
-        Route::get('/membership', 'SubscriptionController@index')->name('membership');
+        /**
+         * ----------------------------------------------------
+         * Subscriptions
+         * ----------------------------------------------------
+         */
+        Route::group(['prefix' => 'membership'], function () {
+            Route::get('/', 'SubscriptionController@index')->name('membership');
+            Route::get('/subscribe/pro', 'SubscriptionController@subscribeToPro')->name('membership.subscribe.pro');
+            Route::get('/subscribe/business', 'SubscriptionController@subscribeToBusiness')->name('membership.subscribe.business');
+            Route::get('/subscribe/pro/cancel', 'SubscriptionController@cancelProSubscription')->name('membership.cancel.pro');
+            Route::get('/subscribe/business/cancel', 'SubscriptionController@cancelBusinessSubscription')->name('membership.cancel.business');
+            Route::get('/subscribe/pro/resume', 'SubscriptionController@resumeProSubscription')->name('membership.resume.pro');
+            Route::get('/subscribe/business/resume', 'SubscriptionController@resumeBusinessSubscription')->name('membership.resume.business');
+            Route::get('/subscribe/pro/switch-to-business', 'SubscriptionController@switchProSubscriptionToBusiness')
+                ->name('membership.switch.pro');
+            Route::get('/subscribe/business/switch->to->pro', 'SubscriptionController@switchBusinessSubscriptionToPro')
+                ->name('membership.switch.business');
+        });
 
         // BOOKMARKS
         Route::get('/bookmarks', 'BookmarksController@index')->name('bookmarks');

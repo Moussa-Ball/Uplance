@@ -30,16 +30,6 @@ Route::group(['middleware' => ['auth:api']], function () {
      * Payments routes
      * ----------------------------------------------------
      */
-    Route::group(['prefix' => 'membership'], function () {
-        Route::get('/subscribe/pro/~{user}', 'SubscriptionController@subscribeToPro');
-        Route::get('/subscribe/business/~{user}', 'SubscriptionController@subscribeToBusiness');
-    });
-
-    /**
-     * ----------------------------------------------------
-     * Payments routes
-     * ----------------------------------------------------
-     */
     Route::group(['prefix' => 'payments'], function () {
         Route::get('/finish/~{invoice}', 'PaymentController@finishPayment');
         Route::get('/end/~{invoice}', 'PaymentController@paidAndEndContract');

@@ -25,6 +25,13 @@
                                     @if($freelancer->verified)
                                     <li><div class="verified-badge-with-title">Verified</div></li>
                                     @endif
+                                    <div class="task-tags">
+                                        @if($freelancer->subscribed('pro'))
+                                        <span><strong>Pro</strong></span>
+                                        @elseif($freelancer->subscribed('business'))
+                                        <span><strong>Business</strong></span>
+                                        @endif
+                                    </div>
                                 </ul>
                             </div>
                         </div>
