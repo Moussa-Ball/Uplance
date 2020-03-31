@@ -100,7 +100,7 @@
                                                 @endif
                                             </div>
                                             <div class="user-name">
-                                                {{ ucfirst(Auth::user()->first_name) }} {{ ucfirst(Auth::user()->last_name) }} <span>{{ ucfirst(Auth::user()->account_type) }}</span>
+                                                {{ ucfirst(Auth::user()->name) }} <span>{{ ucfirst(Auth::user()->current_account) }}</span>
                                             </div>
                                         </div>
 

@@ -24,11 +24,10 @@ class SubscriptionController extends Controller
 
     public function subscribeToPro(Request $request)
     {
-        $user = $request->user();
         $paymentMethod = $request->user()->defaultPaymentMethod();
         if ($paymentMethod) {
             try {
-                $request->user()->newSubscription('pro', 'plan_GyWPNQsPXWAwqm')->create($paymentMethod->id, [
+                $request->user()->newSubscription('pro', 'plan_H0TcmNj1SGJ3zr')->create($paymentMethod->id, [
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                 ]);
@@ -50,7 +49,7 @@ class SubscriptionController extends Controller
         $paymentMethod = $request->user()->defaultPaymentMethod();
         if ($paymentMethod) {
             try {
-                $request->user()->newSubscription('business', 'plan_GyWQ8tjO0p9hn5')->create($paymentMethod->id, [
+                $request->user()->newSubscription('business', 'plan_H0Td1KJRPVeaNI')->create($paymentMethod->id, [
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                 ]);
@@ -111,7 +110,7 @@ class SubscriptionController extends Controller
     {
         if ($request->user()->subscription('pro')) {
             try {
-                $request->user()->subscription('pro')->swap('plan_GyWQ8tjO0p9hn5');
+                $request->user()->subscription('pro')->swap('plan_H0Td1KJRPVeaNI');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'We encountered an error while modifying your subscription.');
             }
@@ -128,7 +127,7 @@ class SubscriptionController extends Controller
     {
         if ($request->user()->subscription('business')) {
             try {
-                $request->user()->subscription('business')->swap('plan_GyWPNQsPXWAwqm');
+                $request->user()->subscription('business')->swap('plan_H0TcmNj1SGJ3zr');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'We encountered an error while modifying your subscription.');
             }

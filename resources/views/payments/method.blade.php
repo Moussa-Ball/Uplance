@@ -96,7 +96,7 @@
                 <ul class="dashboard-box-list">
                     @foreach ($payment_methods as $key => $method)
                         <li style="display: flex; justify-content: space-between;">
-                        <div class="col-xl-4">
+                        <div>
                             @if($method->card->brand == 'visa')
                             <img src="/images/{{ $method->card->brand }}.png" alt="{{ $method->card->brand }}">
                             @elseif($method->card->brand == 'mastercard')
@@ -116,7 +116,7 @@
                             <strong>{{ ucfirst($method->card->brand) }}</strong>
                             @endif
                         </div>
-                        <div class="col-xl-4">
+                        <div>
                             <div class="submit-field">
                                 <br>
                                 <strong>{{ ucfirst($method->card->brand) }} ending in {{ $method->card->last4 }}</strong>
@@ -125,7 +125,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-xl-4">
+                        <div>
                             <div class="submit-field">
                                 <br>
                                 @if(!Auth::user()->defaultPaymentMethod() || Auth::user()->defaultPaymentMethod()->id != $method->id)

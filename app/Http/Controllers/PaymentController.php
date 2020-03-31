@@ -11,6 +11,7 @@ use App\Notifications\ContractEnd;
 use App\Notifications\PaymentMade;
 use App\Notifications\PaymentReceived;
 use App\Review;
+use App\Withdraw;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
@@ -127,6 +128,11 @@ class PaymentController extends Controller
             try {
                 $amount = $invoice->amount * 100;
                 $payment = $request->user()->charge($amount, $paymentMethod->id);
+
+                Withdraw::create([
+                    'amount' => $invoice->amount,
+                    'user_id' => $invoice->to_id,
+                ]);
 
                 if ($payment->charges->data[0]['paid'] == true && $payment->charges->data[0]['status'] == 'succeeded') {
                     $user = User::where('id', $invoice->to_id)->first();
@@ -268,6 +274,11 @@ class PaymentController extends Controller
             try {
                 $amount = $invoice->amount * 100;
                 $payment = $request->user()->charge($amount, $paymentMethod->id);
+
+                Withdraw::create([
+                    'amount' => $invoice->amount,
+                    'user_id' => $invoice->to_id,
+                ]);
 
                 if ($payment->charges->data[0]['paid'] == true && $payment->charges->data[0]['status'] == 'succeeded') {
                     $user = $invoice->to;

@@ -87,7 +87,7 @@
                                                 @endif
                                             </div>
                                             <div class="user-name">
-                                                {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} <span>{{ ucfirst(Auth::user()->account_type) }}</span>
+                                                {{ Auth::user()->name }} <span>{{ ucfirst(Auth::user()->current_account) }}</span>
                                             </div>
                                         </div>
 
@@ -175,8 +175,8 @@
                                 </li>
                                
                                 @if(Auth::user()->current_account === 'freelancer')
-                                <li class="{{ (Route::currentRouteName() == 'payment.get') ? 'active-submenu' : '' }}">
-                                    <a href="#"><i class="icon-line-awesome-money"></i>Get Paid</a>
+                                <li class="{{ (Route::currentRouteName() == 'withdraws.index') ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('withdraws.index') }}"><i class="icon-line-awesome-money"></i>Get Paid</a>
                                 </li>
                                 @endif
                                 

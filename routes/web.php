@@ -33,6 +33,22 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             return redirect()->route('jobs.index');
         });
 
+        Route::group(['prefix' => 'withdraw'], function () {
+            Route::get('/', 'WithdrawController@index')->name('withdraws.index');
+            Route::get('/get-paid', 'WithdrawController@getPaid')->name('withdraw.get');
+
+            Route::get('/enable-paypal', 'WithdrawController@activatePaypalMethod')->name('withdraw.enable.paypal');
+            Route::get('/enable-credit-card', 'WithdrawController@activateCreditCardMethod')->name('withdraw.enable.credit-card');
+
+            Route::get('/enable-paypal-as-default', 'WithdrawController@makePaypalDefaultMethod')
+                ->name('withdraw.default.paypal');
+            Route::get('/enable-credit-card-as-default', 'WithdrawController@makeCreditCardDefaultMethod')
+                ->name('withdraw.default.credit-card');
+
+            Route::get('/remove-paypal', 'WithdrawController@removePaypalMethod')->name('withdraw.remove.paypal');
+            Route::get('/remove-credit-card', 'WithdrawController@removeCreditCardMethod')->name('withdraw.remove.credit-card');
+        });
+
         /**
          * ----------------------------------------------------
          * Subscriptions

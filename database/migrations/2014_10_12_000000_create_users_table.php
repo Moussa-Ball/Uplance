@@ -22,10 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('provider')->nullable();
             $table->string('provider_id')->nullable();
-            $table->double('balance')->default(0);
             $table->double('total_earning')->default(0);
-            $table->double('pending_budget')->default(0);
-            $table->dateTime('next_withdraw_date')->nullable();
             $table->double('rating')->default(0.0);
             $table->integer('jobs_done')->default(0);
             $table->integer('rehired')->default(0);

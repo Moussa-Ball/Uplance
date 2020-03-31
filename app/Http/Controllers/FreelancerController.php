@@ -96,7 +96,7 @@ class FreelancerController extends Controller
     public function show(User $user)
     {
         $freelancer = $user;
-        $reviews = Review::where('to_id', Auth::id())->paginate(10);
+        $reviews = Review::where('to_id', Auth::id())->where('rating', '>', 0)->paginate(10);
         SEOTools::setTitle($user->name . ' - ' . $user->categories()->first()->name);
         return view('freelancers.show', compact('freelancer', 'reviews'));
     }
