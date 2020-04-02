@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\PostJobRequest;
+use App\User;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use PragmaRX\Countries\Package\Countries;
 
@@ -99,6 +100,9 @@ class JobController extends Controller
      */
     public function store(PostJobRequest $request)
     {
+        // Get user
+        $user = User::find($request->user()->id);
+
         // Don't authorize this method, if the current user is not a client.
         $this->authorize('client', $request->user());
 
@@ -109,13 +113,14 @@ class JobController extends Controller
         $category = Category::where('name', $request->category)->first();
 
         // create job.
-        $job = Job::firstOrCreate([
+        $job = Job::create([
             'project_name' => $request->project_name,
             'minimum' => intval($request->minimum),
             'maximum' => intval($request->maximum),
             'location' => $request->location,
             'project_type' => $request->project_type,
             'skills' => $request->skills,
+            'city' => $user->city,
             'description' => $request->description,
             'country' => $country,
             'user_id' => auth()->id(),
@@ -223,6 +228,7 @@ class JobController extends Controller
             'skills' => $request->skills,
             'description' => $request->description,
             'country' => $country,
+            'city' => $job->user->city,
             'user_id' => auth()->id(),
             'category_id' => $category->id
         ]);

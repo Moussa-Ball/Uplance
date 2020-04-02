@@ -19,6 +19,7 @@ class CreateJobsTable extends Migration
             $table->string('project_type');
             $table->string('location')->nullable();
             $table->string('country');
+            $table->string('city');
             $table->decimal('minimum');
             $table->decimal('maximum');
             $table->boolean('payment_verified')->default(false);

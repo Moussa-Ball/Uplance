@@ -16,8 +16,78 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
     'localizationRedirect',
     'localeViewPath',
 ]], function () {
+
     // Authentification routes.
     Auth::routes(['verify' => true]);
+
+    /**
+     * -------------------------------------------------------------------------------------
+     * Routes who not use auth & guest middleware.
+     * -------------------------------------------------------------------------------------
+     */
+
+    //Show job
+    Route::get('/jobs/~{job}', 'JobController@show')->name('jobs.show');
+
+    // Show freelancer
+    Route::get('/freelancers/~{user}', 'FreelancerController@show')->name('freelancers.show');
+
+    // Blog routes
+    Route::get('/blog', 'BlogController@index')->name('blog');
+    Route::get('/blog/search', 'BlogController@search')->name('blog.search');
+    Route::get('/blog/tag/{slug}', 'BlogController@tag')->where('slug', '[a-z\-]+')->name('blog.tag');
+
+    Route::get('/blog/reader/~{slug}-{id}', 'BlogController@read')
+        ->where('slug', '[a-z\-]+')->name('blog.read');
+
+    // About route
+    Route::get('/about', 'HomeController@about')->name('about');
+
+    // Faq route
+    Route::get('/faq', 'HomeController@faq')->name('faq');
+
+    // Terms route
+    Route::get('/terms', 'HomeController@terms')
+        ->name('terms');
+
+    // Contact route
+    Route::post('/contact', 'ContactController@send');
+    Route::get('/contact', 'ContactController@index')->name('contact');
+
+    // Jobs in city
+    Route::get('jobs-in-san-francisco', 'HomeController@jobsInSanFrancisco')
+        ->name('jobs-in-san-francisco');
+    Route::get('jobs-in-new-york', 'HomeController@jobsInNewYork')
+        ->name('jobs-in-new-york');
+    Route::get('jobs-in-los-angeles', 'HomeController@jobsInLosAngeles')
+        ->name('jobs-in-los-angeles');
+    Route::get('jobs-in-miami', 'HomeController@jobsInMiami')
+        ->name('jobs-in-miami');
+
+    Route::get('/explore/{slug}', 'HomeController@getFreelancerFromTag')
+        ->name('freelancers.tag');
+
+
+    // Landing Page route
+    Route::get('/', 'HomeController@index')->name('home.before');
+
+    /**
+     * -------------------------------------------------------------------------------------
+     * Routes when the user is not connected.
+     * -------------------------------------------------------------------------------------
+     */
+    Route::group(['middleware' => ['guest']], function () {
+
+        //Search Job For Offline
+        Route::get('/search-job', 'HomeController@searchJob')->name('search-job');
+
+        // Social authentification routes.
+        Route::get('authentification/{provider}', 'Auth\SocialiteController@redirectToProvider')
+            ->name('socialite.auth');
+        Route::get('authentification/{provider}/callback', 'Auth\SocialiteController@handleProviderCallback')
+            ->name('socialite.callback');
+    });
+
 
     /**
      * -------------------------------------------------------------------------------------
@@ -25,14 +95,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
      * -------------------------------------------------------------------------------------
      */
     Route::group(['middleware' => ['auth', /*'verified'*/]], function () {
-
         /**
-         * Home route
+         * ----------------------------------------------------
+         * Withdrawals
+         * ----------------------------------------------------
          */
-        Route::get('/', function () {
-            return redirect()->route('jobs.index');
-        });
-
         Route::group(['prefix' => 'withdraw'], function () {
             Route::get('/', 'WithdrawController@index')->name('withdraws.index');
             Route::get('/get-paid', 'WithdrawController@getPaid')->name('withdraw.get');
@@ -149,7 +216,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          */
         Route::group(['prefix' => 'freelancers'], function () {
             Route::get('/', 'FreelancerController@index')->name('freelancers.index');
-            Route::get('/~{user}', 'FreelancerController@show')->name('freelancers.show');
         });
 
         /**
@@ -161,7 +227,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             Route::get('edit/~{id}', 'JobController@edit')->name('jobs.edit');
             Route::get('delete/~{id}', 'JobController@destroy')->name('jobs.delete');
             Route::get('manage', 'JobController@manage')->name('jobs.manage');
-            Route::get('/~{job}', 'JobController@show')->name('jobs.show');
         });
 
         /**
@@ -180,21 +245,5 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
         Route::group(['prefix' => 'admin'], function () {
             Voyager::routes();
         });
-    });
-
-
-    /**
-     * -------------------------------------------------------------------------------------
-     * Routes when the user is disconnected.
-     * -------------------------------------------------------------------------------------
-     */
-    Route::group(['middleware' => ['guest']], function () {
-        /**
-         * Social authentification routes.
-         */
-        Route::get('authentification/{provider}', 'Auth\SocialiteController@redirectToProvider')
-            ->name('socialite.auth');
-        Route::get('authentification/{provider}/callback', 'Auth\SocialiteController@handleProviderCallback')
-            ->name('socialite.callback');
     });
 });

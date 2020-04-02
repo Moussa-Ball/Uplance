@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Withdraw;
-use Stripe\Stripe;
 use App\WithdrawMethod;
 use PayPal\Rest\ApiContext;
 use Illuminate\Http\Request;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Exception\PayPalConnectionException;
-use Stripe\Account;
-use Stripe\Transfer;
 
 class WithdrawController extends Controller
 {
@@ -84,6 +81,9 @@ class WithdrawController extends Controller
         }
     }
 
+    /**
+     * Send money to an user from stripe connect.
+     */
     private function getPaidWithCreditCard(Request $request, $balance)
     {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));

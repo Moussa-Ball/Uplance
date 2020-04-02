@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@guest
+    @section('vue')
+        <script src="{{ mix('js/app.js') }}" defer></script>
+    @endsection
+@endguest
+
 @section('content')
     <!-- Titlebar
 ================================================== -->

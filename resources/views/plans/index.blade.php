@@ -56,25 +56,25 @@
                 <li>Profile Badge</li>
                 <li>Automatic offers</li>
               </ul>
-			</div>
+			      </div>
 			
-			@if(Auth::user()->subscription('business') && !Auth::user()->subscription('business')->onGracePeriod())
-			<a href="{{ route('membership.switch.business') }}" class="button full-width margin-top-20">Switch to Pro</a>
-			@endif
+            @if(Auth::user()->subscription('business') && !Auth::user()->subscription('business')->onGracePeriod())
+            <a href="{{ route('membership.switch.business') }}" class="button full-width margin-top-20">Switch to Pro</a>
+            @endif
 
-			@if(!Auth::user()->subscription('pro') && !Auth::user()->subscription('business'))
-			<a href="{{ route('membership.subscribe.pro') }}" class="button full-width margin-top-20">Select</a>
-			@endif
-			
-			@if(Auth::user()->subscription('pro') && Auth::user()->subscription('pro')->onGracePeriod())
-			<a href="{{ route('membership.resume.pro') }}" class="button full-width margin-top-20">Resume</a>
-			<br>
-			<mark>Will be automatically canceled at the end of the due date without billing.</mark>
-			@endif
+            @if(!Auth::user()->subscription('pro') && !Auth::user()->subscription('business'))
+            <a href="{{ route('membership.subscribe.pro') }}" class="button full-width margin-top-20">Select</a>
+            @endif
+            
+            @if(Auth::user()->subscription('pro') && Auth::user()->subscription('pro')->onGracePeriod())
+            <a href="{{ route('membership.resume.pro') }}" class="button full-width margin-top-20">Resume</a>
+            <br>
+            <mark>Will be automatically canceled at the end of the due date without billing.</mark>
+            @endif
 
             @if(Auth::user()->subscription('pro') && !Auth::user()->subscription('pro')->onGracePeriod())
-			<a href="{{ route('membership.cancel.pro') }}" class="button full-width margin-top-20">Cancel</a>
-			@endif
+            <a href="{{ route('membership.cancel.pro') }}" class="button full-width margin-top-20">Cancel</a>
+            @endif
           </div>
 
           <!-- Plan -->
@@ -94,24 +94,24 @@
                 <li>Profile Badge</li>
                 <li>Automatic offers</li>
               </ul>
-			</div>
-			@if(Auth::user()->subscription('pro') && !Auth::user()->subscription('pro')->onGracePeriod())
-			<a href="{{ route('membership.switch.pro') }}" class="button full-width margin-top-20">Switch to Business</a>
-			@endif
+            </div>
+            @if(Auth::user()->subscription('pro') && !Auth::user()->subscription('pro')->onGracePeriod())
+            <a href="{{ route('membership.switch.pro') }}" class="button full-width margin-top-20">Switch to Business</a>
+            @endif
 
-			@if(!Auth::user()->subscription('pro') && !Auth::user()->subscription('business'))
-			<a href="{{ route('membership.subscribe.pro') }}" class="button full-width margin-top-20">Select</a>
-			@endif
-			
-			@if(Auth::user()->subscription('business') && Auth::user()->subscription('business')->onGracePeriod())
-			<a href="{{ route('membership.resume.business') }}" class="button full-width margin-top-20">Resume</a>
-			<br>
-			<mark>Will be automatically canceled at the end of the due date without billing.</mark>
-			@endif
+            @if(!Auth::user()->subscription('pro') && !Auth::user()->subscription('business'))
+            <a href="{{ route('membership.subscribe.pro') }}" class="button full-width margin-top-20">Select</a>
+            @endif
+            
+            @if(Auth::user()->subscription('business') && Auth::user()->subscription('business')->onGracePeriod())
+            <a href="{{ route('membership.resume.business') }}" class="button full-width margin-top-20">Resume</a>
+            <br>
+            <mark>Will be automatically canceled at the end of the due date without billing.</mark>
+            @endif
 
             @if(Auth::user()->subscription('business') && !Auth::user()->subscription('business')->onGracePeriod())
-			<a href="{{ route('membership.cancel.business') }}" class="button full-width margin-top-20">Cancel</a>
-			@endif
+            <a href="{{ route('membership.cancel.business') }}" class="button full-width margin-top-20">Cancel</a>
+            @endif
           </div>
         </div>
       </div>

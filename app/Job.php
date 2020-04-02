@@ -49,6 +49,9 @@ class Job extends Model
             'country' => [
                 'type' => 'text',
             ],
+            'city' => [
+                'type' => 'text',
+            ],
             'skills' => [
                 'type' => 'text',
             ],
@@ -57,7 +60,7 @@ class Job extends Model
             ],
             'created_at' => [
                 'type' => 'date',
-                "format" => "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
+                //"format" => "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
             ],
         ]
     ];
@@ -75,6 +78,7 @@ class Job extends Model
         'location',
         'skills',
         'country',
+        'city',
         'user_id',
         'category_id',
         'description',

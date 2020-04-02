@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@guest
+    @section('vue')
+        <script src="{{ mix('js/app.js') }}" defer></script>
+    @endsection
+@endguest
+
 @section('content')
 <!-- Titlebar
 ==================================================-->
@@ -15,11 +21,11 @@
                 <ul>
                 <li v-tippy="{placement: 'bottom',  arrow: true, maxWidth: 350, theme: 'light'}"
                 content="This client has a good hiring experience.">
-                    <div class="star-rating" data-rating="5.0">
+                    <div class="star-rating" data-rating="{{ number_format(5, 1, '.', '') }}">
                         <star-rating :style="{position: 'relative', top: 3 + 'px'}" 
                             :star-size="18" :read-only="true"
                             :show-rating="false" 
-                            :rating="5">
+                            :rating="{{ number_format(5, 1, '.', '') }}">
                         </star-rating>
                     </div>
                 </li>
@@ -144,9 +150,8 @@
 							<!-- Name -->
 							<div class="freelancer-name">
                                 <h4>
-                                    <a target="_blank" href="#">
-                                        {{ $bid->user->first_name }} {{ $bid->user->last_name }} 
-                                        
+                                    <a target="_blank" href="{{ route('freelancers.show', $bid->user->hashid) }}">
+                                        {{ $bid->user->name }}
                                     </a>
                                     <img style="position: relative; bottom: 5px;" class="flag" 
                                         src="/images/flags/{{strtolower($bid->user->country)}}.svg"
@@ -156,9 +161,9 @@
                                         content="{{ ucfirst(\PragmaRX\Countries\Package\Countries::where('cca2', $bid->user->country)->first()->name->common) }}"
                                         data-original-title="{{ ucfirst(\PragmaRX\Countries\Package\Countries::where('cca2', $bid->user->country)->first()->name->common) }}">
                                 </h4>
-								<div data-rating="5.0" class="star-rating">
+                                <div data-rating="{{ number_format($bid->user->rating, 1, '.', '') }}" class="star-rating">
 									<star-rating :style="{position: 'relative', top: 3 + 'px'}" :star-size="18" :read-only="true"
-													:show-rating="false" :rating="5.0">
+													:show-rating="false" :rating="{{ number_format($bid->user->rating, 1, '.', '') }}">
 									</star-rating>
 								</div>
 							</div>
@@ -204,12 +209,20 @@
                     <a class="close"></a>
                 </div>
                 @else
+                @auth
                 @if((int)Auth::id() !== (int)$job->user_id && Auth::user()->current_account == 'freelancer')
                 <a target="_blank" href="{{ route('proposals.index', $job->hashid) }}" class="apply-now-button">
                     Submit a proposal
                     <i class="icon-material-outline-arrow-right-alt"></i>
                 </a>
                 @endif
+                @endauth
+                @guest
+                <a target="_blank" href="{{ route('proposals.index', $job->hashid) }}" class="apply-now-button">
+                    Submit a proposal
+                    <i class="icon-material-outline-arrow-right-alt"></i>
+                </a>
+                @endguest
                 @endif
                 
 
