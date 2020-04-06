@@ -193,6 +193,12 @@
                                     <a href="{{ route('offers.index') }}"><i class="icon-material-outline-local-offer"></i>  Offers</a>
                                 </li>
                                 @endif
+
+                                @if(Auth::user()->current_account === 'freelancer')
+                                <li class="{{ (Route::currentRouteName() == 'credit.index') ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('credit.index') }}"><i class="icon-line-awesome-credit-card"></i>  Credits</a>
+                                </li>
+                                @endif
                             </ul>
                             @if(Auth::user()->current_account === 'client')
                             <ul data-submenu-title="Organize and Manage">

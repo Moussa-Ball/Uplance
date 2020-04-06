@@ -108,6 +108,16 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
          * Withdrawals
          * ----------------------------------------------------
          */
+        Route::group(['prefix' => 'credit'], function () {
+            Route::get('/', 'CreditController@index')->name('credit.index');
+            Route::post('/buy', 'CreditController@buy')->name('credit.buy');
+        });
+
+        /**
+         * ----------------------------------------------------
+         * Withdrawals
+         * ----------------------------------------------------
+         */
         Route::group(['prefix' => 'withdraw'], function () {
             Route::get('/', 'WithdrawController@index')->name('withdraws.index');
             Route::get('/get-paid', 'WithdrawController@getPaid')->name('withdraw.get');

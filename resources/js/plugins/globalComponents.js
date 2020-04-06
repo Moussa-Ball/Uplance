@@ -32,6 +32,7 @@ import "vue-datetime/dist/vue-datetime.css";
 import VueTimeago from "vue-timeago";
 import VueChatScroll from "vue-chat-scroll";
 import { Picker } from "emoji-mart-vue";
+import VModal from 'vue-js-modal'
 
 /**
  * Import Component to display.
@@ -55,6 +56,7 @@ import MessageBadge from "../components/MessageBadge";
 import Contract from "../components/Contract";
 import StoreReview from "../components/StoreReview";
 import Premium from "../components/Premium";
+import Portfolio from "../components/Portfolio";
 
 export default {
     install(Vue) {
@@ -66,6 +68,7 @@ export default {
 
         Vue.use(ReadMore);
         Vue.use(VueChatScroll);
+        Vue.use(VModal)
         Vue.use(VueTelInput);
         Vue.use(VueAxios, axios);
         Vue.use(money, { precision: 4 });
@@ -147,5 +150,6 @@ export default {
         Vue.component("contract", Contract);
         Vue.component("store-review", StoreReview);
         Vue.component("premium", Premium);
+        Vue.component("portfolio", Portfolio);
     }
 };
