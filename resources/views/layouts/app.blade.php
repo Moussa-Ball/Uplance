@@ -14,6 +14,7 @@
     <link rel="shortcut icon" type="image/png" href="/internet.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//github.com/downloads/lafeber/world-flags-sprite/flags16.css" />
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @yield('css')
 </head>
@@ -242,9 +243,9 @@
                             <div class="footer-links">
                                 <h3>Browse</h3>
                                 <ul>
-                                    <li><a href="#"><span>Freelancer In UK</span></a></li>
-                                    <li><a href="#"><span>Freelancer In USA</span></a></li>
-                                    <li><a href="#"><span>Freelancer In France</span></a></li>
+                                    <li><a href="{{ route('freelancers-in-united-kingdom') }}"><span>Freelancer In UK</span></a></li>
+                                    <li><a href="{{ route('freelancers-in-usa') }}"><span>Freelancer In USA</span></a></li>
+                                    <li><a href="{{ route('freelancers-in-france') }}"><span>Freelancer In France</span></a></li>
                                 </ul>
                             </div>
                         </div>

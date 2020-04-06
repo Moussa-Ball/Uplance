@@ -157,7 +157,7 @@
                       <ul class="task-icons">
                         <li>
                           <i class="icon-material-outline-location-on"></i>
-                          {{ job.country }}
+                          {{ job.country_name }}
                         </li>
                         <li>
                           <i class="icon-material-outline-access-time"></i>

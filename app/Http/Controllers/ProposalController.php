@@ -25,7 +25,7 @@ class ProposalController extends Controller
      */
     public function index(Request $request, $id)
     {
-        $this->authorize('freelancer', $request->user());
+        $this->authorize('freelancer');
         $encoded_id = $id;
         $id = Hashids::connection(Job::class)->decode($id);
         if (!$id) return abort(404);
@@ -75,7 +75,7 @@ class ProposalController extends Controller
             return response()->json(['error' => "You don't have enough credit to apply for a job."], 401);
         }
 
-        $this->authorize('freelancer', $request->user());
+        $this->authorize('freelancer');
         $encoded_id = $id;
         $id = Hashids::connection(Job::class)->decode($id);
         if (!$id) return abort(404);

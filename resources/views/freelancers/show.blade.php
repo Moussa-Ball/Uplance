@@ -19,9 +19,13 @@
                             <div class="header-details">
                                 <h3>{{ $freelancer->name }} <span>{{ $freelancer->tagline }}</span></h3>
                                 <ul>
-                                    <div data-rating="{{ $freelancer->rating }}" class="star-rating">
-                                        <star-rating :style="{position: 'relative', top: 3 + 'px'}" :star-size="18" :read-only="true"
-                                                        :show-rating="false" :rating="{{ $freelancer->rating }}">
+                                    <div data-rating="{{ number_format($freelancer->rating, 1, '.', '') }}" class="star-rating">
+                                        <star-rating :style="{position: 'relative', top: 3 + 'px'}" 
+                                                    :star-size="20" 
+													:read-only="true"
+													:show-rating="false"
+													:increment="0.01" :fixed-points="2" 
+													:rating="{{ number_format($freelancer->rating, 1, '.', '') }}">
                                         </star-rating>
                                     </div>
                                     <li style="position: relative; left: 10px; top: 1px;">

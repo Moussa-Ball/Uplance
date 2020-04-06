@@ -2,28 +2,50 @@
 
 namespace App;
 
+use ScoutElastic\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-    protected $table = 'posts';
+    use Searchable;
 
     protected $fillable = ['name', 'slug', 'see', 'image', 'content'];
+
+    /**
+     * @var string
+     */
+    protected $indexConfigurator = ArticleIndexConfigurator::class;
+
+    /**
+     * @var array
+     */
+    protected $searchRules = [];
+
+    /**
+     * @var array
+     */
+    protected $mapping = [
+        'properties' => [
+            'name' => [
+                'type' => 'text',
+            ],
+            'slug' => [
+                'type' => 'text',
+            ],
+            'see' => [
+                'type' => 'integer',
+            ],
+            'content' => [
+                'type' => 'text',
+            ],
+            'created_at' => [
+                'type' => 'date'
+            ],
+        ]
+    ];
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
-    }
-
-    public function scopeSearch($query, $keywords)
-    {
-        $searchValues = preg_split('/\s+/', $keywords, -1, PREG_SPLIT_NO_EMPTY);
-        return $query->where(function ($q) use ($searchValues) {
-            foreach ($searchValues as $value) {
-                $q->orWhere('name', 'like', "%{$value}%");
-                $q->orWhere('slug', 'like', "%{$value}%");
-                $q->orWhere('content', 'like', "%{$value}%");
-            }
-        });
     }
 }

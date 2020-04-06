@@ -21,17 +21,21 @@
                 <ul>
                 <li v-tippy="{placement: 'bottom',  arrow: true, maxWidth: 350, theme: 'light'}"
                 content="This client has a good hiring experience.">
-                    <div class="star-rating" data-rating="{{ number_format(5, 1, '.', '') }}">
+                    <div class="star-rating" data-rating="{{ number_format(4.5, 1, '.', '') }}">
                         <star-rating :style="{position: 'relative', top: 3 + 'px'}" 
-                            :star-size="18" :read-only="true"
-                            :show-rating="false" 
-                            :rating="{{ number_format(5, 1, '.', '') }}">
+                            :star-size="20" 
+                            :read-only="true"
+                            :show-rating="false"
+                            :increment="0.01" :fixed-points="2" 
+                            :rating="{{ number_format(4.5, 1, '.', '') }}">
                         </star-rating>
                     </div>
                 </li>
                 <li>
-                    <img style="position: relative; top: 5px;" class="flag" src="/images/flags/{{ strtolower($job->user->country) }}.svg" alt /> 
-                    <span style="position: relative; top: 6px;">{{ $job->country }}</span>
+                    <img style="position: relative; top: 5px;" 
+                        class="flag" 
+                        src="/images/flags/{{ strtolower($job->country) }}.svg" alt /> 
+                    <span style="position: relative; top: 6px;">{{ $job->country_name }}</span>
                 </li>
                 @if($job->user->hasPaymentMethod())
                 <li>
@@ -233,7 +237,7 @@
                             <ul>
                                 <li><i class="icon-material-outline-location-on"></i>
                                     <span>Client Location</span>
-                                    <h5>{{ $job->user->city }}, {{ $job->country }}</h5>
+                                    <h5>{{ $job->city }}, {{ $job->country_name }}</h5>
                                 </li>
                                 @if($job->location)
                                 <li>

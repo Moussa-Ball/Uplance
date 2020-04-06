@@ -170,7 +170,7 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['hashid', 'country_name', 'premium'];
+    protected $appends = ['hashid', 'country_name', 'premium', 'rating_format'];
 
     /**
      * The attributes that should be cast to native types.
@@ -180,6 +180,11 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getRatingFormatAttribute()
+    {
+        return number_format($this->rating, 1, '.', '');
+    }
 
     public function getHashidAttribute()
     {

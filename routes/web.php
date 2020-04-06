@@ -33,12 +33,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
     Route::get('/freelancers/~{user}', 'FreelancerController@show')->name('freelancers.show');
 
     // Blog routes
-    Route::get('/blog', 'BlogController@index')->name('blog');
-    Route::get('/blog/search', 'BlogController@search')->name('blog.search');
-    Route::get('/blog/tag/{slug}', 'BlogController@tag')->where('slug', '[a-z\-]+')->name('blog.tag');
-
-    Route::get('/blog/reader/~{slug}-{id}', 'BlogController@read')
-        ->where('slug', '[a-z\-]+')->name('blog.read');
+    Route::group(['prefix' => 'blog'], function () {
+        Route::get('/', 'BlogController@index')->name('blog');
+        Route::get('/tag/{slug}', 'BlogController@tag')->name('blog.tag');
+        Route::get('/search', 'BlogController@search')->name('blog.search');
+        Route::get('/read/~{article}', 'BlogController@read')->name('blog.read');
+    });
 
     // About route
     Route::get('/about', 'HomeController@about')->name('about');
@@ -63,6 +63,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
         ->name('jobs-in-los-angeles');
     Route::get('jobs-in-miami', 'HomeController@jobsInMiami')
         ->name('jobs-in-miami');
+
+    // Feelancers in country
+    Route::get('freelancers-in-united-kingdom', 'HomeController@freelancersInUK')
+        ->name('freelancers-in-united-kingdom');
+    Route::get('freelancers-in-usa', 'HomeController@freelancersInUSA')
+        ->name('freelancers-in-usa');
+    Route::get('freelancers-in-france', 'HomeController@freelancersInFrance')
+        ->name('freelancers-in-france');
 
     Route::get('/explore/{slug}', 'HomeController@getFreelancerFromTag')
         ->name('freelancers.tag');

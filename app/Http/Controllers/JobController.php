@@ -52,7 +52,8 @@ class JobController extends Controller
         $job = $job->search($keywords);
 
         if ($location) {
-            $job = $job->where('country', strtolower($location));
+            $job = $job->where('country', \PragmaRX\Countries\Package\Countries::where('name.common', $location)
+                ->first()->cca2);
         }
 
         if ($category) {
@@ -87,7 +88,7 @@ class JobController extends Controller
      */
     public function create(Request $request)
     {
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         SEOMeta::setTitle('Post a Job');
         return view('jobs.create');
     }
@@ -100,14 +101,8 @@ class JobController extends Controller
      */
     public function store(PostJobRequest $request)
     {
-        // Get user
-        $user = User::find($request->user()->id);
-
         // Don't authorize this method, if the current user is not a client.
-        $this->authorize('client', $request->user());
-
-        $countries = new Countries();
-        $country = $countries->where('cca2', $request->user()->country)->first()->name->common;
+        $this->authorize('client');
 
         // get category
         $category = Category::where('name', $request->category)->first();
@@ -120,9 +115,9 @@ class JobController extends Controller
             'location' => $request->location,
             'project_type' => $request->project_type,
             'skills' => $request->skills,
-            'city' => $user->city,
+            'city' => $request->user()->city,
             'description' => $request->description,
-            'country' => $country,
+            'country' => $request->user()->country,
             'user_id' => auth()->id(),
             'category_id' => $category->id
         ]);
@@ -177,7 +172,7 @@ class JobController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         $encoded_id = $id;
         $id = Hashids::connection(Job::class)->decode($id);
         $job = Job::where('id', $id)->first();
@@ -193,7 +188,9 @@ class JobController extends Controller
             'maximum' => $job->maximum,
             'location' => $job->location,
             'skills' => $job->skills,
-            'description' => $job->description
+            'city' => $request->user()->city,
+            'description' => $job->description,
+            'country' => $request->user()->country,
         ];
         return view('jobs.edit', compact('job'));
     }
@@ -210,11 +207,8 @@ class JobController extends Controller
         $id = Hashids::connection(Job::class)->decode($id);
         if (!$id) return abort(404);
         $job = Job::where('id', $id)->first();
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         $this->authorize('owner', $job->user_id);
-
-        $countries = new Countries();
-        $country = $countries->where('cca2', $request->user()->country)->first()->name->common;
 
         // get category
         $category = Category::where('name', $request->category)->first();
@@ -227,8 +221,8 @@ class JobController extends Controller
             'location' => $request->location,
             'skills' => $request->skills,
             'description' => $request->description,
-            'country' => $country,
-            'city' => $job->user->city,
+            'country' => $request->user()->country,
+            'city' => $request->user()->city,
             'user_id' => auth()->id(),
             'category_id' => $category->id
         ]);
@@ -267,7 +261,7 @@ class JobController extends Controller
         if (!$id) return abort(404);
         $job = Job::where('id', $id)->first();
         if ($job) {
-            $this->authorize('client', $request->user());
+            $this->authorize('client');
             $this->authorize('owner', $job->user_id);
             $job->delete();
             return redirect()->back()->with('success', 'Your project has been archived.');
@@ -282,7 +276,7 @@ class JobController extends Controller
      */
     public function manage(Request $request)
     {
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         SEOMeta::setTitle('Manage Jobs');
         $jobs = Job::where('user_id', $request->user()->id)
             ->orderBy('created_at', 'DESC')->paginate(10);

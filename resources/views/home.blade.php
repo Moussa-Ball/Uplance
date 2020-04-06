@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('css')
+<style>
+	.blog-compact-item-content p {
+		color: #ffffff !important;
+	}
+</style>
+@endsection
+
 @section('content')
 <!-- Intro Banner
 ================================================== -->
@@ -25,18 +33,8 @@
 		
 		<!-- Search Bar -->
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6">
 				<form method="get" action="{{ route('search-job') }}" class="intro-banner-search-form margin-top-95">
-
-					<!-- Search Field -->
-					<div class="intro-search-field with-autocomplete">
-						<label for="autocomplete-input" class="field-title ripple-effect">Where?</label>
-						<div class="input-with-icon">
-							<input name="location" id="autocomplete-input" type="text" placeholder="Location">
-							<i class="icon-material-outline-location-on"></i>
-						</div>
-					</div>
-
 					<!-- Search Field -->
 					<div class="intro-search-field">
 						<label for ="intro-keywords" class="field-title ripple-effect">What you need done?</label>
@@ -50,6 +48,7 @@
 				</form>
 			</div>
 		</div>
+		
 
 		<!-- Stats -->
 		<div class="row">
@@ -140,7 +139,7 @@
 							<div class="task-listing-description">
 								<h3 class="task-listing-title">{{ $job->project_name }}</h3>
 								<ul class="task-icons">
-									<li><i class="icon-material-outline-location-on"></i> {{ $job->user->city }}</li>
+									<li><i class="icon-material-outline-location-on"></i> {{ $job->country_name }}</li>
 									<li><i class="icon-material-outline-access-time"></i> {{ Carbon\Carbon::createFromDate((string)$job->created_at)->diffForHumans() }}</li>
 								</ul>
 								<p class="task-listing-text">{{ (strlen($job->description) > 150) ? substr($job->description, 0, 150).'...' : $job->description }}</p>
@@ -327,18 +326,30 @@
 									@if($developer->verified)
 									<div class="verified-badge"></div>
 									@endif
-									<a href="{{ route('freelancers.show', $developer->hashid) }}"><img width="110px" height="110px" src="{{ $developer->avatar }}" alt=""></a>
+									<a href="{{ route('freelancers.show', $developer->hashid) }}">
+										<img width="110px" height="110px" src="{{ $developer->avatar }}" alt="">
+									</a>
 								</div>
 
 								<!-- Name -->
 								<div class="freelancer-name">
-									<h4><a target="_blank" href="{{ route('freelancers.show', $developer->hashid) }}">{{ $developer->name }} <img class="flag" src="images/flags/{{ $developer->country }}.svg" alt="" title="{{ $developer->country_name }}" data-tippy-placement="top"></a></h4>
+									<h4><a target="_blank" href="{{ route('freelancers.show', $developer->hashid) }}">{{ $developer->name }} 
+										<img class="flag" src="/images/flags/{{ strtolower($developer->country) }}.svg" alt="" 
+											title="{{ $developer->country_name }}" data-tippy-placement="top"></a></h4>
 									<span>{{ $developer->tagline }}</span>
 								</div>
 
 								<!-- Rating -->
 								<div class="freelancer-rating">
-									<div class="star-rating" data-rating="{{ $developer->rating }}"></div>
+									<div class="star-rating" data-rating="{{ number_format($developer->rating, 1, '.', '') }}">
+										<star-rating :style="{position: 'relative', top: 1 + 'px'}" 
+													:star-size="20" 
+													:read-only="true"
+													:show-rating="false"
+													:increment="0.01" :fixed-points="2" 
+													:rating="{{ number_format($developer->rating, 1, '.', '') }}">
+										</star-rating>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -515,18 +526,20 @@
 				</div>
 				<div class="row">
 					<!-- Blog Post Item -->
-					@foreach($posts as $post)
+					@foreach($posts as $key => $post)
 					<div class="col-xl-4">
-						<a href="pages-blog-post.html" class="blog-compact-item-container">
+						<a href="{{ route('blog.read', $post->id) }}" class="blog-compact-item-container">
 							<div class="blog-compact-item">
-								<img src="images/blog-03a.jpg" alt="">
-								<span class="blog-item-tag">Marketing</span>
+								<img src="{{ Storage::url($post->image) }}" alt="image-{{ $key }}">
+								@foreach ($post->tags as $tag)
+								<span class="blog-item-tag">{{ $tag->name }}</span>
+								@endforeach
 								<div class="blog-compact-item-content">
 									<ul class="blog-post-tags">
-										<li>10 June 2019</li>
+										<li>{{ $post->created_at->format('d M Y') }}</li>
 									</ul>
-									<h3>11 Tips to Help You Get New Clients Through Cold Calling</h3>
-									<p>Compellingly embrace empowered e-business after user friendly intellectual capital. Interactively front-end.</p>
+									<h3>{{ $post->name }}</h3>
+									<p style="color: #ffffff !important;">{!! substr($post->content, 0, 255) !!}...</p>
 								</div>
 							</div>
 						</a>
@@ -564,4 +577,10 @@
 	</div>
 </div>
 @endif
+@endsection
+
+@section('vue')
+@guest
+<script src="{{ mix('js/app.js') }}" defer></script>
+@endguest
 @endsection

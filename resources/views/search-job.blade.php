@@ -26,15 +26,6 @@
 		<div class="row">
 			<div class="col-md-12">
 				<form method="get" action="{{ route('search-job') }}" class="intro-banner-search-form">
-
-					<!-- Search Field -->
-					<div class="intro-search-field with-autocomplete">
-						<div class="input-with-icon">
-							<input value="{{ old('location', Request::get('location')) }}" name="location" id="autocomplete-input" type="text" placeholder="Location">
-							<i class="icon-material-outline-location-on"></i>
-						</div>
-					</div>
-
 					<!-- Search Field -->
 					<div class="intro-search-field">
 						<input value="{{ old('q', Request::get('q')) }}" name="q" id="intro-keywords" type="text" placeholder="Job title or Keywords">
@@ -66,7 +57,7 @@
 							<div class="task-listing-description">
 								<h3 class="task-listing-title">{{ $job->project_name }}</h3>
 								<ul class="task-icons">
-									<li><i class="icon-material-outline-location-on"></i> {{ $job->user->city }}</li>
+									<li><i class="icon-material-outline-location-on"></i> {{ $job->country_name }}</li>
 									<li><i class="icon-material-outline-access-time"></i> {{ Carbon\Carbon::createFromDate((string)$job->created_at)->diffForHumans() }}</li>
 								</ul>
 								<p class="task-listing-text">{{ (strlen($job->description) > 150) ? substr($job->description, 0, 150).'...' : $job->description }}</p>
@@ -89,7 +80,7 @@
 									@endif
 									<span>Fixed Price</span>
 								</div>
-								<span class="button button-sliding-icon ripple-effect">See more <i class="icon-material-outline-arrow-right-alt"></i></span>
+								<span class="button button-sliding-icon ripple-effect">Bid Now<i class="icon-material-outline-arrow-right-alt"></i></span>
 							</div>
 						</div>
 					</a>

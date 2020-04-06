@@ -14,6 +14,7 @@ class JobResource extends JsonResource
      */
     public function toArray($request)
     {
+        dd($this);
         return [
             'project_name' => $this->project_name,
             'category' => ($this->categories()->first()) ? $this->categories()->first()->name : "",

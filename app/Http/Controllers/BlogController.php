@@ -12,11 +12,10 @@ class BlogController extends Controller
     {
         $articles = Article::orderBy('created_at', 'DESC')->paginate(5);
 
-        if (!$articles->count()) {
+        if ($articles->isEmpty())
             return view('blog.empty');
-        }
 
-        $trendings = Article::orderBy('view', 'DESC')->limit(3);
+        $trendings = Article::orderBy('see', 'DESC')->limit(3)->get();
         $tags = Tag::all();
         return view('blog.index', compact('articles', 'tags', 'trendings'));
     }
@@ -24,31 +23,35 @@ class BlogController extends Controller
     public function tag($slug)
     {
         $tag = Tag::where('slug', $slug)->first();
+        if (!$tag)
+            return abort(404);
+
         $articles = $tag->articles()->paginate(5);
+        if ($articles->isEmpty())
+            return view('blog.empty');
+
+        $trendings = Article::orderBy('see', 'DESC')->limit(3)->get();
         $tags = Tag::all();
-        return view('blog.tag', compact('articles', 'tags', 'tag'));
+        return view('blog.tag', compact('articles', 'tags', 'tag', 'trendings'));
     }
 
-    public function read($slug, $id)
+    public function read(Article $article)
     {
-        $article = Article::where(['slug' => $slug, 'id' => $id])->first();
         $article->see += 1;
         $article->save();
         $tags = Tag::all();
-        return view('blog.read', compact('article', 'tags'));
+        $trendings = Article::orderBy('see', 'DESC')->limit(3)->get();
+        return view('blog.read', compact('article', 'tags', 'trendings'));
     }
 
     public function search(Request $request)
     {
-        $articles = Article::search($request->get('q'))
+        $search = ($request->get('q')) ? $request->get('q') : '*';
+        $articles = Article::search($search)
             ->orderBy('created_at', 'DESC')->paginate(5);
 
-        if (!$articles->count()) {
-            return view('blog.empty');
-        }
-
-        $trendings = Article::orderBy('view', 'DESC')->limit(3);
+        $trendings = Article::orderBy('see', 'DESC')->limit(3)->get();
         $tags = Tag::all();
-        return view('blog.index', compact('articles', 'tags', 'trendings'));
+        return view('blog.search', compact('articles', 'tags', 'trendings'));
     }
 }

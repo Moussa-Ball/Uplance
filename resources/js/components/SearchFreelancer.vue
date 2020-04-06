@@ -156,13 +156,14 @@
                         >{{ String(freelancer.tagline).substr(0, 20) + '...' }}</span>
                         <span v-else>{{ freelancer.tagline }}</span>
                         <div class="freelancer-rating">
-                          <div :data-rating="freelancer.rating" class="star-rating">
+                          <div :data-rating="freelancer.rating_format" class="star-rating">
                             <star-rating
                               :style="{position: 'relative', top: 3 + 'px'}"
-                              :star-size="18"
+                              :star-size="20" 
                               :read-only="true"
                               :show-rating="false"
-                              :rating="freelancer.rating"
+                              :increment="0.01" :fixed-points="2"
+                              :rating="freelancer.rating_format"
                             ></star-rating>
                             <span v-if="freelancer.premium">
                               <span v-if="freelancer.premium == 'pro'" class="badge">Pro</span>

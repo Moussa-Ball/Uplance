@@ -22,9 +22,7 @@ class Job extends Model
     /**
      * @var array
      */
-    protected $searchRules = [
-        //
-    ];
+    protected $searchRules = [];
 
     /**
      * @var array
@@ -47,7 +45,7 @@ class Job extends Model
                 'type' => 'double',
             ],
             'country' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'city' => [
                 'type' => 'text',
@@ -89,7 +87,7 @@ class Job extends Model
      *
      * @var array
      */
-    protected $appends = ['hashid'];
+    protected $appends = ['hashid', 'country_name'];
 
     /**
      * The attributes that should be hidden.
@@ -106,6 +104,16 @@ class Job extends Model
     protected $casts = [
         'skills' => 'array',
     ];
+
+    public function getCountryNameAttribute()
+    {
+        if ($this->country) {
+            return \PragmaRX\Countries\Package\Countries::where('cca2', strtoupper($this->country))
+                ->first()->name->common;
+        } else {
+            return "";
+        }
+    }
 
     public function getHashidAttribute()
     {

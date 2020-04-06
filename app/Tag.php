@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $table = 'taggers';
-
     public $guarded = [];
     public $timestamps = false;
 

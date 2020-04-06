@@ -1,12 +1,12 @@
 /* ----------------- Start Document ----------------- */
-(function($) {
+(function ($) {
     "use strict";
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         /*--------------------------------------------------*/
         /*  Mobile Menu - mmenu.js
 	/*--------------------------------------------------*/
-        $(function() {
+        $(function () {
             function mmenuInit() {
                 var wi = $(window).width();
                 if (wi <= "1099") {
@@ -44,14 +44,14 @@
                     var mmenuAPI = $(".mmenu-init").data("mmenu");
                     var $icon = $(".mmenu-trigger .hamburger");
 
-                    $(".mmenu-trigger").on("click", function() {
+                    $(".mmenu-trigger").on("click", function () {
                         mmenuAPI.open();
                     });
                 }
                 $(".mm-next").addClass("mm-fullsubopen");
             }
             mmenuInit();
-            $(window).resize(function() {
+            $(window).resize(function () {
                 mmenuInit();
             });
         });
@@ -60,7 +60,7 @@
         /*  Sticky Header
 	/*--------------------------------------------------*/
         function stickyHeader() {
-            $(window).on("scroll load", function() {
+            $(window).on("scroll load", function () {
                 if ($(window).width() < "1099") {
                     $("#header-container").removeClass("cloned");
                 }
@@ -115,7 +115,7 @@
                         );
                     }
 
-                    $(window).on("load resize", function() {
+                    $(window).on("load resize", function () {
                         var headerOffset = $("#header-container").height();
                         $("#wrapper").css({ "padding-top": headerOffset });
                     });
@@ -129,7 +129,7 @@
         /*--------------------------------------------------*/
         /*  Transparent Header Spacer Adjustment
 	/*--------------------------------------------------*/
-        $(window).on("load resize", function() {
+        $(window).on("load resize", function () {
             var transparentHeaderHeight = $(
                 ".transparent-header"
             ).outerHeight();
@@ -152,7 +152,7 @@
         var pxShow = 600; // height on which the button will show
         var scrollSpeed = 500; // how slow / fast you want the button to scroll to top.
 
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             if ($(window).scrollTop() >= pxShow) {
                 $("#backtotop").addClass("visible");
             } else {
@@ -160,7 +160,7 @@
             }
         });
 
-        $("#backtotop a").on("click", function() {
+        $("#backtotop a").on("click", function () {
             $("html, body").animate({ scrollTop: 0 }, scrollSpeed);
             return false;
         });
@@ -168,7 +168,7 @@
         /*--------------------------------------------------*/
         /*  Ripple Effect
 	/*--------------------------------------------------*/
-        $(".ripple-effect, .ripple-effect-dark").on("click", function(e) {
+        $(".ripple-effect, .ripple-effect-dark").on("click", function (e) {
             var rippleDiv = $('<span class="ripple-overlay">'),
                 rippleOffset = $(this).offset(),
                 rippleY = e.pageY - rippleOffset.top,
@@ -182,7 +182,7 @@
                 })
                 .appendTo($(this));
 
-            window.setTimeout(function() {
+            window.setTimeout(function () {
                 rippleDiv.remove();
             }, 800);
         });
@@ -190,11 +190,11 @@
         /*--------------------------------------------------*/
         /*  Interactive Effects
 	/*--------------------------------------------------*/
-        $(".switch, .radio").each(function() {
+        $(".switch, .radio").each(function () {
             var intElem = $(this);
-            intElem.on("click", function() {
+            intElem.on("click", function () {
                 intElem.addClass("interactive-effect");
-                setTimeout(function() {
+                setTimeout(function () {
                     intElem.removeClass("interactive-effect");
                 }, 400);
             });
@@ -203,10 +203,10 @@
         /*--------------------------------------------------*/
         /*  Sliding Button Icon
 	/*--------------------------------------------------*/
-        $(window).on("load", function() {
+        $(window).on("load", function () {
             $(".button.button-sliding-icon")
                 .not(".task-listing .button.button-sliding-icon")
-                .each(function() {
+                .each(function () {
                     var buttonWidth = $(this).outerWidth() + 30;
                     $(this).css("width", buttonWidth);
                 });
@@ -230,7 +230,7 @@
 	/*----------------------------------------------------*/
         $("a.close")
             .removeAttr("href")
-            .on("click", function() {
+            .on("click", function () {
                 function slideFade(elem) {
                     var fadeOut = { opacity: 0, transition: "opacity 0.5s" };
                     elem.css(fadeOut).slideUp();
@@ -241,13 +241,13 @@
         /*--------------------------------------------------*/
         /*  Notification Dropdowns
 	/*--------------------------------------------------*/
-        $(".header-notifications").each(function() {
+        $(".header-notifications").each(function () {
             var userMenu = $(this);
             var userMenuTrigger = $(this).find(
                 ".header-notifications-trigger a"
             );
 
-            $(userMenuTrigger).on("click", function(event) {
+            $(userMenuTrigger).on("click", function (event) {
                 event.preventDefault();
 
                 if (
@@ -271,19 +271,19 @@
         // Closes notification dropdown on click outside the conatainer
         var mouse_is_inside = false;
 
-        $(".header-notifications").on("mouseenter", function() {
+        $(".header-notifications").on("mouseenter", function () {
             mouse_is_inside = true;
         });
-        $(".header-notifications").on("mouseleave", function() {
+        $(".header-notifications").on("mouseleave", function () {
             mouse_is_inside = false;
         });
 
-        $("body").mouseup(function() {
+        $("body").mouseup(function () {
             if (!mouse_is_inside) close_user_dropdown();
         });
 
         // Close with ESC
-        $(document).keyup(function(e) {
+        $(document).keyup(function (e) {
             if (e.keyCode == 27) {
                 close_user_dropdown();
             }
@@ -298,13 +298,13 @@
             $(".status-indicator").addClass("right");
         }
 
-        $(".status-switch label.user-invisible").on("click", function() {
+        $(".status-switch label.user-invisible").on("click", function () {
             $(".status-indicator").addClass("right");
             $(".status-switch label").removeClass("current-status");
             $(".user-invisible").addClass("current-status");
         });
 
-        $(".status-switch label.user-online").on("click", function() {
+        $(".status-switch label.user-online").on("click", function () {
             $(".status-indicator").removeClass("right");
             $(".status-switch label").removeClass("current-status");
             $(".user-online").addClass("current-status");
@@ -327,7 +327,7 @@
         // Enabling Scrollbar
         function fullPageScrollbar() {
             $(".full-page-sidebar-inner, .dashboard-sidebar-inner").each(
-                function() {
+                function () {
                     var headerHeight = $("#header-container").outerHeight();
                     var windowHeight = $(window).outerHeight() - headerHeight;
                     var sidebarContainerHeight = $(this)
@@ -347,7 +347,7 @@
         }
 
         // Init
-        $(window).on("load resize", function() {
+        $(window).on("load resize", function () {
             wrapperHeight();
             fullPageScrollbar();
         });
@@ -355,14 +355,14 @@
         fullPageScrollbar();
 
         // Sliding Sidebar
-        $(".enable-filters-button").on("click", function() {
+        $(".enable-filters-button").on("click", function () {
             $(".full-page-sidebar").toggleClass("enabled-sidebar");
             $(this).toggleClass("active");
             $(".filter-button-tooltip").removeClass("tooltip-visible");
         });
 
         /*  Enable Filters Button Tooltip */
-        $(window).on("load", function() {
+        $(window).on("load", function () {
             $(".filter-button-tooltip")
                 .css({
                     left: $(".enable-filters-button").outerWidth() + 48
@@ -372,11 +372,11 @@
 
         // Avatar Switcher
         function avatarSwitcher() {
-            var readURL = function(input) {
+            var readURL = function (input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         $(".profile-pic").attr("src", e.target.result);
                     };
 
@@ -384,11 +384,11 @@
                 }
             };
 
-            $(".file-upload").on("change", function() {
+            $(".file-upload").on("change", function () {
                 readURL(this);
             });
 
-            $(".upload-button").on("click", function() {
+            $(".upload-button").on("click", function () {
                 $(".file-upload").click();
             });
         }
@@ -399,7 +399,7 @@
 	/*----------------------------------------------------*/
 
         // Dashboard Nav Submenus
-        $(".dashboard-nav ul li a").on("click", function(e) {
+        $(".dashboard-nav ul li a").on("click", function (e) {
             if (
                 $(this)
                     .closest("li")
@@ -422,7 +422,7 @@
         });
 
         // Responsive Dashbaord Nav Trigger
-        $(".dashboard-responsive-nav-trigger").on("click", function(e) {
+        $(".dashboard-responsive-nav-trigger").on("click", function (e) {
             e.preventDefault();
             $(this).toggleClass("active");
 
@@ -458,7 +458,7 @@
                 }
             }
 
-            $(".fun-fact").each(function() {
+            $(".fun-fact").each(function () {
                 var factColor = $(this).attr("data-fun-fact-color");
 
                 if (factColor !== undefined) {
@@ -474,11 +474,11 @@
         funFacts();
 
         // Notes & Messages Scrollbar
-        $(window).on("load resize", function() {
+        $(window).on("load resize", function () {
             var winwidth = $(window).width();
             if (winwidth > 1199) {
                 // Notes
-                $(".row").each(function() {
+                $(".row").each(function () {
                     var mbh = $(this)
                         .find(".main-box-in-row")
                         .outerHeight();
@@ -500,8 +500,8 @@
                             .find(".child-box-in-row .content")
                             .wrap(
                                 '<div class="dashboard-box-scrollbar" style="max-height: ' +
-                                    mainBoxHeight +
-                                    'px" data-simplebar></div>'
+                                mainBoxHeight +
+                                'px" data-simplebar></div>'
                             );
                     }
                 });
@@ -518,7 +518,7 @@
         });
 
         // Mobile Adjustment for Single Button Icon in Dashboard Box
-        $(".buttons-to-right").each(function() {
+        $(".buttons-to-right").each(function () {
             var btr = $(this).width();
             if (btr < 36) {
                 $(this).addClass("single-right-button");
@@ -526,7 +526,7 @@
         });
 
         // Small Footer Adjustment
-        $(window).on("load resize", function() {
+        $(window).on("load resize", function () {
             var smallFooterHeight = $(".small-footer").outerHeight();
             $(".dashboard-footer-spacer").css({
                 "padding-top": smallFooterHeight + 45
@@ -535,16 +535,16 @@
 
         // Auto Resizing Message Input Field
         /* global jQuery */
-        jQuery.each(jQuery("textarea[data-autoresize]"), function() {
+        jQuery.each(jQuery("textarea[data-autoresize]"), function () {
             var offset = this.offsetHeight - this.clientHeight;
 
-            var resizeTextarea = function(el) {
+            var resizeTextarea = function (el) {
                 jQuery(el)
                     .css("height", "auto")
                     .css("height", el.scrollHeight + offset);
             };
             jQuery(this)
-                .on("keyup input", function() {
+                .on("keyup input", function () {
                     resizeTextarea(this);
                 })
                 .removeAttr("data-autoresize");
@@ -612,7 +612,7 @@
         /*  Enabling Scrollbar in User Menu
 	/*--------------------------------------------------*/
         function userMenuScrollbar() {
-            $(".header-notifications-scroll").each(function() {
+            $(".header-notifications-scroll").each(function () {
                 var scrollContainerList = $(this).find("ul");
                 var itemsCount = scrollContainerList.children("li").length;
                 var notificationItems;
@@ -631,7 +631,7 @@
 
                     $(scrollContainerList)
                         .find("li:lt(" + notificationItems + ")")
-                        .each(function() {
+                        .each(function () {
                             listHeight += $(this).height();
                         });
 
@@ -672,7 +672,7 @@
         /*----------------------------------------------------*/
         /*	Accordion @Lewis Briffa
 	/*----------------------------------------------------*/
-        var accordion = (function() {
+        var accordion = (function () {
             var $accordion = $(".js-accordion");
             var $accordion_header = $accordion.find(".js-accordion-header");
 
@@ -687,8 +687,8 @@
 
             return {
                 // pass configurable object literal
-                init: function($settings) {
-                    $accordion_header.on("click", function() {
+                init: function ($settings) {
+                    $accordion_header.on("click", function () {
                         accordion.toggle($(this));
                     });
 
@@ -709,15 +709,15 @@
                         .find("> .js-accordion-body")
                         .show();
                 },
-                toggle: function($this) {
+                toggle: function ($this) {
                     if (
                         settings.oneOpen &&
                         $this[0] !=
-                            $this
-                                .closest(".js-accordion")
-                                .find(
-                                    "> .js-accordion-item.active > .js-accordion-header"
-                                )[0]
+                        $this
+                            .closest(".js-accordion")
+                            .find(
+                                "> .js-accordion-item.active > .js-accordion-header"
+                            )[0]
                     ) {
                         $this
                             .closest(".js-accordion")
@@ -737,16 +737,16 @@
             };
         })();
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             accordion.init({ speed: 300, oneOpen: true });
         });
 
         /*--------------------------------------------------*/
         /*  Tabs
 	/*--------------------------------------------------*/
-        $(window).on("load resize", function() {
+        $(window).on("load resize", function () {
             if ($(".tabs")[0]) {
-                $(".tabs").each(function() {
+                $(".tabs").each(function () {
                     var thisTab = $(this);
 
                     // Intial Border Position
@@ -803,7 +803,7 @@
                         thisTab
                             .find(".tab")
                             .stop()
-                            .fadeOut(300, function() {
+                            .fadeOut(300, function () {
                                 // Remove Class
                                 $(this).removeClass("active");
                             })
@@ -812,7 +812,7 @@
                         thisTab
                             .find(".tab[data-tab-id=" + getTabId + "]")
                             .stop()
-                            .fadeIn(300, function() {
+                            .fadeIn(300, function () {
                                 // Add Class
                                 $(this).addClass("active");
 
@@ -822,7 +822,7 @@
                     }
 
                     // Tabs
-                    thisTab.find(".tabs-header a").on("click", function(e) {
+                    thisTab.find(".tabs-header a").on("click", function (e) {
                         e.preventDefault();
 
                         // Tab Id
@@ -850,7 +850,7 @@
                         thisTab
                             .find(".tab")
                             .stop()
-                            .fadeOut(300, function() {
+                            .fadeOut(300, function () {
                                 // Remove Class
                                 $(this).removeClass("active");
                             })
@@ -860,7 +860,7 @@
                         thisTab
                             .find('.tab[data-tab-id="' + tabId + '"]')
                             .stop()
-                            .fadeIn(300, function() {
+                            .fadeIn(300, function () {
                                 // Add Class
                                 $(this).addClass("active");
 
@@ -876,7 +876,7 @@
                     var tabCurrentItem = tabItems.filter(".active");
 
                     // Next Button
-                    thisTab.find(".tab-next").on("click", function(e) {
+                    thisTab.find(".tab-next").on("click", function (e) {
                         e.preventDefault();
 
                         var nextItem = tabCurrentItem.next();
@@ -896,7 +896,7 @@
                     });
 
                     // Prev Button
-                    thisTab.find(".tab-prev").on("click", function(e) {
+                    thisTab.find(".tab-prev").on("click", function (e) {
                         e.preventDefault();
 
                         var prevItem = tabCurrentItem.prev();
@@ -919,7 +919,7 @@
         /*--------------------------------------------------*/
         /*  Keywords
 	/*--------------------------------------------------*/
-        $(".keywords-container").each(function() {
+        $(".keywords-container").each(function () {
             var keywordInput = $(this).find(".keyword-input");
             var keywordsList = $(this).find(".keywords-list");
 
@@ -927,29 +927,29 @@
             function addKeyword() {
                 var $newKeyword = $(
                     "<span class='keyword'><span class='keyword-remove'></span><span class='keyword-text'>" +
-                        keywordInput.val() +
-                        "</span></span>"
+                    keywordInput.val() +
+                    "</span></span>"
                 );
                 keywordsList.append($newKeyword).trigger("resizeContainer");
                 keywordInput.val("");
             }
 
             // add via enter key
-            keywordInput.on("keyup", function(e) {
+            keywordInput.on("keyup", function (e) {
                 if (e.keyCode == 13 && keywordInput.val() !== "") {
                     addKeyword();
                 }
             });
 
             // add via button
-            $(".keyword-input-button").on("click", function() {
+            $(".keyword-input-button").on("click", function () {
                 if (keywordInput.val() !== "") {
                     addKeyword();
                 }
             });
 
             // removing keyword
-            $(document).on("click", ".keyword-remove", function() {
+            $(document).on("click", ".keyword-remove", function () {
                 $(this)
                     .parent()
                     .addClass("keyword-removed");
@@ -962,7 +962,7 @@
             });
 
             // animating container height
-            keywordsList.on("resizeContainer", function() {
+            keywordsList.on("resizeContainer", function () {
                 var heightnow = $(this).height();
                 var heightfull = $(this)
                     .css({ "max-height": "auto", height: "auto" })
@@ -973,12 +973,12 @@
                     .animate({ height: heightfull }, 200);
             });
 
-            $(window).on("resize", function() {
+            $(window).on("resize", function () {
                 keywordsList.css({ height: "auto" }).height();
             });
 
             // Auto Height for keywords that are pre-added
-            $(window).on("load", function() {
+            $(window).on("load", function () {
                 var keywordCount = $(".keywords-list").children("span").length;
 
                 // Enables scrollbar if more than 3 items
@@ -1017,7 +1017,7 @@
         // Bidding Slider Init
         $(".bidding-slider").slider();
 
-        $(".bidding-slider").on("slide", function(slideEvt) {
+        $(".bidding-slider").on("slide", function (slideEvt) {
             $("#biddingVal").text(ThousandSeparator(parseInt(slideEvt.value)));
         });
         $("#biddingVal").text(
@@ -1028,7 +1028,7 @@
         var currencyAttr = $(".range-slider").attr("data-slider-currency");
 
         $(".range-slider").slider({
-            formatter: function(value) {
+            formatter: function (value) {
                 return (
                     currencyAttr +
                     ThousandSeparator(parseInt(value[0])) +
@@ -1062,7 +1062,7 @@
             );
         }
 
-        $(".billing-cycle-radios").on("click", function() {
+        $(".billing-cycle-radios").on("click", function () {
             if ($(".billed-yearly-radio input").is(":checked")) {
                 $(".pricing-plans-container").addClass("billed-yearly");
             }
@@ -1083,7 +1083,7 @@
         }
         qtySum();
 
-        $(".qtyDec, .qtyInc").on("click", function() {
+        $(".qtyDec, .qtyInc").on("click", function () {
             var $button = $(this);
             var oldValue = $button
                 .parent()
@@ -1118,7 +1118,7 @@
 	/*----------------------------------------------------*/
         function inlineBG() {
             // Common Inline CSS
-            $(".single-page-header, .intro-banner").each(function() {
+            $(".single-page-header, .intro-banner").each(function () {
                 var attrImageBG = $(this).attr("data-background-image");
 
                 if (attrImageBG !== undefined) {
@@ -1135,7 +1135,7 @@
         inlineBG();
 
         // Fix for intro banner with label
-        $(".intro-search-field").each(function() {
+        $(".intro-search-field").each(function () {
             var bannerLabel = $(this).children("label").length;
             if (bannerLabel > 0) {
                 $(this).addClass("with-label");
@@ -1143,7 +1143,7 @@
         });
 
         // Photo Boxes
-        $(".photo-box, .photo-section, .video-container").each(function() {
+        $(".photo-box, .photo-section, .video-container").each(function () {
             var photoBox = $(this);
             var photoBoxBG = $(this).attr("data-background-image");
 
@@ -1159,7 +1159,7 @@
         $(".copy-url input").val(window.location.href);
         new ClipboardJS(".copy-url-button");
 
-        $(".share-buttons-icons a").each(function() {
+        $(".share-buttons-icons a").each(function () {
             var buttonBG = $(this).attr("data-button-color");
             if (buttonBG !== undefined) {
                 $(this).css("background-color", buttonBG);
@@ -1172,7 +1172,7 @@
         var $tabsNav = $(".popup-tabs-nav"),
             $tabsNavLis = $tabsNav.children("li");
 
-        $tabsNav.each(function() {
+        $tabsNav.each(function () {
             var $this = $(this);
 
             $this
@@ -1190,7 +1190,7 @@
                 .show();
         });
 
-        $tabsNavLis.on("click", function(e) {
+        $tabsNavLis.on("click", function (e) {
             var $this = $(this);
 
             $this
@@ -1223,7 +1223,7 @@
         }
 
         // Link to Register Tab
-        $(".register-tab").on("click", function(event) {
+        $(".register-tab").on("click", function (event) {
             event.preventDefault();
             $(".popup-tab-content").hide();
             $("#register.popup-tab-content").show();
@@ -1234,7 +1234,7 @@
         });
 
         // Disable tabs if there's only one tab
-        $(".popup-tabs-nav").each(function() {
+        $(".popup-tabs-nav").each(function () {
             var listCount = $(this).find("li").length;
             if (listCount < 2) {
                 $(this).css({
@@ -1246,7 +1246,7 @@
         /*----------------------------------------------------*/
         /*  Indicator Bar
     /*----------------------------------------------------*/
-        $(".indicator-bar").each(function() {
+        $(".indicator-bar").each(function () {
             var indicatorLenght = $(this).attr("data-indicator-percentage");
             $(this)
                 .find("span")
@@ -1264,7 +1264,7 @@
             $nameField: $(".uploadButton-file-name")
         };
 
-        uploadButton.$button.on("change", function() {
+        uploadButton.$button.on("change", function () {
             _populateFileField($(this));
         });
 
@@ -1419,7 +1419,7 @@
         /*----------------------------------------------------*/
         /*  Magnific Popup
     /*----------------------------------------------------*/
-        $(".mfp-gallery-container").each(function() {
+        $(".mfp-gallery-container").each(function () {
             // the containers for all your galleries
 
             $(this).magnificPopup({
