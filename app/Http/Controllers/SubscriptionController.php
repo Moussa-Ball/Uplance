@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function index(Request $request)
     {
         $user = $request->user();
@@ -27,7 +32,7 @@ class SubscriptionController extends Controller
         $paymentMethod = $request->user()->defaultPaymentMethod();
         if ($paymentMethod) {
             try {
-                $request->user()->newSubscription('pro', 'plan_H0TcmNj1SGJ3zr')->create($paymentMethod->id, [
+                $request->user()->newSubscription('pro', env('PRO_PLAN_ID'))->create($paymentMethod->id, [
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                 ]);
@@ -49,7 +54,7 @@ class SubscriptionController extends Controller
         $paymentMethod = $request->user()->defaultPaymentMethod();
         if ($paymentMethod) {
             try {
-                $request->user()->newSubscription('business', 'plan_H0Td1KJRPVeaNI')->create($paymentMethod->id, [
+                $request->user()->newSubscription('business', env('BUSINESS_PLAN_ID'))->create($paymentMethod->id, [
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                 ]);
@@ -110,7 +115,7 @@ class SubscriptionController extends Controller
     {
         if ($request->user()->subscription('pro')) {
             try {
-                $request->user()->subscription('pro')->swap('plan_H0Td1KJRPVeaNI');
+                $request->user()->subscription('pro')->swap(env('BUSINESS_PLAN_ID'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'We encountered an error while modifying your subscription.');
             }
@@ -127,7 +132,7 @@ class SubscriptionController extends Controller
     {
         if ($request->user()->subscription('business')) {
             try {
-                $request->user()->subscription('business')->swap('plan_H0TcmNj1SGJ3zr');
+                $request->user()->subscription('business')->swap(env('PRO_PLAN_ID'));
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'We encountered an error while modifying your subscription.');
             }

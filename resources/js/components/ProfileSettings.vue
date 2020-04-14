@@ -118,10 +118,11 @@
     <!-- BEGIN PROFILE INFORMATION -->
     <div v-if="user.current_account" class="col-xl-12">
       <div class="dashboard-box">
-        <div class="headline">
+        <div class="headline" style="display: flex; justify-content: space-between;">
           <h3>
             <i class="icon-material-outline-face"></i> My Profile
           </h3>
+          <strong>This information below will be used for verification of your account, your payments or withdrawal.</strong>
         </div>
         <div v-if="!loading" class="content">
           <ul class="fields-ul">
@@ -174,7 +175,7 @@
                 <div class="col-xl-6">
                   <div class="submit-field">
                     <h5>City</h5>
-                    <places v-model="user.city" @change="val => { user.city = val.name }"></places>
+                    <input v-model="user.city" type="text" class="with-border" />
                   </div>
                 </div>
                 <div class="col-xl-6">

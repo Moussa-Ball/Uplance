@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class PaymentMade extends Notification
 {
@@ -31,7 +32,7 @@ class PaymentMade extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database', 'broadcast'];
     }
 
     /**
@@ -60,7 +61,21 @@ class PaymentMade extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'link' => route('invoices.show', $this->invoice->hashid),
+            'content' => 'Thank you for making the $'
+                . $this->invoice->amount . ' payment for the '
+                . $this->invoice->contract->title . ' project.',
         ];
+    }
+
+    /**
+     * Get the broadcastable representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return BroadcastMessage
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage($this->toArray($notifiable));
     }
 }

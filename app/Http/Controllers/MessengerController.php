@@ -8,6 +8,7 @@ use App\Http\Requests\StoreMessageRequest;
 use Auth;
 use App\Job;
 use App\Notifications\MessageReceived;
+use App\Offer;
 use App\Proposal;
 use Illuminate\Http\Request;
 use Cmgmyr\Messenger\Models\Thread;
@@ -17,6 +18,11 @@ use Cmgmyr\Messenger\Models\Participant;
 
 class MessengerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function index()
     {
         $active = ActivateDiscussion::where('user_id', Auth::id())->first();
@@ -33,10 +39,52 @@ class MessengerController extends Controller
         return view('messenger.index');
     }
 
+    public function createConversationForOffer(Request $request, Offer $offer)
+    {
+        $this->authorize('freelancer');
+        $this->authorize('owner', $offer->to->id);
+
+        $participants = participant::where('user_id', $request->user()->id)->get();
+        foreach ($participants as $participant) {
+            $prtcps = participant::where('thread_id', $participant->thread_id)->get();
+            foreach ($prtcps as $prtcp) {
+                if ($prtcp->user_id == $offer->from->id) {
+                    return redirect()->route('messages.index');
+                }
+            }
+        }
+
+        // create thread || Discussion.
+        $thread = Thread::create([
+            'subject' => "{$offer->contract_title}",
+        ]);
+
+        // Sender
+        Participant::create([
+            'thread_id' => $thread->id,
+            'user_id' => $offer->to->id,
+            'last_read' => new \Carbon\Carbon(),
+        ]);
+
+        // Recipient
+        $thread->addParticipant($offer->from->id);
+        return redirect()->route('messages.index');
+    }
+
     public function createConversation(Request $request, Job $job, Proposal $proposal)
     {
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         $this->authorize('owner', $job->user_id);
+
+        $participants = participant::where('user_id', $request->user()->id)->get();
+        foreach ($participants as $participant) {
+            $prtcps = participant::where('thread_id', $participant->thread_id)->get();
+            foreach ($prtcps as $prtcp) {
+                if ($prtcp->user_id == $proposal->user->id) {
+                    return redirect()->route('messages.index');
+                }
+            }
+        }
 
         // create thread || Discussion.
         $thread = Thread::create([
@@ -52,8 +100,6 @@ class MessengerController extends Controller
 
         // Recipient
         $thread->addParticipant($proposal->user_id);
-
-        // Store activate thread in database.
 
         return redirect()->route('messages.index');
     }

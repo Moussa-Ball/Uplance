@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CreditController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function index(Request $request)
     {
         return view('credits.index');

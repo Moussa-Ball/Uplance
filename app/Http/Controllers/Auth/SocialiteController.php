@@ -6,6 +6,7 @@ use Auth;
 use App\User;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Laravel\Socialite\Facades\Socialite;
 
 /**
@@ -65,7 +66,8 @@ class SocialiteController extends Controller
         $trashedUser = User::withTrashed()->where('email', $user->email)->first();
         if (!empty($trashedUser) && $trashedUser->trashed()) {
             return redirect('/login')
-                ->with('error', 'This account is inactive and cannot be used. Please contact customer support for further assistance.');
+                ->with('error', 'This account is inactive and cannot be used. 
+                Please contact customer support for further assistance.');
         }
 
         $authUser = $this->findOrCreateUser($user, $provider);
@@ -118,7 +120,8 @@ class SocialiteController extends Controller
                 'email' => $user->email,
                 'avatar' => asset('users/default.png'),
                 'provider' => $provider, // The name of the service provider.
-                'provider_id' => $user->id // The user id from the service provider.
+                'provider_id' => $user->id, // The user id from the service provider.
+                'email_verified_at' => Carbon::now()
             ]);
         } elseif (\App::getLocale() == 'fr') {
             $new_user = User::create([
@@ -128,7 +131,8 @@ class SocialiteController extends Controller
                 'email' => $user->email,
                 'avatar' => asset('users/default.png'),
                 'provider' => $provider, // The name of the service provider.
-                'provider_id' => $user->id // The user id from the service provider.
+                'provider_id' => $user->id, // The user id from the service provider.
+                'email_verified_at' => Carbon::now()
             ]);
         }
 

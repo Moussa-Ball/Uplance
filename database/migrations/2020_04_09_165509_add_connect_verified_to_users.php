@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientRatingsTable extends Migration
+class AddConnectVerifiedToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateClientRatingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_ratings', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('connect_verified')->default(false);
         });
     }
 
@@ -26,6 +25,8 @@ class CreateClientRatingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_ratings');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['connect_verified']);
+        });
     }
 }

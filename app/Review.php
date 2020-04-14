@@ -12,4 +12,14 @@ class Review extends Model
     {
         return $this->belongsTo(Contract::class);
     }
+
+    public function to()
+    {
+        return $this->belongsTo(User::class, 'to_id');
+    }
+
+    public function from()
+    {
+        return $this->belongsTo(User::class, 'from_id');
+    }
 }

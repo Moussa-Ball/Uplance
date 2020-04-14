@@ -56,7 +56,7 @@ class ContractEnd extends Notification
             return (new MailMessage)
                 ->greeting(' ')
                 ->subject("The {$this->contract->title} contract is now closed.")
-                ->line("The {$this->contract->title} contract is already marked as completed. Your review was branded on the freelancer profile. Your project is no longer online. Thank you for doing your business on uplance we wish you the best.")
+                ->line("The {$this->contract->title} contract is already marked as completed. Your review was branded on the freelancer profile. Thank you for doing your business on uplance we wish you the best.")
                 ->action('See the contract', url(route('contracts.show', $this->contract->id)));
         }
     }
@@ -71,17 +71,16 @@ class ContractEnd extends Notification
     {
         if ($this->for_who === 'freelancer') {
             return [
-                'link' => route('contracts.show', $this->contract->id),
+                'link' => route('contracts.show', $this->contract->hashid),
                 'content' => "The {$this->contract->title} contract is already marked as completed. 
                     The client will leave you a review. Thank you for doing your business on uplance, 
                     we wish you the best success on uplance."
             ];
         } else {
             return [
-                'link' => route('contracts.show', $this->contract->id),
+                'link' => route('contracts.show', $this->contract->hashid),
                 'content' => "The {$this->contract->title} contract is already marked as completed. 
-                    Your review was branded on the freelancer profile. Your project is no longer online. 
-                    Thank you for doing your business on uplance we wish you the best."
+                    Your review was branded on the freelancer profile. Thank you for doing your business on uplance we wish you the best."
             ];
         }
     }

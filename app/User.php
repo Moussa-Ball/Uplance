@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Connect\StripeConnect;
 use ScoutElastic\Searchable;
 use Laravel\Cashier\Billable;
 use \Conner\Tagging\Taggable;
@@ -15,7 +16,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
 {
-    use Messagable, Billable, SoftDeletes, Hashidable, Taggable, HasApiTokens, Notifiable, Searchable;
+    use Messagable,
+        Billable,
+        SoftDeletes,
+        Hashidable,
+        Taggable,
+        HasApiTokens,
+        Notifiable,
+        Searchable,
+        StripeConnect;
 
     /**
      * @var string
@@ -134,6 +143,9 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
         'mobile_phone',
         'presentation',
         'postal_code',
+        'connect_id',
+        'connect_verified',
+        'escrow',
     ];
 
     /**

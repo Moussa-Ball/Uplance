@@ -17,6 +17,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
     'localeViewPath',
 ]], function () {
 
+    Route::get('/email/verify/{id}/{hash}', 'Auth\VerificationController@verify')
+        ->name('verification.verify');
+
     // Authentification routes.
     Auth::routes(['verify' => true]);
 
@@ -102,7 +105,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
      * Routes when the user is connected.
      * -------------------------------------------------------------------------------------
      */
-    Route::group(['middleware' => ['auth', /*'verified'*/]], function () {
+    Route::group(['middleware' => ['auth', 'verified']], function () {
         /**
          * ----------------------------------------------------
          * Withdrawals
@@ -115,23 +118,28 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
 
         /**
          * ----------------------------------------------------
-         * Withdrawals
+         * Identities
+         * ----------------------------------------------------
+         */
+        Route::group(['prefix' => 'Identity'], function () {
+            Route::get('/', 'IdentityController@index')->name('identity.index');
+            Route::get('/stripe/verify-identity', 'IdentityController@checkStripeIdentity')->name('identity.stripe.verify');
+            Route::get('/stripe/verify-identity', 'IdentityController@checkStripeIdentity')->name('identity.stripe.verify');
+            Route::get('/stripe/identity/success', 'IdentityController@success')->name('identity.success');
+            Route::get('/stripe/identity/failure', 'IdentityController@failure')->name('identity.failure');
+        });
+
+        /**
+         * ----------------------------------------------------
+         * Withdrawals<
          * ----------------------------------------------------
          */
         Route::group(['prefix' => 'withdraw'], function () {
             Route::get('/', 'WithdrawController@index')->name('withdraws.index');
-            Route::get('/get-paid', 'WithdrawController@getPaid')->name('withdraw.get');
-
-            Route::get('/enable-paypal', 'WithdrawController@activatePaypalMethod')->name('withdraw.enable.paypal');
-            Route::get('/enable-credit-card', 'WithdrawController@activateCreditCardMethod')->name('withdraw.enable.credit-card');
-
-            Route::get('/enable-paypal-as-default', 'WithdrawController@makePaypalDefaultMethod')
-                ->name('withdraw.default.paypal');
-            Route::get('/enable-credit-card-as-default', 'WithdrawController@makeCreditCardDefaultMethod')
-                ->name('withdraw.default.credit-card');
-
-            Route::get('/remove-paypal', 'WithdrawController@removePaypalMethod')->name('withdraw.remove.paypal');
-            Route::get('/remove-credit-card', 'WithdrawController@removeCreditCardMethod')->name('withdraw.remove.credit-card');
+            Route::get('/get-paid', 'WithdrawController@getPaid')->name('withdraws.paid');
+            Route::post('/add-method', 'WithdrawController@addMethod')->name('withdraws.add');
+            Route::get('/default/~{withdrawMethod}', 'WithdrawController@setDefault')->name('withdraws.default');
+            Route::get('/remove/~{withdrawMethod}', 'WithdrawController@remove')->name('withdraws.remove');
         });
 
         /**
@@ -163,7 +171,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
 
         // REVIEWS
         Route::get('/reviews', 'ReviewController@index')->name('reviews');
-        Route::get('/reviews/leave/{id}', 'ReviewController@leave')->name('reviews.leave');
+        Route::get('/reviews/leave/{review}', 'ReviewController@leave')->name('reviews.leave');
 
         /**
          * Invoices routes
@@ -209,6 +217,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
             Route::get('/thread~{id}', 'MessengerController@show')->name('messages.thread');
             Route::get('/~{job}-{proposal}', 'MessengerController@createConversation')
                 ->name('messages.create');
+            Route::get('/~{offer}', 'MessengerController@createConversationForOffer')
+                ->name('messages.create.offer');
         });
 
         /**

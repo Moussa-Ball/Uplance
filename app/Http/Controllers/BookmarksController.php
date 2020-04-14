@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class BookmarksController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function index(Request $request)
     {
         $jobs = [];

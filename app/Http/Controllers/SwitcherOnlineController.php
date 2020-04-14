@@ -7,6 +7,11 @@ use App\User;
 
 class SwitcherOnlineController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function __invoke(User $user)
     {
         $user->switcher_status = 'online';

@@ -19,6 +19,11 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function index(Request $request)
     {
         $user = Cashier::findBillable($request->user()->stripe_id);
@@ -128,6 +133,8 @@ class PaymentController extends Controller
             try {
                 $amount = $invoice->amount * 100;
                 $payment = $request->user()->charge($amount, $paymentMethod->id);
+                $invoice->payment_id = $payment->id;
+                $invoice->save();
 
                 Withdraw::create([
                     'amount' => $invoice->amount,
@@ -274,6 +281,8 @@ class PaymentController extends Controller
             try {
                 $amount = $invoice->amount * 100;
                 $payment = $request->user()->charge($amount, $paymentMethod->id);
+                $invoice->payment_id = $payment->id;
+                $invoice->save();
 
                 Withdraw::create([
                     'amount' => $invoice->amount,

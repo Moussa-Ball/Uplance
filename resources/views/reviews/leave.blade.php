@@ -20,7 +20,6 @@
             </a>
         </span>
     </div>
-
-<store-review :id="{{ $review->id }}" :freelancer="{{ ($review->contract->from_id == Auth::id()) ? true : false }}"></store-review>
+    <store-review id="{{ $review->id }}" freelancer="{{ ($review->contract->from_id == Auth::id()) ? true : false }}"></store-review>
 </div>
 @endsection

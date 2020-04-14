@@ -8,6 +8,11 @@ use App\Http\Requests\BookmarkRequest;
 
 class BookmarkController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function index(Request $request, $bookmark_id, $bookmark_type)
     {
         $class = 'App\\' . $bookmark_type;

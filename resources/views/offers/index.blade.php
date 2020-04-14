@@ -148,12 +148,12 @@
 												<i class="icon-material-outline-check"></i> 
 												Accept Offer
 											</a>
-                                            <a href="{{ route('messages.index') }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                                            <a href="{{ route('messages.create.offer', $offer->hashid) }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
 											<a href="{{ route('offers.destroy', $offer->hashid) }}" onclick="return confirm('Are you sure?')" class="button gray ripple-effect ico" title="Decline the offer" data-tippy-placement="top"><i class="icon-feather-trash-2"></i></a>
 										</div>
 										@else
 										<div class="buttons-to-right always-visible margin-top-25 margin-bottom-0">
-                                            <a disabled href="{{ route('messages.index') }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
+                                            <a disabled href="{{ route('messages.create.offer', $offer->hashid) }}" class="button dark ripple-effect"><i class="icon-feather-mail"></i> Send Message</a>
 										</div>
 										@endif
 									</div>

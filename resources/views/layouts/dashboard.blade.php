@@ -174,6 +174,10 @@
                                     <a href="{{ route('invoices.index') }}"><i class="icon-material-outline-assignment"></i> Invoices</a>
                                 </li>
                                
+                                <li class="{{ (Route::currentRouteName() == 'identity.index') ? 'active-submenu' : '' }}">
+                                    <a href="{{ route('identity.index') }}"><i class="icon-feather-user-check"></i>Identity</a>
+                                </li>
+
                                 @if(Auth::user()->current_account === 'freelancer')
                                 <li class="{{ (Route::currentRouteName() == 'withdraws.index') ? 'active-submenu' : '' }}">
                                     <a href="{{ route('withdraws.index') }}"><i class="icon-line-awesome-money"></i>Get Paid</a>

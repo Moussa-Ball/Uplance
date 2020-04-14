@@ -11,79 +11,78 @@
 ==================================================-->
 <div class="single-page-header">
     <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-        <div class="single-page-header-inner">
-            <div class="left-side">
-            <div class="header-details">
-            <h3>{{ $job->project_name }}</h3>
-                <h5>About the Employer</h5>
-                <ul>
-                <li v-tippy="{placement: 'bottom',  arrow: true, maxWidth: 350, theme: 'light'}"
-                content="This client has a good hiring experience.">
-                    <div class="star-rating" data-rating="{{ number_format(4.5, 1, '.', '') }}">
-                        <star-rating :style="{position: 'relative', top: 3 + 'px'}" 
-                            :star-size="20" 
-                            :read-only="true"
-                            :show-rating="false"
-                            :increment="0.01" :fixed-points="2" 
-                            :rating="{{ number_format(4.5, 1, '.', '') }}">
-                        </star-rating>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="single-page-header-inner">
+                    <div class="left-side">
+                    <div class="header-details">
+                    <h3>{{ $job->project_name }}</h3>
+                        <h5>About the Employer</h5>
+                        <ul>
+                        <li>
+                            <div class="star-rating" data-rating="{{ number_format($rating, 1, '.', '') }}">
+                                <star-rating :style="{position: 'relative', top: 3 + 'px'}" 
+                                    :star-size="20" 
+                                    :read-only="true"
+                                    :show-rating="false"
+                                    :increment="0.01" :fixed-points="2" 
+                                    :rating="{{ number_format($rating, 1, '.', '') }}">
+                                </star-rating>
+                            </div>
+                        </li>
+                        <li>
+                            <img style="position: relative; top: 5px;" 
+                                class="flag" 
+                                src="/images/flags/{{ strtolower($job->country) }}.svg" alt /> 
+                            <span style="position: relative; top: 6px;">{{ $job->country_name }}</span>
+                        </li>
+                        @if($job->user->hasPaymentMethod())
+                        <li>
+                            <div style="position: relative; top: 5px; cursor: default;" class="verified-badge-with-title" 
+                            v-tippy="{placement: 'bottom',  arrow: true, maxWidth: 350, theme: 'light'}"
+                            content="The customer's payment method has already been verified.">Verified</div>
+                        </li>
+                        @endif
+                        </ul>
                     </div>
-                </li>
-                <li>
-                    <img style="position: relative; top: 5px;" 
-                        class="flag" 
-                        src="/images/flags/{{ strtolower($job->country) }}.svg" alt /> 
-                    <span style="position: relative; top: 6px;">{{ $job->country_name }}</span>
-                </li>
-                @if($job->user->hasPaymentMethod())
-                <li>
-                    <div style="position: relative; top: 5px; cursor: default;" class="verified-badge-with-title" 
-                    v-tippy="{placement: 'bottom',  arrow: true, maxWidth: 350, theme: 'light'}"
-                    content="The customer's payment method has already been verified.">Verified</div>
-                </li>
-                @endif
-                </ul>
-            </div>
-            </div>
-            <div class="right-side">
-            <div class="salary-box">
-                <div class="salary-type">Project Budget</div>
-                @if($job->minimum === $job->maximum)
-                <div class="salary-amount">
-                    <money-format :style="'display: inline-block;'" 
-                        :value="{{ $job->maximum }}" 
-                        locale='en' 
-                        currency-code='USD' 
-                        subunit-value=true 
-                        :hide-subunits=true>
-                    </money-format>
+                    </div>
+                    <div class="right-side">
+                    <div class="salary-box">
+                        <div class="salary-type">Project Budget</div>
+                        @if($job->minimum === $job->maximum)
+                        <div class="salary-amount">
+                            <money-format :style="'display: inline-block;'" 
+                                :value="{{ $job->maximum }}" 
+                                locale='en' 
+                                currency-code='USD' 
+                                subunit-value=true 
+                                :hide-subunits=true>
+                            </money-format>
+                        </div>
+                        @else
+                        <div class="salary-amount">
+                            <money-format :style="'display: inline-block;'" 
+                                :value="{{ $job->minimum }}" 
+                                locale='en' 
+                                currency-code='USD' 
+                                subunit-value=true 
+                                :hide-subunits=true>
+                            </money-format>
+                            -
+                            <money-format :style="'display: inline-block;'" 
+                                :value="{{ $job->maximum }}" 
+                                locale='en' 
+                                currency-code='USD' 
+                                subunit-value=true 
+                                :hide-subunits=true>
+                            </money-format>
+                        </div>
+                        @endif
+                    </div>
+                    </div>
                 </div>
-                @else
-                <div class="salary-amount">
-                    <money-format :style="'display: inline-block;'" 
-                        :value="{{ $job->minimum }}" 
-                        locale='en' 
-                        currency-code='USD' 
-                        subunit-value=true 
-                        :hide-subunits=true>
-                    </money-format>
-                    -
-                    <money-format :style="'display: inline-block;'" 
-                        :value="{{ $job->maximum }}" 
-                        locale='en' 
-                        currency-code='USD' 
-                        subunit-value=true 
-                        :hide-subunits=true>
-                    </money-format>
-                </div>
-                @endif
-            </div>
             </div>
         </div>
-        </div>
-    </div>
     </div>
 </div>
 
@@ -144,7 +143,7 @@
 							@if($bid->user->verified)
 							<div class="verified-badge"></div>
 							@endif
-							<a target="_blank" href="#">
+							<a target="_blank" href="{{ route('freelancers.show', $bid->user->hashid) }}">
 								<img style="width: 80px; height: 80px;" src="{{ $bid->user->avatar }}" alt="avatar"></a>
 							</div>
 						</div>
@@ -196,7 +195,54 @@
         		@endforeach
 				</ul>
 			</div>
-			@endif
+            @endif
+            
+            <!-- Boxed List -->
+            @if(!$reviews->isEmpty())
+            <div class="boxed-list margin-bottom-60">
+                <div class="boxed-list-headline">
+                    <h3><i class="icon-material-outline-thumb-up"></i> Client's history </h3>
+                </div>
+                <ul class="boxed-list-ul">
+                    @foreach($reviews as $review)
+                    @if(!$review->contract->is_agency)
+                    <li>
+                        <div class="boxed-list-item">
+                            <!-- Content -->
+                            <div class="item-content">
+                                <h4>{{ $review->contract->title }} <span>Rated as Client</span></h4>
+                                <div class="item-details margin-top-10">
+                                    @if($review->rating)
+                                    <div data-rating="{{ number_format($review->rating, 1, '.', '') }}" class="star-rating">
+                                        <star-rating :style="{position: 'relative', top: 3 + 'px'}" :star-size="18" :read-only="true"
+                                                        :show-rating="false" :rating="{{ number_format($review->rating, 1, '.', '') }}">
+                                        </star-rating>
+                                    </div>
+                                    @endif
+                                    <div class="detail-item"><i class="icon-material-outline-date-range"></i> {{ $review->created_at->format('d M Y') }}</div>
+                                </div>
+                                @if($review->comment)
+                                <div class="item-description">
+                                    <p>{{ $review->comment }}</p>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </li>
+                    @endif
+                    @endforeach
+                </ul>
+
+                <!-- Pagination -->
+                <div class="clearfix"></div>
+                <div class="pagination-container margin-top-40 margin-bottom-10">
+                    {!! $reviews->links('vendor.pagination.uplance') !!}
+                </div>
+                <div class="clearfix"></div>
+                <!-- Pagination / End -->
+            </div>
+            @endif
+            <!-- Boxed List / End -->
         </div>
 
         <!-- Sidebar -->

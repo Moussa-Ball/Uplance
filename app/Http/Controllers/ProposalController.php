@@ -122,7 +122,7 @@ class ProposalController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         $encoded_id = $id;
         $id = Hashids::connection(Job::class)->decode($id);
         if (!$id) return abort(404);
@@ -142,7 +142,7 @@ class ProposalController extends Controller
      */
     public function destroy(Request $request, Job $job, Proposal $proposal)
     {
-        $this->authorize('client', $request->user());
+        $this->authorize('client');
         $this->authorize('owner', $job->user_id);
         $this->authorize('not-accepted', $proposal);
 

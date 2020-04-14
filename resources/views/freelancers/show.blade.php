@@ -65,12 +65,12 @@
             </div>
 
             <!-- Portofolio List -->
-            <div class="boxed-list margin-bottom-60">
+            <!--<div class="boxed-list margin-bottom-60">
                 <div class="boxed-list-headline">
                     <h3><i class="icon-brand-wpforms"></i> Portfolio</h3>
                 </div>
                 <portfolio></portfolio>
-            </div>
+            </div>-->
             <!-- End Portofolio List -->
 
             <!-- Boxed List -->
@@ -89,13 +89,13 @@
                                 <h4>{{ $review->contract->title }} <span>Rated as Freelancer</span></h4>
                                 <div class="item-details margin-top-10">
                                     @if($review->rating)
-                                    <div data-rating="{{ $review->rating }}" class="star-rating">
+                                    <div data-rating="{{ number_format($review->rating, 1, '.', '') }}" class="star-rating">
                                         <star-rating :style="{position: 'relative', top: 3 + 'px'}" :star-size="18" :read-only="true"
-                                                        :show-rating="false" :rating="{{ $review->rating }}">
+                                                        :show-rating="false" :rating="{{ number_format($review->rating, 1, '.', '') }}">
                                         </star-rating>
                                     </div>
                                     @endif
-                                    <div class="detail-item"><i class="icon-material-outline-date-range"></i> {{ $review->created_at->format('Y-m-d') }}</div>
+                                    <div class="detail-item"><i class="icon-material-outline-date-range"></i> {{ $review->created_at->format('d M Y') }}</div>
                                 </div>
                                 @if($review->comment)
                                 <div class="item-description">

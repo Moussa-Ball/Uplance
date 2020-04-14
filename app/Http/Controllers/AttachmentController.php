@@ -8,6 +8,11 @@ use App\Http\Requests\AttachmentRequest;
 
 class AttachmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function attachments(AttachmentRequest $request)
     {
         $type = $request->get('attachable_type');

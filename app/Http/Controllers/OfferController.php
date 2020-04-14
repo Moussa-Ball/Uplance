@@ -19,6 +19,11 @@ use Cmgmyr\Messenger\Models\Thread;
 
 class OfferController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     /**
      * Show the list of offer for an user.
      *
@@ -26,7 +31,7 @@ class OfferController extends Controller
      */
     public function index()
     {
-        $this->authorize('freelancer', Auth::user());
+        $this->authorize('freelancer');
         $offers = Offer::where('to_id', Auth::id())->orderBy('created_at', 'DESC')->paginate(10);
         SEOTools::setTitle('Contract Offers');
         return view('offers.index', compact('offers'));
@@ -39,8 +44,8 @@ class OfferController extends Controller
      */
     public function create(Request $request, User $user)
     {
-        $this->authorize('client', $request->user());
-        $this->authorize('client', $user);
+        $this->authorize('client');
+        $this->authorize('client');
         $proposal = $request->get('proposal');
         if ($proposal) {
             $proposal = Hashids::connection(Proposal::class)->decode($proposal);
@@ -61,8 +66,8 @@ class OfferController extends Controller
      */
     public function store(OfferRequest $request, User $user)
     {
-        $this->authorize('client', $request->user());
-        $this->authorize('client', $user);
+        $this->authorize('client');
+        $this->authorize('client');
         $proposal = $request->get('proposal');
         if ($proposal) {
             $proposal = Hashids::connection(Proposal::class)->decode($proposal);
@@ -103,7 +108,7 @@ class OfferController extends Controller
     {
         $data = $offer;
         $offer->delete();
-        $data->to->notify(new DeclineOffer($data));
+        $data->from->notify(new DeclineOffer($data));
         return redirect()->back();
     }
 }

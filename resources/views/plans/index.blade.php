@@ -29,7 +29,7 @@
             <div class="pricing-plan-features">
               <strong>Features of Basic Free</strong>
               <ul>
-                <li>30 credits / monthly</li>
+                <li>30 credits upon start-up.</li>
                 <li>2 credits = 1 Bid</li>
                 <li>Unlimited Portfolio (Soon)</li>
                 <li>Unlimited Bookmark</li>
@@ -49,12 +49,11 @@
             <div class="pricing-plan-features">
               <strong>Features of Pro Plan</strong>
               <ul>
-                <li>100 credits / monthly</li>
                 <li>2 credits = 1 Bid</li>
                 <li>Unlimited Portfolio (Soon)</li>
                 <li>Unlimited Bookmark</li>
                 <li>Profile Badge</li>
-                <li>Automatic offers</li>
+                <li style="text-decoration: unset;">Automatic offers</li>
               </ul>
 			      </div>
 			
@@ -87,7 +86,6 @@
             <div class="pricing-plan-features">
               <strong>Features of Business Plan</strong>
               <ul>
-                <li>Unlimited credits</li>
                 <li>Unlimited proposals</li>
                 <li>Unlimited Portfolio (Soon)</li>
                 <li>Unlimited Bookmark</li>

@@ -2,10 +2,7 @@
   <!-- Message Content -->
   <div class="message-content">
     <div class="messages-headline">
-      <h4 v-if="messages.user">{{ messages.user.name }},</h4>
-      <strong
-        v-if=" messages.thread.subject.length > 25"
-      >{{ messages.thread.subject.substr(0, 25) }}...</strong>
+      <h4 v-if="messages.user">{{ messages.user.name }}</h4>
       <strong v-else>{{ messages.thread.subject }}</strong>
       <div class="message-action">
         <a v-if="false" href="javascript:void;">
@@ -14,7 +11,7 @@
         <a v-if="false" href="javascript:void;">
           <i class="icon-feather-phone-call"></i> Voice Call
         </a>
-        <a href="javascript:void;">
+        <a href="javascript:void;" v-if="false">
           <i class="icon-feather-trash-2"></i> Delete Conversation
         </a>
       </div>
@@ -79,7 +76,7 @@
         class="picker"
       />
 
-      <div v-show="!loading" class="ml-1">
+      <div v-show="!loading" class="ml-1" v-if="false">
         <div class="emoji-invoker">
           <i
             class="icon-material-outline-attach-file"

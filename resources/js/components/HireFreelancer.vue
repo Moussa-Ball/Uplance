@@ -55,7 +55,7 @@
                             <li style="position: relative; top: 7px;">
                               <img
                                 class="flag"
-                                :src="'/images/flags/' + freelancer.country + '.svg'"
+                                :src="'/images/flags/' + String(freelancer.country).toLowerCase() + '.svg'"
                                 alt
                               />
                               {{ getCountryName(freelancer.country) }}

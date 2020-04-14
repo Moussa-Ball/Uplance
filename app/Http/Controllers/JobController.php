@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\PostJobRequest;
+use App\Review;
 use App\User;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use PragmaRX\Countries\Package\Countries;
@@ -160,8 +161,21 @@ class JobController extends Controller
     {
         $category = $job->categories()->first();
         if (!$category) return abort(404);
+        $reviews = Review::where('from_id', \Auth::id())->where('rated', true)->paginate(10);
+
+        $rating = null;
+        $rate_title = null;
+
+        foreach ($reviews as $review) {
+            $rating += $review->rating;
+        }
+        $rating = $rating / 10;
+
+        if ($rating > 5)
+            $rating = 5;
+
         SEOMeta::setTitle($job->project_name . ' - ' . $category->name);
-        return view('jobs.show', compact('job'));
+        return view('jobs.show', compact('job', 'reviews', 'rating', 'rate_title'));
     }
 
     /**

@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     public function limit(Request $request)
     {
         return $request->user()->notifications()

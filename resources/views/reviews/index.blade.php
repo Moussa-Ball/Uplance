@@ -13,7 +13,7 @@
         <div class="dashboard-box margin-top-0">
             <!-- Headline -->
             <div class="headline">
-                <h3><i class="icon-material-outline-face"></i>Rate Freelancers ({{ $reviews->count() }})</h3>
+                <h3><i class="icon-material-outline-face"></i>Reviews ({{ $reviews->count() }})</h3>
             </div>
             <div class="content">
                 <ul class="dashboard-box-list">
@@ -27,11 +27,12 @@
 									<span class="company-not-rated margin-bottom-5">Not Rated</span>
 									@else
 									<div class="item-details margin-top-10">
-										<div class="star-rating" data-rating="{{ floatval($review->rating) }}"></div>
+										<div class="star-rating" data-rating="{{ number_format($review->rating, 1, '.', '') }}"></div>
 										<star-rating :style="{position: 'relative', top: 1 + 'px', 'right': 15 + 'px'}"
 											:star-size="18" :read-only="true"
-											:show-rating="false" 
-											:rating="{{ floatval($review->rating) }}">
+											:show-rating="false"
+											:increment="0.01" :fixed-points="2"
+											:rating="{{ number_format($review->rating, 1, '.', '') }}">
 										</star-rating>
 										<div class="detail-item"><i class="icon-material-outline-date-range"></i>{{ \Carbon\Carbon::createFromDate((string)$review->updated_at)->isoFormat('LLLL') }}</div>
 									</div>

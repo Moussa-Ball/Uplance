@@ -157,7 +157,32 @@
 <script>
     const stripe = Stripe("{{ env('STRIPE_KEY') }}");
     const elements = stripe.elements();
-    const cardElement = elements.create('card');
+
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+        base: {
+                color: '#32325d',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '18px',
+                '::placeholder': {
+                color: '#aab7c4'
+            },
+            ':-webkit-autofill': {
+                color: '#32325d',
+            },
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a',
+            ':-webkit-autofill': {
+            color: '#fa755a',
+            },
+        }
+    };
+
+    const cardElement = elements.create('card', {style: style});
     cardElement.mount('#card-element');
 
     const cardButton = document.getElementById('card-button');

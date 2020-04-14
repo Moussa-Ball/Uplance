@@ -147,7 +147,7 @@ Route::group(['middleware' => ['auth:api']], function () {
      * All reviews routes.
      * ----------------------------------------------------
      */
-    Route::post('/store-review~{id}', 'ReviewController@storeReview');
+    Route::post('/store-review~{review}', 'ReviewController@storeReview');
 });
 
 

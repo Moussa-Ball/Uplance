@@ -31,6 +31,8 @@ class CreateUsersTable extends Migration
             $table->integer('recommendation')->default(0);
             $table->integer('on_time')->default(0);
             $table->integer('on_budget')->default(0);
+            $table->double('escrow')->nullable();
+            $table->string('connect_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->enum('account_type', ['freelancer', 'client'])->nullable();
             $table->enum('current_account', ['freelancer', 'client'])->nullable();

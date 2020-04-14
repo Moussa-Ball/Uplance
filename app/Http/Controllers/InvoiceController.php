@@ -7,6 +7,11 @@ use App\Invoice;
 
 class InvoiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     /**
      * Display a listing of the resource.
      *

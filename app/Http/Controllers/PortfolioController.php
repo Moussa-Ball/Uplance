@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     /**
      * Display a listing of the resource.
      *

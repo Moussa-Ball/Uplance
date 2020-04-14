@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\User;
 use App\Category;
 use App\Review;
 use Illuminate\Http\Request;
-use Vinkla\Hashids\Facades\Hashids;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\SEOTools;
 use PragmaRX\Countries\Package\Countries;
 
 class FreelancerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('complete.profile');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -96,42 +99,8 @@ class FreelancerController extends Controller
     public function show(User $user)
     {
         $freelancer = $user;
-        $reviews = Review::where('to_id', Auth::id())->where('rating', '>', 0)->paginate(10);
+        $reviews = Review::where('to_id', $user->id)->where('rated', true)->paginate(10);
         SEOTools::setTitle($user->name . ' - ' . $user->categories()->first()->name);
         return view('freelancers.show', compact('freelancer', 'reviews'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

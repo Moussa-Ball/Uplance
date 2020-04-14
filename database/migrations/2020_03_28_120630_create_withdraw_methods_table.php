@@ -14,12 +14,14 @@ class CreateWithdrawMethodsTable extends Migration
     public function up()
     {
         Schema::create('withdraw_methods', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->boolean('paypal')->default(false);
-            $table->boolean('credit_card')->default(false);
-            $table->enum('default_method', ['paypal', 'credit_card'])->nullable();
-            $table->dateTime('paypal_activation_date')->default(\Carbon\Carbon::now()->addDay(2))->nullable();
-            $table->dateTime('credit_card_activation_date')->default(\Carbon\Carbon::now()->addDay(2))->nullable();
+            $table->increments('id');
+            $table->string('brand');
+            $table->string('type');
+            $table->string('token');
+            $table->string('currency');
+            $table->string('last_four');
+            $table->string('identifier');
+            $table->boolean('default')->default(false);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
