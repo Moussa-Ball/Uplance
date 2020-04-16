@@ -12,36 +12,27 @@
       <ul class="share-buttons-icons">
         <li @click.prevent="shareOnFacebook">
           <a
-            style="background: #3b5998;"
+            style="background: #3b5998; cursor: pointer;"
             v-tippy="{ arrow : true }"
-            href="#"
-            data-button-color="#3b5998"
-            title="Share on Facebook"
-            data-tippy-placement="top"
+            content="Share on Facebook"
           >
             <i class="icon-brand-facebook-f"></i>
           </a>
         </li>
         <li @click.prevent="shareOnTwitter">
           <a
-            style="background: #1da1f2;"
+            style="background: #1da1f2; cursor: pointer;"
             v-tippy="{ arrow : true }"
-            href="#"
-            data-button-color="#1da1f2"
-            title="Share on Twitter"
-            data-tippy-placement="top"
+            content="Share on Twitter"
           >
             <i class="icon-brand-twitter"></i>
           </a>
         </li>
         <li @click.prevent="shareOnLinkedin">
           <a
-            style="background: #0077b5;"
+            style="background: #0077b5; cursor: pointer;"
             v-tippy="{ arrow : true }"
-            href="#"
-            data-button-color="#0077b5"
-            title="Share on LinkedIn"
-            data-tippy-placement="top"
+            content="Share on LinkedIn"
           >
             <i class="icon-brand-linkedin-in"></i>
           </a>

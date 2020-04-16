@@ -12,6 +12,7 @@ use Vinkla\Hashids\Facades\Hashids;
 use App\Http\Requests\PostJobRequest;
 use App\Review;
 use App\User;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use PragmaRX\Countries\Package\Countries;
 
@@ -175,6 +176,24 @@ class JobController extends Controller
             $rating = 5;
 
         SEOMeta::setTitle($job->project_name . ' - ' . $category->name);
+        SEOMeta::setDescription($job->description);
+        SEOTools::setCanonical(route('freelancers.show', $job->hashid));
+        SEOMeta::addMeta('robots', 'noarchive', 'property');
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle($job->project_name . ' - ' . $category->name);
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription($job->description);
+        SEOTools::opengraph()->setUrl(route('freelancers.show', $job->hashid));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle($job->project_name . ' - ' . $category->name);
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription($job->description);
+        SEOTools::twitter()->setUrl(route('freelancers.show', $job->hashid));
+
         return view('jobs.show', compact('job', 'reviews', 'rating', 'rate_title'));
     }
 

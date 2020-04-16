@@ -100,7 +100,26 @@ class FreelancerController extends Controller
     {
         $freelancer = $user;
         $reviews = Review::where('to_id', $user->id)->where('rated', true)->paginate(10);
-        SEOTools::setTitle($user->name . ' - ' . $user->categories()->first()->name);
+
+        SEOMeta::setTitle($user->name . ' - ' . $user->tagline);
+        SEOMeta::setDescription($user->presentation);
+        SEOTools::setCanonical(route('freelancers.show', $user->hashid));
+        SEOMeta::addMeta('robots', 'noarchive', 'property');
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle($user->name . ' - ' . $user->tagline);
+        SEOTools::opengraph()->addImage($user->avatar);
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription($user->presentation);
+        SEOTools::opengraph()->setUrl(route('freelancers.show', $user->hashid));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle($user->name . ' - ' . $user->tagline);
+        SEOTools::twitter()->setImages($user->avatar);
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription($user->presentation);
+        SEOTools::twitter()->setUrl(route('freelancers.show', $user->hashid));
+
         return view('freelancers.show', compact('freelancer', 'reviews'));
     }
 }

@@ -6,9 +6,10 @@ use App\Article;
 use App\Job;
 use App\User;
 use App\Category;
-use App\Post;
 use App\Sponsor;
 use Illuminate\Http\Request;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\SEOTools;
 
 class HomeController extends Controller
 {
@@ -68,6 +69,25 @@ class HomeController extends Controller
 
         $countries = \PragmaRX\Countries\Package\Countries::all();
 
+        SEOMeta::setTitle('Hire experts freelancers for any job, any time. - Uplance');
+        SEOMeta::setDescription('Huge community of designers, developers and creatives ready for your project.');
+        SEOTools::setCanonical(url('/'));
+        SEOMeta::addMeta('robots', 'noarchive', 'property');
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Hire experts freelancers for any job, any time. - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription('Huge community of designers, developers and creatives ready for your project.');
+        SEOTools::opengraph()->setUrl(url('/'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Hire experts freelancers for any job, any time. - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription('Huge community of designers, developers and creatives ready for your project.');
+        SEOTools::twitter()->setUrl(url('/'));
+
         return view('home', [
             'posts' => $posts,
             'sponsors' => $sponsors,
@@ -90,6 +110,28 @@ class HomeController extends Controller
             ->where('skills', '!=', null)
             ->orderBy('global_rank', 'DESC')
             ->paginate(40);
+
+        SEOMeta::setTitle('Best freelancers ' . $tag->name . ' - Uplance');
+        SEOMeta::setDescription("With uplance, you don't even need to post a job, 
+            you can hire experts directly for large projects.");
+        SEOTools::setCanonical(route('freelancers.tag', $slug));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Freelancers by rank in ' . $tag->name . ' - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription("With uplance, you don't even need to post a job, 
+            you can hire experts directly for large projects.");
+        SEOTools::opengraph()->setUrl(route('freelancers.tag', $slug));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Freelancers by rank in ' . $tag->name . ' - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription("With uplance, you don't even need to post a job, 
+            you can hire experts directly for large projects.");
+        SEOTools::twitter()->setUrl(route('freelancers.tag', $slug));
+
         return view('freelancers-tag', compact('tag', 'freelancers'));
     }
 
@@ -97,42 +139,123 @@ class HomeController extends Controller
     {
         $search = ($request->get('q')) ? $request->get('q') : '*';
         $jobs = Job::search($search)->orderBy('created_at', 'DESC')->paginate(10);
+
+        SEOMeta::setTitle('Search Job - Uplance');
+        SEOMeta::setDescription('Search for a suitable job based on your skills and area of expertise, then apply online.');
+        SEOMeta::addMeta('robots', 'noindex', 'property');
+
         return view('search-job', compact('jobs'));
     }
 
     public function jobsInSanFrancisco()
     {
         $title = 'Jobs in San Francisco';
-        $subtitle = 'List of Jobs in San Francisco';
+        $subtitle = 'List of Jobs available in San Francisco';
         $jobs = Job::where('country', 'US')
             ->where('city', 'San Francisco')->orderBy('created_at', 'DESC')->paginate(40);
+
+        SEOMeta::setTitle('Explore jobs in San Francisco. - Uplance');
+        SEOMeta::setDescription("Explore all jobs that clients locate in San Francisco and work with them in good condition");
+        SEOTools::setCanonical(route('jobs-in-san-francisco'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Explore jobs in San Francisco. - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription("Explore all jobs that clients locate in San Francisco and work with them in good condition");
+        SEOTools::opengraph()->setUrl(route('jobs-in-san-francisco'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Explore jobs in San Francisco. - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription("Explore all jobs that clients locate in San Francisco and work with them in good condition");
+        SEOTools::twitter()->setUrl(route('jobs-in-san-francisco'));
+
         return view('jobs-city', compact('title', 'subtitle', 'jobs'));
     }
 
     public function jobsInNewYork()
     {
         $title = 'Jobs in New York';
-        $subtitle = 'List of Jobs in New York';
+        $subtitle = 'List of Jobs available in New York';
         $jobs = Job::where('country', 'US')
             ->where('city', 'New York')->orderBy('created_at', 'DESC')->paginate(40);
+
+        SEOMeta::setTitle('Explore jobs in New York.  - Uplance');
+        SEOMeta::setDescription("Explore all jobs that clients locate in New York and work with them in good condition");
+        SEOTools::setCanonical(route('jobs-in-new-york'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Explore jobs in New York - Uplance.');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription("Explore all jobs that clients locate in New York and work with them in good condition");
+        SEOTools::opengraph()->setUrl(route('jobs-in-new-york'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Explore jobs in New York. - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription("Explore all jobs that clients locate in New York and work with them in good condition");
+        SEOTools::twitter()->setUrl(route('jobs-in-new-york'));
+
         return view('jobs-city', compact('title', 'subtitle', 'jobs'));
     }
 
     public function jobsInLosAngeles()
     {
         $title = 'Jobs in Los Angeles';
-        $subtitle = 'List of Jobs in Los Angeles';
+        $subtitle = 'List of Jobs available in Los Angeles';
         $jobs = Job::where('country', 'US')
             ->where('city', 'Los Angeles')->orderBy('created_at', 'DESC')->paginate(40);
+
+        SEOMeta::setTitle('Explore jobs in Los Angeles. - Uplance');
+        SEOMeta::setDescription("Explore all jobs that clients locate in Los Angeles and work with them in good condition");
+        SEOTools::setCanonical(route('jobs-in-los-angeles'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Explore jobs in Los Angeles. - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription("Explore all jobs that clients locate in Los Angeles and work with them in good condition");
+        SEOTools::opengraph()->setUrl(route('jobs-in-los-angeles'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Explore jobs in Los Angeles. - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription("Explore all jobs that clients locate in Los Angeles and work with them in good condition");
+        SEOTools::twitter()->setUrl(route('jobs-in-los-angeles'));
+
         return view('jobs-city', compact('title', 'subtitle', 'jobs'));
     }
 
     public function jobsInMiami()
     {
         $title = 'Jobs in Miami';
-        $subtitle = 'List of Jobs in Miami';
+        $subtitle = 'List of Jobs available in Miami';
         $jobs = Job::where('country', 'US')
             ->where('city', 'Miami')->orderBy('created_at', 'DESC')->paginate(40);
+
+        SEOMeta::setTitle('Explore jobs in Miami. - Uplance');
+        SEOMeta::setDescription("Explore all jobs that clients locate in Miami and work with them in good condition");
+        SEOTools::setCanonical(route('jobs-in-los-angeles'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Explore jobs in Miami. - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription("Explore all jobs that clients locate in Miami and work with them in good condition");
+        SEOTools::opengraph()->setUrl(route('jobs-in-los-angeles'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Explore jobs in Miami. - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription("Explore all jobs that clients locate in Miami and work with them in good condition");
+        SEOTools::twitter()->setUrl(route('jobs-in-los-angeles'));
+
         return view('jobs-city', compact('title', 'subtitle', 'jobs'));
     }
 
@@ -143,7 +266,26 @@ class HomeController extends Controller
             'country' => 'GB',
         ])->where('skills', '!=', null)->orderBy('global_rank', 'DESC')->paginate(40);
         $title = 'Freelancers in United Kingdom';
-        $subtitle = 'Freelancers in United Kingdom by ranking';
+        $subtitle = 'Explore Freelancers in United Kingdom by ranking';
+
+        SEOMeta::setTitle($subtitle . ' - Uplance');
+        SEOMeta::setDescription($subtitle);
+        SEOTools::setCanonical(route('jobs-in-los-angeles'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle($title . ' - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription($subtitle);
+        SEOTools::opengraph()->setUrl(route('jobs-in-los-angeles'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle($title . ' - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription($subtitle);
+        SEOTools::twitter()->setUrl(route('jobs-in-los-angeles'));
+
         return view('freelancers-by-country', compact('freelancers', 'title', 'subtitle'));
     }
 
@@ -154,7 +296,26 @@ class HomeController extends Controller
             'country' => 'us',
         ])->where('skills', '!=', null)->orderBy('global_rank', 'DESC')->paginate(40);
         $title = 'Freelancers in USA';
-        $subtitle = 'Freelancers in USA by ranking';
+        $subtitle = 'Explore Freelancers in USA by ranking';
+
+        SEOMeta::setTitle($subtitle . ' - Uplance');
+        SEOMeta::setDescription($subtitle);
+        SEOTools::setCanonical(route('jobs-in-los-angeles'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle($title . ' - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription($subtitle);
+        SEOTools::opengraph()->setUrl(route('jobs-in-los-angeles'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle($title . ' - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription($subtitle);
+        SEOTools::twitter()->setUrl(route('jobs-in-los-angeles'));
+
         return view('freelancers-by-country', compact('freelancers', 'title', 'subtitle'));
     }
 
@@ -165,22 +326,61 @@ class HomeController extends Controller
             'country' => 'fr',
         ])->where('skills', '!=', null)->orderBy('global_rank', 'DESC')->paginate(40);
         $title = 'Freelancers in France';
-        $subtitle = 'Freelancers in France by ranking';
+        $subtitle = 'Explore Freelancers in France by ranking';
+
+        SEOMeta::setTitle($subtitle . ' - Uplance');
+        SEOMeta::setDescription($subtitle);
+        SEOTools::setCanonical(route('jobs-in-los-angeles'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle($title . ' - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription($subtitle);
+        SEOTools::opengraph()->setUrl(route('jobs-in-los-angeles'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle($title . ' - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription($subtitle);
+        SEOTools::twitter()->setUrl(route('jobs-in-los-angeles'));
+
         return view('freelancers-by-country', compact('freelancers', 'title', 'subtitle'));
     }
 
     public function about()
     {
+        SEOMeta::setTitle('About Us - Uplance');
+        SEOMeta::setDescription('Huge community of designers, developers and creatives ready for your project.');
+        SEOTools::setCanonical(route('about'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('About Us - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription('Huge community of designers, developers and creatives ready for your project.');
+        SEOTools::opengraph()->setUrl(route('about'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('About Us - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription('Huge community of designers, developers and creatives ready for your project.');
+        SEOTools::twitter()->setUrl(route('about'));
+
         return view('about');
     }
 
     public function faq()
     {
+        SEOMeta::setTitle('Frequently Asked Questions - Uplance');
         return view('faq');
     }
 
     public function terms()
     {
+        SEOMeta::setTitle('Terms of Service - Uplance');
         return view('terms');
     }
 }

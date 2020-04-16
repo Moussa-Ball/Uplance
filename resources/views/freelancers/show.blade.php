@@ -28,7 +28,7 @@
                                                 :rating="{{ number_format($freelancer->rating, 1, '.', '') }}">
                                     </star-rating>
                                 </div>
-                                <li style="position: relative; left: 10px; top: 1px;">
+                                <li style="position: relative; left: 10px;">
                                     <img class="flag" src="/images/flags/{{ strtolower($freelancer->country) }}.svg" alt="flag"> 
                                     {{ ucfirst(\PragmaRX\Countries\Package\Countries::where('cca2', $freelancer->country)->first()->name->common) }} 
                                 </li>
@@ -209,7 +209,7 @@
                     </div>
 
                     <!-- Share Buttons -->
-                    <social-share></social-share>
+                    <social-share url="{{ route('freelancers.show', $freelancer->hashid) }}"></social-share>
                 </div>
             </div>
         </div>

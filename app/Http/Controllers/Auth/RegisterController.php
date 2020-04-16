@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -96,5 +98,33 @@ class RegisterController extends Controller
             );
         }
         return $user;
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        SEOMeta::setTitle('Create an Account - Uplance');
+        SEOMeta::setDescription('Uplance is a marketplace for finding the best experts in their field with a variety of technology.');
+        SEOTools::setCanonical(route('register'));
+
+        SEOTools::opengraph()->setType('article');
+        SEOTools::opengraph()->setTitle('Create an Account - Uplance');
+        SEOTools::opengraph()->addImage(asset('images/uplance.png'));
+        SEOTools::opengraph()->setSiteName('UplanceHQ');
+        SEOTools::opengraph()->setDescription('Uplance is a marketplace for finding the best experts in their field with a variety of technology.');
+        SEOTools::opengraph()->setUrl(route('register'));
+
+        SEOTools::twitter()->setType('summary');
+        SEOTools::twitter()->setTitle('Create an Account - Uplance');
+        SEOTools::twitter()->setImages(asset('images/uplance.png'));
+        SEOTools::twitter()->setSite('@UplanceHQ');
+        SEOTools::twitter()->setDescription('Uplance is a marketplace for finding the best experts in their field with a variety of technology.');
+        SEOTools::twitter()->setUrl(route('register'));
+
+        return view('auth.register');
     }
 }

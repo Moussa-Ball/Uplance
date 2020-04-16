@@ -42,13 +42,13 @@
 							<span>{{ $freelancer->tagline }}</span>
 							<!-- Rating -->
 							<div class="freelancer-rating">
-								<div class="star-rating" data-rating="{{ $freelancer->rating }}">
+								<div class="star-rating" data-rating="{{ number_format($freelancer->rating, 1, '.', '') }}">
 									<star-rating :style="{position: 'relative', top: 1 + 'px'}" 
 												:star-size="20" 
 												:read-only="true"
 												:show-rating="false"
 												:increment="0.01" :fixed-points="2" 
-												:rating="{{ $freelancer->rating }}">
+												:rating="{{ number_format($freelancer->rating, 1, '.', '') }}">
 								</star-rating>
 								<div class="task-tags">
 										@if($freelancer->subscribed('pro'))

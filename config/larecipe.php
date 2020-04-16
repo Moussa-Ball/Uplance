@@ -1,5 +1,21 @@
 <?php
 
+function page_title($url)
+{
+    $fp = file_get_contents($url);
+    if (!$fp)
+        return null;
+
+    $res = preg_match("/<title>(.*)<\/title>/siU", $fp, $title_matches);
+    if (!$res)
+        return null;
+
+    // Clean up title: remove EOL's and excessive whitespace.
+    $title = preg_replace('/\s+/', ' ', $title_matches[1]);
+    $title = trim($title);
+    return $title;
+}
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -145,15 +161,15 @@ return [
     */
 
     'seo'                 => [
-        'author'          => '',
-        'description'     => '',
-        'keywords'        => '',
+        'author'          => 'Ciao',
+        'description'     => 'Learn how to use uplance easily with our help support.',
+        'keywords'        => 'PHP, Laravel, Paypal, Stripe, Stripe Connect, Marketplace',
         'og'              => [
-            'title'       => '',
+            'title'       => 'Help Support - Uplance',
             'type'        => 'article',
-            'url'         => '',
-            'image'       => '',
-            'description' => '',
+            'url'         => env('APP_URL') . '/support',
+            'image'       => asset('images/uplance.png'),
+            'description ' => 'Learn how to use uplance easily with our help support.',
         ]
     ],
 
