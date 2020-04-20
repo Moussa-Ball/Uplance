@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\User;
 use App\Review;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -17,6 +18,7 @@ class ReviewController extends Controller
     public function index(Request $request)
     {
         $reviews = Review::where('from_id', $request->user()->id)->paginate(10);
+        SEOMeta::setTitle('Reviews');
         return view('reviews.index', compact('reviews'));
     }
 
@@ -24,6 +26,7 @@ class ReviewController extends Controller
     {
         if ($review->from_id != Auth::id() || $review->rated == true)
             return $this->authorize(false);
+        SEOMeta::setTitle('Leave a review');
         return view('reviews.leave', compact('review'));
     }
 

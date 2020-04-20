@@ -168,7 +168,7 @@ return [
             'title'       => 'Help Support - Uplance',
             'type'        => 'article',
             'url'         => env('APP_URL') . '/support',
-            'image'       => asset('images/uplance.png'),
+            'image'       =>  env('APP_URL') . '/images/uplance.png',
             'description ' => 'Learn how to use uplance easily with our help support.',
         ]
     ],

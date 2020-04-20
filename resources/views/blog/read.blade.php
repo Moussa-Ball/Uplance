@@ -62,7 +62,7 @@
 
   					<!-- Share Buttons -->
   					<div class="margin-top-25"></div>
-					<social-share url="{{ route('blog.read', $article->id) }}"></social-share>
+					<social-share url="{{ route('blog.read', ['slug' => $article->slug, 'id' => $article->id]) }}"></social-share>
   				</div>
   			</div>
   			<!-- Blog Post Content / End -->

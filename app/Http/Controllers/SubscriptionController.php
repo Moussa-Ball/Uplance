@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
@@ -15,6 +16,7 @@ class SubscriptionController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        SEOMeta::setTitle('Membership');
         return view(
             'plans.index',
             [

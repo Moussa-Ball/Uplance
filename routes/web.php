@@ -40,7 +40,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [
         Route::get('/', 'BlogController@index')->name('blog');
         Route::get('/tag/{slug}', 'BlogController@tag')->name('blog.tag');
         Route::get('/search', 'BlogController@search')->name('blog.search');
-        Route::get('/read/~{article}', 'BlogController@read')->name('blog.read');
+        Route::get('/read/{slug}~{id}', 'BlogController@read')->name('blog.read');
     });
 
     // About route

@@ -57,8 +57,8 @@
                     </div>
 
                     <!-- Blog Post -->
-                    @foreach ($articles as $article)
-                      <a href="{{ route('blog.read', $article->id) }}" class="blog-post">
+                    @foreach ($articles as $key =>  $article)
+                      <a href="{{ route('blog.read', ['slug' => $article->slug, 'id' => $article->id]) }}" class="blog-post">
                           <!-- Blog Post Thumbnail -->
                           <div class="blog-post-thumbnail">
                               <div class="blog-post-thumbnail-inner">

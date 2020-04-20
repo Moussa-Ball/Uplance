@@ -241,4 +241,16 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
     {
         return $this->morphMany(Bookmark::class, 'bookmark');
     }
+
+    public function incrementProfileView()
+    {
+        $profileViewModel = new ProfileView;
+        $profileViewModel->user_id = $this->id;
+        $profileViewModel->save();
+    }
+
+    public function profileViews()
+    {
+        return $this->hasMany(ProfileView::class, 'user_id');
+    }
 }

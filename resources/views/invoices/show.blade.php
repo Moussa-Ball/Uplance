@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Uplance Invoice</title>
+	 {!!  SEO :: generate () !!}
 	<link href="{{ asset('css/invoice.css') }}" rel="stylesheet">
 </head> 
 

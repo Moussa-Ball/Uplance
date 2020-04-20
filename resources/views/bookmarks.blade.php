@@ -82,7 +82,7 @@
                                 <!-- Name -->
                                 <div class="freelancer-name">
                                     <h4><a target="_blank" href="{{ route('freelancers.show', $bookmark[0]->hashid) }}">{{ $bookmark[0]->first_name }} {{ $bookmark[0]->last_name }}
-                                    <img class="flag" src="/images/flags/{{ $bookmark[0]->country }}.svg" alt="flag" title="{{ $bookmark[0]->country_name }}" data-tippy-placement="top"></a> </h4>
+                                    <img class="flag" src="/images/flags/{{ strtolower($bookmark[0]->country) }}.svg" alt="flag" title="{{ $bookmark[0]->country_name }}" data-tippy-placement="top"></a> </h4>
                                     <span>{{ $bookmark[0]->tagline }}</span>
                                     <!-- Rating -->
                                     <div class="freelancer-rating">

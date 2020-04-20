@@ -51,13 +51,13 @@ class ContractEnd extends Notification
                 ->greeting(' ')
                 ->subject("The {$this->contract->title} contract is now closed.")
                 ->line("The {$this->contract->title} contract is already marked as completed. The client will leave you a review. Thank you for doing your business on uplance, we wish you the best success on uplance.")
-                ->action('See the contract', url(route('contracts.show', $this->contract->id)));
+                ->action('See the contract', url(route('contracts.show', $this->contract->hashid)));
         } else {
             return (new MailMessage)
                 ->greeting(' ')
                 ->subject("The {$this->contract->title} contract is now closed.")
                 ->line("The {$this->contract->title} contract is already marked as completed. Your review was branded on the freelancer profile. Thank you for doing your business on uplance we wish you the best.")
-                ->action('See the contract', url(route('contracts.show', $this->contract->id)));
+                ->action('See the contract', url(route('contracts.show', $this->contract->hashid)));
         }
     }
 

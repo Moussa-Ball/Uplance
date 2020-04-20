@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -15,6 +16,10 @@ class IdentityController extends Controller
 
     public function index()
     {
+        if (\Auth::user()->current_account != 'freelancer')
+            return $this->authorize(false);
+
+        SEOMeta::setTitle('Your Identity');
         return view('identities.index');
     }
 

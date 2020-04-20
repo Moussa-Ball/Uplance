@@ -12,6 +12,91 @@
 </style>
 @endsection
 
+@if(Auth::user()->current_account == 'freelancer')
+@section('js')
+<!-- Chart.js // documentation: http://www.chartjs.org/docs/latest/ -->
+<script src="{{ asset('js/chart.min.js') }}"></script>
+<script>
+	Chart.defaults.global.defaultFontFamily = "Nunito";
+	Chart.defaults.global.defaultFontColor = '#888';
+	Chart.defaults.global.defaultFontSize = '14';
+
+    var datas = {!! json_encode($data); !!}
+    var keys = []
+    var values = []
+
+    for (var i in datas) {  keys.push(i); values.push(datas[i]); }
+	var ctx = document.getElementById('chart').getContext('2d');
+    
+	var chart = new Chart(ctx, {
+		type: 'line',
+
+		// The data for our dataset!
+		data: {
+			labels: keys,
+			// Information about the dataset
+	   		datasets: [{
+				label: "Views",
+				backgroundColor: 'rgba(42,65,232,0.08)',
+				borderColor: '#2a41e8',
+				borderWidth: "3",
+				data: values,
+				pointRadius: 5,
+				pointHoverRadius:5,
+				pointHitRadius: 10,
+				pointBackgroundColor: "#fff",
+				pointHoverBackgroundColor: "#fff",
+				pointBorderWidth: "2",
+			}]
+		},
+
+		// Configuration options
+		options: {
+
+		    layout: {
+		      padding: 10,
+		  	},
+
+			legend: { display: false },
+			title:  { display: false },
+
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: false
+					},
+					gridLines: {
+						 borderDash: [6, 10],
+						 color: "#d8d8d8",
+						 lineWidth: 1,
+	            	},
+				}],
+				xAxes: [{
+					scaleLabel: { display: false },  
+					gridLines:  { display: false },
+				}],
+			},
+
+		    tooltips: {
+		      backgroundColor: '#333',
+		      titleFontSize: 13,
+		      titleFontColor: '#fff',
+		      bodyFontColor: '#fff',
+		      bodyFontSize: 13,
+		      displayColors: false,
+		      xPadding: 10,
+		      yPadding: 10,
+		      intersect: false
+		    }
+		},
+
+
+});
+
+</script>
+@endsection
+@endif
+
 @section('content')
 <!-- Dashboard Headline -->
 <div class="dashboard-headline">
@@ -38,22 +123,7 @@
     <div class="fun-fact" data-fun-fact-color="#efa80f">
         <div class="fun-fact-text">
             <span>Reviews</span>
-            @php
-                $review_count = 0;
-
-                foreach($reviews as $review) 
-                {
-                    if (Auth::user()->account_type == 'freelancer' && $review->rated) 
-                    {
-                        $review_count += 1;
-                    } 
-                    elseif (Auth::user()->account_type == 'employer')  
-                    {
-                        $review_count += 1;
-                    }
-                }
-            @endphp
-            <h4>{{ $review_count }}</h4>
+            <h4>{{ $reviews }}</h4>
         </div>
         <div class="fun-fact-icon"><i class="icon-material-outline-rate-review"></i></div>
     </div>
@@ -87,6 +157,24 @@
 
 <!-- Row -->
 <div class="row">
+    @if(Auth::user()->current_account == 'freelancer')
+    <div class="col-xl-12">
+        <!-- Dashboard Box -->
+        <div class="dashboard-box main-box-in-row">
+            <div class="headline">
+                <h3><i class="icon-feather-bar-chart-2"></i> Your Profile Views</h3>
+            </div>
+            <div class="content">
+                <!-- Chart -->
+                <div class="chart">
+                    <canvas id="chart" width="100" height="45"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Dashboard Box / End -->
+    </div>
+    @endif
+
 	<!-- Dashboard Box -->
 	<div class="col-xl-12">
 		<div class="dashboard-box">

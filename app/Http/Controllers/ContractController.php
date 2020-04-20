@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Notifications\FreelancerHired;
 use App\Notifications\ContractActivated;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class ContractController extends Controller
 {
@@ -29,6 +30,7 @@ class ContractController extends Controller
         $contracts = Contract::where('to_id', Auth::id())
             ->orWhere('from_id', Auth::id())
             ->orderBy('created_at', 'DESC')->paginate(10);
+        SEOMeta::setTitle('My Contracts');
         return view('contracts.index', compact('contracts'));
     }
 
@@ -58,6 +60,7 @@ class ContractController extends Controller
         $contract = Contract::with([
             'from', 'to', 'proposal', 'invoices'
         ])->where('id', $contract->id)->first();
+        SEOMeta::setTitle($contract->title . '- Contract');
         return view('contracts.show', compact('user', 'contract'));
     }
 

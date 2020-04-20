@@ -528,7 +528,7 @@
 					<!-- Blog Post Item -->
 					@foreach($posts as $key => $post)
 					<div class="col-xl-4">
-						<a href="{{ route('blog.read', $post->id) }}" class="blog-compact-item-container">
+						<a href="{{ route('blog.read', ['slug' => $post->slug, 'id' => $post->id]) }}" class="blog-compact-item-container">
 							<div class="blog-compact-item">
 								<img src="{{ Storage::url($post->image) }}" alt="image-{{ $key }}">
 								@foreach ($post->tags as $tag)

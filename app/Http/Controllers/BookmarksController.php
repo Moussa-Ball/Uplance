@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Bookmark;
 use App\Job;
 use App\User;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Book;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,7 @@ class BookmarksController extends Controller
         $bookmarkJobs = $jobs;
         $bookmarkFreelancers = $users;
 
+        SEOMeta::setTitle('Bookmarked Jobs');
         return view('bookmarks', compact('bookmarkJobs', 'bookmarkFreelancers'));
     }
 

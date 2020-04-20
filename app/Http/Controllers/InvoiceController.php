@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Invoice;
+use Artesaos\SEOTools\Facades\SEOMeta;
 
 class InvoiceController extends Controller
 {
@@ -22,6 +23,7 @@ class InvoiceController extends Controller
         $invoices = Invoice::where('to_id', Auth::id())
             ->orWhere('from_id', Auth::id())
             ->orderBy('created_at', 'DESC')->paginate(10);
+        SEOMeta::setTitle('My Invoices');
         return view('invoices.index', compact('invoices'));
     }
 
@@ -33,6 +35,7 @@ class InvoiceController extends Controller
      */
     public function success(Invoice $invoice)
     {
+        SEOMeta::setTitle('Payment Successful');
         return view('invoices.success', compact('invoice'));
     }
 
@@ -44,6 +47,7 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
+        SEOMeta::setTitle($invoice->description . '- Invoice');
         return view('invoices.show', compact('invoice'));
     }
 }

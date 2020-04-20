@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\User;
 use App\Category;
 use App\Review;
@@ -98,6 +99,12 @@ class FreelancerController extends Controller
      */
     public function show(User $user)
     {
+        if (Auth::check() && Auth::user()->id != $user->id) {
+            $user->incrementProfileView();
+        } elseif (!Auth::check()) {
+            $user->incrementProfileView();
+        }
+
         $freelancer = $user;
         $reviews = Review::where('to_id', $user->id)->where('rated', true)->paginate(10);
 

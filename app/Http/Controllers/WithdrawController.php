@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Withdraw;
 use App\WithdrawMethod;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 use PragmaRX\Countries\Package\Countries;
 
@@ -32,6 +33,7 @@ class WithdrawController extends Controller
         }
         $intent = $request->user()->createSetupIntent();
         $currency = Countries::where('cca2', $request->user()->country)->first()->currencies->first();
+        SEOMeta::setTitle('Get Paid');
         return view('payments.paid', compact('balance', 'methods', 'currency'));
     }
 
