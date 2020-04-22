@@ -6,7 +6,6 @@ use Auth;
 use App\WithdrawMethod;
 use Illuminate\Http\Request;
 use PragmaRX\Countries\Package\Countries;
-use Swap\Swap;
 
 trait StripeConnect
 {
@@ -105,10 +104,11 @@ trait StripeConnect
     public function transfer($amount, $destination)
     {
         $currency = Countries::where('cca2', Auth::user()->country)->first()->currencies->first();
+        $amount = currency($amount, 'USD', $currency, false);
+
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        $amount = $rate = Swap::latest("USD/{$currency}");;
         return \Stripe\Transfer::create([
-            'amount' => $amount * 100,
+            'amount' => round($amount * 100),
             'currency' => $currency,
             'destination' => $destination,
         ]);

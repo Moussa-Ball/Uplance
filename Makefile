@@ -1,4 +1,4 @@
-.PHONY=dev; elastic-fresh; elastic-new;
+.PHONY=dev; elastic-fresh; elastic-new; add-stripe-currency;
 
 dev:
 	tmux \
@@ -31,3 +31,7 @@ elastic-new:
 	php artisan scout:import "App\User"
 	php artisan scout:import "App\Job"
 	php artisan scout:import "App\Article"
+
+
+add-stripe-currency:
+	php artisan currency:manage add AUD,BRL,GBP,CAD,CZK,DKK,EUR,HKD,HUF,ILS,JPY,MYR,MXN,TWD,NZD,NOK,PHP,PLN,RUB,SGD,SEK,CHF,THB,USD

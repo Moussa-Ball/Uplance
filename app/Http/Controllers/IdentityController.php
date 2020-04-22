@@ -32,19 +32,28 @@ class IdentityController extends Controller
 
     public function success(Request $request)
     {
-        if (Auth::user()->connect_verified)
+        if ($request->user()->connect_verified)
             return $this->authorize(false);
 
-        if (!empty($request->user()->connectAccount()->capabilities))
-            $request->user()->update(['connect_verified' => true]);
+        if (
+            $request->user()->connectAccount()->capabilities->card_payments == 'inactive' ||
+            $request->user()->connectAccount()->capabilities->platform_payments == 'inactive'
+        ) {
+            return redirect()->route('identity.index')
+                ->with('warning', "Your identity could no be verified.");
+        } else {
+            $request->user()->update(['connect_verified' => 1]);
+            return redirect()->route('identity.index')
+                ->with('success', "Your identity has been verified.");
+        }
 
-        return redirect()->route('identity.index')
-            ->with('success', "Your identity has been verified.");
+        if (!empty($request->user()->connectAccount()->capabilities)) {
+        }
     }
 
     public function failure(Request $request)
     {
-        if (Auth::user()->connect_verified)
+        if ($request->user()->connect_verified)
             return $this->authorize(false);
         return redirect()->route('identity.index')
             ->with('error', "Your identity could not be verified.");

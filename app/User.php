@@ -107,6 +107,9 @@ class User extends \TCG\Voyager\Models\User implements MustVerifyEmail
             'category_id' => [
                 'type' => 'integer',
             ],
+            'connect_verified' => [
+                'type' => 'integer',
+            ],
             'created_at' => [
                 'type' => 'date',
                 "format" => "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",

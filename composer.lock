@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c0d11c4339720f5e39faee1a0c1c95b3",
+    "content-hash": "59aa8a5db0fdf9e6287a72aab76c3676",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
@@ -1825,193 +1825,6 @@
                 "php"
             ],
             "time": "2020-03-25T18:49:23+00:00"
-        },
-        {
-            "name": "florianv/exchanger",
-            "version": "2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/florianv/exchanger.git",
-                "reference": "eaece7c0f16d5b923b55d4b81a0c90c4e93708b8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/florianv/exchanger/zipball/eaece7c0f16d5b923b55d4b81a0c90c4e93708b8",
-                "reference": "eaece7c0f16d5b923b55d4b81a0c90c4e93708b8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3",
-                "php-http/client-implementation": "^1.0",
-                "php-http/discovery": "^1.6",
-                "php-http/httplug": "^1.0 || ^2.0",
-                "php-http/message-factory": "^1.0.2",
-                "psr/simple-cache": "^1.0"
-            },
-            "require-dev": {
-                "nyholm/psr7": "^1.0",
-                "php-http/message": "^1.7",
-                "php-http/mock-client": "^1.0",
-                "phpunit/phpunit": "^7.5"
-            },
-            "suggest": {
-                "php-http/guzzle6-adapter": "Required to use Guzzle for sending HTTP requests",
-                "php-http/message": "Required to use Guzzle for sending HTTP requests"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Exchanger\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florian Voutzinos",
-                    "email": "florian@voutzinos.com",
-                    "homepage": "https://voutzinos.com"
-                }
-            ],
-            "description": "Currency exchange rates framework for PHP",
-            "homepage": "https://github.com/florianv/exchanger",
-            "keywords": [
-                "Rate",
-                "conversion",
-                "currency",
-                "exchange rates",
-                "money"
-            ],
-            "time": "2020-03-03T10:00:48+00:00"
-        },
-        {
-            "name": "florianv/laravel-swap",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/florianv/laravel-swap.git",
-                "reference": "9f6f769c38389abee5713b5e53e33cd85154ef6e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/florianv/laravel-swap/zipball/9f6f769c38389abee5713b5e53e33cd85154ef6e",
-                "reference": "9f6f769c38389abee5713b5e53e33cd85154ef6e",
-                "shasum": ""
-            },
-            "require": {
-                "florianv/swap": "^4.0",
-                "php": "^7.1.3"
-            },
-            "require-dev": {
-                "graham-campbell/testbench": "^5.3",
-                "nyholm/psr7": "^1.0",
-                "php-http/guzzle6-adapter": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Swap\\Laravel\\SwapServiceProvider"
-                    ],
-                    "aliases": {
-                        "Swap": "Swap\\Laravel\\Facades\\Swap"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Swap\\Laravel\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florian Voutzinos",
-                    "email": "florian@voutzinos.com",
-                    "homepage": "https://voutzinos.com"
-                }
-            ],
-            "description": "Currency exchange rates library for Laravel and Lumen",
-            "homepage": "https://github.com/florianv/laravel-swap",
-            "keywords": [
-                "Rate",
-                "conversion",
-                "currency",
-                "exchange rates",
-                "laravel",
-                "lumen",
-                "money"
-            ],
-            "time": "2019-10-10T14:48:17+00:00"
-        },
-        {
-            "name": "florianv/swap",
-            "version": "4.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/florianv/swap.git",
-                "reference": "89128edec43cec06b65f0d90141512e91e5e14bf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/florianv/swap/zipball/89128edec43cec06b65f0d90141512e91e5e14bf",
-                "reference": "89128edec43cec06b65f0d90141512e91e5e14bf",
-                "shasum": ""
-            },
-            "require": {
-                "florianv/exchanger": "^2.0",
-                "php": "^7.1.3"
-            },
-            "require-dev": {
-                "nyholm/psr7": "^1.0",
-                "php-http/message": "^1.7",
-                "php-http/mock-client": "^1.0",
-                "phpunit/phpunit": "^7.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Swap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Florian Voutzinos",
-                    "email": "florian@voutzinos.com",
-                    "homepage": "https://voutzinos.com"
-                }
-            ],
-            "description": "Exchange rates library for PHP",
-            "keywords": [
-                "Rate",
-                "conversion",
-                "currency",
-                "exchange rates",
-                "money"
-            ],
-            "time": "2019-05-30T10:44:39+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -8725,6 +8538,68 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2019-10-24T08:53:34+00:00"
+        },
+        {
+            "name": "torann/currency",
+            "version": "1.0.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Torann/laravel-currency.git",
+                "reference": "27b2b00574364e04ef25e42195581e503b0fbef2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Torann/laravel-currency/zipball/27b2b00574364e04ef25e42195581e503b0fbef2",
+                "reference": "27b2b00574364e04ef25e42195581e503b0fbef2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "~5.1|^6.0|^7.0",
+                "illuminate/support": "~5.1|^6.0|^7.0",
+                "php": ">=5.5.9"
+            },
+            "suggest": {
+                "illuminate/database": "Allows for storing of currencies in the database"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Torann\\Currency\\CurrencyServiceProvider"
+                    ],
+                    "aliases": {
+                        "Currency": "Torann\\Currency\\Facades\\Currency"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Torann\\Currency\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Stainback",
+                    "email": "torann@gmail.com"
+                }
+            ],
+            "description": "This provides Laravel with currency functions such as currency formatting and conversion using up-to-date exchange rates.",
+            "keywords": [
+                "currency",
+                "exchange rate",
+                "finance",
+                "laravel",
+                "money",
+                "openexchangerates"
+            ],
+            "time": "2020-03-09T13:28:06+00:00"
         },
         {
             "name": "vinkla/hashids",
